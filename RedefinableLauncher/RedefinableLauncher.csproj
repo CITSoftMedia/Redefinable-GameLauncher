@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{565CF2A7-BA2A-4E31-ADB2-F0FB06249AAB}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Redefinable.Applications.Launcher</RootNamespace>
+    <AssemblyName>RedefinableLauncher</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Common Codes\CommonAssemblyInfo.cs">
+      <Link>Common Codes\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Common Codes\LauncherAssembly.cs">
+      <Link>Common Codes\LauncherAssembly.cs</Link>
+    </Compile>
+    <Compile Include="Common Codes\LocalAssemblyInfo.cs" />
+    <None Include="DebugCode.cs" />
+    <Compile Include="Entry.cs" />
+    <Compile Include="LauncherAssemblyUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.ExElements\Redefinable.ExElements.csproj">
+      <Project>{ebc5f787-1d1a-4f36-b56a-d234b436d5db}</Project>
+      <Name>Redefinable.ExElements</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.ExHandler\Redefinable.ExHandler.csproj">
+      <Project>{3f994eae-d8d8-4b02-af2a-1408f3978a2e}</Project>
+      <Name>Redefinable.ExHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable\Redefinable.csproj">
+      <Project>{283b9c50-3ba4-4559-96dd-b83a567c84ed}</Project>
+      <Name>Redefinable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RedefinableLauncher.Controls\RedefinableLauncher.Controls.csproj">
+      <Project>{9927e317-9f6c-487b-8857-8b1143edb1b3}</Project>
+      <Name>RedefinableLauncher.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RedefinableLauncher.Core\RedefinableLauncher.Core.csproj">
+      <Project>{b6dfbb4e-e432-4bea-b095-accb14a907b5}</Project>
+      <Name>RedefinableLauncher.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RedefinableLauncher.Forms\RedefinableLauncher.Forms.csproj">
+      <Project>{b1037a3c-3945-4004-be5f-329019083629}</Project>
+      <Name>RedefinableLauncher.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RedefinableLauncher.Informations\RedefinableLauncher.Informations.csproj">
+      <Project>{c247380f-8561-4bdd-9231-215117d9d95c}</Project>
+      <Name>RedefinableLauncher.Informations</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="testImage.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

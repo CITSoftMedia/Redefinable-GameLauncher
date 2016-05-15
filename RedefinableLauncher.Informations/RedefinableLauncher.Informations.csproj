@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C247380F-8561-4BDD-9231-215117D9D95C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Redefinable.Applications.Launcher.Informations</RootNamespace>
+    <AssemblyName>RedefinableLauncher.Informations</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Common Codes\CommonAssemblyInfo.cs">
+      <Link>Common Codes\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Common Codes\LauncherAssembly.cs">
+      <Link>Common Codes\LauncherAssembly.cs</Link>
+    </Compile>
+    <Compile Include="Common Codes\LocalAssemblyInfo.cs" />
+    <Compile Include="DisplayNumber.cs" />
+    <Compile Include="ExecInfo.cs" />
+    <Compile Include="GameDirectory.cs" />
+    <Compile Include="GameFilesDirectory.cs" />
+    <Compile Include="Developer.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="GameImage.cs" />
+    <Compile Include="GameServerConnectInfo.cs" />
+    <Compile Include="Team.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.ExElements\Redefinable.ExElements.csproj">
+      <Project>{ebc5f787-1d1a-4f36-b56a-d234b436d5db}</Project>
+      <Name>Redefinable.ExElements</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.ExHandler\Redefinable.ExHandler.csproj">
+      <Project>{3f994eae-d8d8-4b02-af2a-1408f3978a2e}</Project>
+      <Name>Redefinable.ExHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.IniHandler\Redefinable.IniHandler.csproj">
+      <Project>{1d944a8e-79e6-4151-a58c-9594a95b91ac}</Project>
+      <Name>Redefinable.IniHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.StreamArchive\Redefinable.StreamArchive.csproj">
+      <Project>{7309dee9-2bb4-42df-88e9-c9ca7e15f06b}</Project>
+      <Name>Redefinable.StreamArchive</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable\Redefinable.csproj">
+      <Project>{283b9c50-3ba4-4559-96dd-b83a567c84ed}</Project>
+      <Name>Redefinable</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common Codes\External Solutions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Game Files\directory.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StreamArchive Tools\a32ApplicationUtility.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StreamArchive Tools\a32ApplicationUtility.ExHandler.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StreamArchive Tools\a32ApplicationUtility.ExHandleXML.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StreamArchive Tools\a32StreamArchiver.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StreamArchive Tools\QuickExtractor.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
