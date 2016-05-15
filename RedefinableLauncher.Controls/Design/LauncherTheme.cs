@@ -15,7 +15,19 @@ namespace Redefinable.Applications.Launcher.Controls.Design
     /// </summary>
     public class LauncherTheme
     {
+        // 非公開メソッド
+        private LauncherThemeInfo info;
         
+
+        // 公開メソッド
+
+        /// <summary>
+        /// テーマ情報を格納するインスタンスを取得します。
+        /// </summary>
+        public LauncherThemeInfo Info
+        {
+            get { return this.info; }
+        }
     }
 
     public class LauncherThemeInfo
@@ -109,7 +121,15 @@ namespace Redefinable.Applications.Launcher.Controls.Design
 
             bc.ReadDictionary(dict, stream);
 
+            if (!dict.ContainsKey("FileId") && dict["FileId"] != "Launcher Theme Information")
+                throw new NotSupportedException("Launcher Theme Informationが不正です。");
 
+            this.name = dict["Name"];
+
+            if (Boolean.Parse(dict["Inherited"]))
+                this.baseThemeFile = dict["BaseThemeFile"];
+            else
+                this.baseThemeFile = null;
         }
     }
 }
