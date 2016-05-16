@@ -106,6 +106,8 @@ namespace Redefinable.Applications.Launcher.Controls
             this.Controls.Add(new NormalScaleableColorPanel(new Point(20, 20), new Size(100, 100), Color.Blue));
             this.Controls.Add(new NormalScaleableColorPanel(new Point(140, 50), new Size(100, 100), Color.Green));
             this.Controls.Add(new LauncherButton(new Point(200, 200), new Size(130, 40)));
+            this.Controls.Add(new LauncherButton(new Point(200, 250), new Size(200, 40)));
+
         }
         
         private void _setScale(float value)
