@@ -158,5 +158,35 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             this.leftPaddingSize = leftPadding;
             this.rightPaddingSize = rightPadding;
         }
+
+
+        // 公開静的メソッド
+
+        /// <summary>
+        /// デバッグ用のサンプルテーマを取得します。
+        /// </summary>
+        /// <returns></returns>
+        public static LauncherButtonTheme GetSampleTheme()
+        {
+            Image left, center, right;
+            Graphics g;
+
+            left = new Bitmap(10, 10);
+            g = Graphics.FromImage(left);
+            g.FillRectangle(Brushes.Blue, 0, 0, 10, 10);
+            g.Dispose();
+
+            center = new Bitmap(10, 10);
+            g = Graphics.FromImage(center);
+            g.FillRectangle(Brushes.White, 0, 0, 10, 10);
+            g.Dispose();
+
+            right = new Bitmap(10, 10);
+            g = Graphics.FromImage(right);
+            g.FillRectangle(Brushes.Red, 0, 0, 10, 10);
+            g.Dispose();
+
+            return new LauncherButtonTheme(left, center, right, 40, 10, 10);
+        }
     }
 }

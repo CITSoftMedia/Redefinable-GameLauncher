@@ -15,11 +15,14 @@ namespace Redefinable.Applications.Launcher.Controls.Design
     /// </summary>
     public class LauncherTheme
     {
-        // 非公開メソッド
+        // 非公開フィールド
         private LauncherThemeInfo info;
         
+        private LauncherButtonTheme buttonTheme;
 
-        // 公開メソッド
+
+
+        // 公開フィールド・プロパティ
 
         /// <summary>
         /// テーマ情報を格納するインスタンスを取得します。
@@ -29,7 +32,26 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             get { return this.info; }
         }
 
+        /// <summary>
+        /// LauncherButton用のテーマデータのインスタンスを取得します。
+        /// </summary>
+        public LauncherButtonTheme ButtonTheme
+        {
+            get { return this.buttonTheme; }
+        }
 
+
+
+        // コンストラクタ
+
+        /// <summary>
+        /// デバッグ用のサンプルテーマとしてLauncherThemeクラスのインスタンスを初期化します。
+        /// </summary>
+        public LauncherTheme()
+        {
+            this.info = new LauncherThemeInfo("Sample Theme for DEBUG", null);
+            this.buttonTheme = LauncherButtonTheme.GetSampleTheme();
+        }
     }
 
     /// <summary>

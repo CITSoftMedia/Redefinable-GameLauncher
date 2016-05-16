@@ -99,6 +99,9 @@ namespace Redefinable.Applications.Launcher.Controls
             this.Location = this.DefaultControlLocation;
             this.Size = this.DefaultControlSize;
 
+            // テーマ
+            this.theme = new LauncherTheme(); // デバッグ用, サンプルテーマ
+
             // テストコントロール
             this.Controls.Add(new NormalScaleableColorPanel(new Point(20, 20), new Size(100, 100), Color.Blue));
             this.Controls.Add(new NormalScaleableColorPanel(new Point(140, 50), new Size(100, 100), Color.Green));

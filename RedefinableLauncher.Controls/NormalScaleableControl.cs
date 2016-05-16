@@ -69,6 +69,25 @@ namespace Redefinable.Applications.Launcher.Controls
         }
 
 
+        // 限定公開メソッド
+
+        /// <summary>
+        /// 現在のScaleの値を使用して、Size originのスケーリング後のサイズを計算します。
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <returns></returns>
+        protected Size CalcurateScaledSize(Size origin)
+        {
+            float w = origin.Width;
+            float h = origin.Height;
+
+            w *= this.currentScale;
+            h *= this.currentScale;
+
+            return new Size((int) w, (int) h);
+        }
+
+
         // 公開メソッド
 
         /// <summary>
@@ -166,6 +185,7 @@ namespace Redefinable.Applications.Launcher.Controls
                 Control control = this;
                 while (control != null)
                 {
+                    //Console.WriteLine(control.ToString());
                     control = control.Parent;
                     if (control is LauncherPanel)
                         return (LauncherPanel) control;
@@ -191,6 +211,16 @@ namespace Redefinable.Applications.Launcher.Controls
                 return p.Theme;
             
             return null;
+        }
+
+        /// <summary>
+        /// DefaultControlSizeの値を変更します。推奨されません。
+        /// </summary>
+        /// <param name="size"></param>
+        /// <remarks>テーマ付きコントロールでテーマに合わせたサイズに変更するための実装です。</remarks>
+        protected void SetDefaultControlSize(Size size)
+        {
+            this.defaultControlSize = size;
         }
 
 

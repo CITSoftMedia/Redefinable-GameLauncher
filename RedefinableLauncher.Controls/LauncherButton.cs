@@ -5,17 +5,31 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using Redefinable;
+using Redefinable.Applications.Launcher.Controls.Design;
 
 namespace Redefinable.Applications.Launcher.Controls
 {
     public class LauncherButton : VariableScaleableControl
     {
         // 非公開フィールド
-        
+        private bool applyThemesHeight;
 
 
         // 非公開フィールド :: コントロール
         private NormalScaleableColorPanel hilightPanel;
+
+
+        // 公開フィールド
+
+        /// <summary>
+        /// このLauncherButtonの高さをテーマが推奨するサイズへ設定するかどうかを示す値を取得・設定します。
+        /// </summary>
+        public bool ApplyThemesHeight
+        {
+            get { return this.applyThemesHeight; }
+            set { this.applyThemesHeight = value; }
+        }
 
 
         // コンストラクタ
@@ -37,8 +51,13 @@ namespace Redefinable.Applications.Launcher.Controls
 
             
             // イベントの追加
+            this.ScaleChanged += (sender, e) => { this.RefreshTheme(); };
             this.MouseMove += (sender, e) => { this.hilightPanel.Visible = true; };
             this.hilightPanel.MouseLeave += (sender, e) => { this.hilightPanel.Visible = false; };
+
+
+            // テーマの適用
+            this.RefreshTheme();
         }
 
         
@@ -47,6 +66,7 @@ namespace Redefinable.Applications.Launcher.Controls
         private void _initializeControls()
         {
             this.BackColor = Color.Gray;
+            this.BackgroundImageLayout = ImageLayout.Stretch;
             this.Cursor = Cursors.Hand;
 
             // ハイライトパネル
@@ -57,6 +77,45 @@ namespace Redefinable.Applications.Launcher.Controls
         }
 
 
-        // 
+        // 公開メソッド
+
+        public override void RefreshTheme()
+        {
+            // 先に処理
+            base.RefreshTheme();
+            
+            // テーマの適用
+            // テーマが取得できない場合 → 終わり
+            LauncherTheme theme = this.GetLauncherTheme();
+            if (theme == null)
+            {
+                //Console.WriteLine("テーマ取得失敗");
+                return;
+            }
+
+            LauncherButtonTheme bt = theme.ButtonTheme;
+            
+
+            if (this.applyThemesHeight)
+            {
+                // テーマが推奨する高さを使用する
+                this.SetDefaultControlSize(new Size(this.Width, bt.RecommendedHeight));
+                this.ChangeScale(this.currentScale);
+            }
+
+            // 背景描画
+            this.BackgroundImage = new Bitmap(this.Width, this.Height);
+
+            Graphics g = Graphics.FromImage(this.BackgroundImage);
+            g.DrawImage(bt.CenterDecoration, 0, 0, this.Width, this.Height);
+
+            int leftw = (int)((float)bt.LeftPaddingSize * this.currentScale);
+            int rightw = (int)((float)bt.RightPaddingSize * this.currentScale);
+
+            g.DrawImage(bt.LeftDecoration, 0, 0, leftw, this.Height);
+            g.DrawImage(bt.RightDecoration, this.Width - rightw, 0, rightw, this.Height);
+
+            g.Dispose();
+        }
     }
 }
