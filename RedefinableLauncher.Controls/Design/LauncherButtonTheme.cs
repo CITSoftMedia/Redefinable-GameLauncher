@@ -78,6 +78,56 @@ namespace Redefinable.Applications.Launcher.Controls.Design
 
         // コンストラクタ
 
+        /// <summary>
+        /// 新しいLauncherButtonThemeクラスのインスタンスを初期化します。このコンストラクタの仕様は推奨されません。
+        /// </summary>
+        public LauncherButtonTheme()
+        {
+            this.leftDecoration = null;
+            this.centerDecoration = null;
+            this.rightDecoration = null;
+
+            this.recommendedHeight = 30;
+
+            this.leftPaddingSize = 10;
+            this.rightPaddingSize = 10;
+        }
+
+        /// <summary>
+        /// 新しいLauncherButtonThemeクラスのインスタンスを初期化します。
+        /// </summary>
+        /// <param name="left">左端の装飾イメージ</param>
+        /// <param name="center">中央部の装飾イメージ</param>
+        /// <param name="right">右端の装飾イメージ</param>
+        /// <param name="clone">各インスタンスを複製するかどうか</param>
+        public LauncherButtonTheme(Image left, Image center, Image right, bool clone)
+        {
+            if (clone)
+            {
+                left = (Image) left.Clone();
+                center = (Image) center.Clone();
+                right = (Image) right.Clone();
+            }
+
+            this.leftDecoration = left;
+            this.centerDecoration = center;
+            this.rightDecoration = right;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="left">左端イメージ</param>
+        /// <param name="center">中央イメージ</param>
+        /// <param name="right">右端イメージ</param>
+        /// <param name="height">このテーマで推奨されるデフォルトのボタンの高さ</param>
+        /// <param name="leftPadding">左端部分の幅 (内部余白)</param>
+        /// <param name="rightPadding">右端部分の幅 (内部余白)</param>
+        public LauncherButtonTheme(Image left, Image center, Image right, int height, int leftPadding, int rightPadding)
+            : this(left, center, right, false)
+        {
+            this.SetSizes(height, leftPadding, rightPadding);
+        }
         
 
 
@@ -97,14 +147,16 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         }
         
         /// <summary>
-        /// このボタンテーマの各種サイズなどの値を更新します。
+        /// このボタンテーマの各種サイズなどの値を更新します。すでにこのテーマが使用中の場合は、このボタンテーマを利用しているコントロールで再描画を実施しなくてはなりません。
         /// </summary>
-        /// <param name="height"></param>
-        /// <param name="leftPadding"></param>
-        /// <param name="rightPadding"></param>
+        /// <param name="height">このテーマで推奨されるデフォルトのボタンの高さ</param>
+        /// <param name="leftPadding">左端部分の幅 (内部余白)</param>
+        /// <param name="rightPadding">右端部分の幅 (内部余白)</param>
         public void SetSizes(int height, int leftPadding, int rightPadding)
         {
-
+            this.recommendedHeight = height;
+            this.leftPaddingSize = leftPadding;
+            this.rightPaddingSize = rightPadding;
         }
     }
 }
