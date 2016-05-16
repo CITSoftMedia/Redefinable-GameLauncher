@@ -42,6 +42,7 @@
       <Link>Common Codes\LauncherAssembly.cs</Link>
     </Compile>
     <Compile Include="Common Codes\LocalAssemblyInfo.cs" />
+    <Compile Include="Design\LauncherButtonTheme.cs" />
     <Compile Include="Design\LauncherTheme.cs" />
     <Compile Include="IScaleableControl.cs" />
     <Compile Include="LauncherButton.cs">

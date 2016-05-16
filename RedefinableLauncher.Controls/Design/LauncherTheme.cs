@@ -28,8 +28,13 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         {
             get { return this.info; }
         }
+
+
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class LauncherThemeInfo
     {
         // 非公開フィールド
