@@ -144,6 +144,12 @@ namespace Redefinable.Applications.Launcher.Controls
         /// 現在のテーマに合わせてコントロールを再描画します。
         /// </summary>
         public abstract void RefreshTheme();
+
+        /// <summary>
+        /// LauncherPanelのFocusIndexが変化した際に自動的に実行され、もし、このコントロールにフォーカスが当てられた際は、フォーカス処理を実行します。
+        /// また、コントロール内部に配置されているチャイルドコントロールでもこのメソッドを実行するように実装してください。
+        /// </summary>
+        public abstract void RefreshFocusState();
     }
 
     /// <summary>
@@ -295,6 +301,18 @@ namespace Redefinable.Applications.Launcher.Controls
         public override void RefreshTheme()
         {
             // 継承先で実装
+        }
+
+        /// <summary>
+        /// LauncherPanelのFocusIndexが変化した際に自動的に実行され、もし、このコントロールにフォーカスが当てられた際は、フォーカス処理を実行します。
+        /// コントロール内部に配置されているチャイルドコントロールでもこのメソッドを実行するように実装してください。
+        /// </summary>
+        public override void RefreshFocusState()
+        {
+            // 子コントロールで同様の処理を行わせる
+            foreach (var c in this.Controls)
+                if (c is IScaleableControl)
+                    ((IScaleableControl) c).RefreshFocusState();
         }
     }
 }

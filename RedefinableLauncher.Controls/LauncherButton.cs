@@ -79,6 +79,9 @@ namespace Redefinable.Applications.Launcher.Controls
 
         // 公開メソッド
 
+        /// <summary>
+        /// コントロールを現在のテーマで再描画します。
+        /// </summary>
         public override void RefreshTheme()
         {
             // 先に処理
@@ -116,6 +119,14 @@ namespace Redefinable.Applications.Launcher.Controls
             g.DrawImage(bt.RightDecoration, this.Width - rightw, 0, rightw, this.Height);
 
             g.Dispose();
+        }
+
+        public override void RefreshFocusState()
+        {
+            
+
+            // 子コントロールへも適用
+            base.RefreshFocusState();
         }
     }
 }

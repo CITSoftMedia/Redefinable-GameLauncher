@@ -213,9 +213,16 @@ namespace Redefinable.Applications.Launcher.Controls
                     ((IScaleableControl) cont).RefreshTheme();
         }
 
+        /// <summary>
+        /// FocusIndexが変化した際に実行され、
+        /// </summary>
+        public void RefreshFocusState()
+        {
+
+        }
+
 
         // 公開メソッド :: インタフェースの明示的な実装
-
         
     }
 }
