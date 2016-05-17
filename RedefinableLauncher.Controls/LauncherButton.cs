@@ -123,7 +123,11 @@ namespace Redefinable.Applications.Launcher.Controls
 
         public override void RefreshFocusState()
         {
-            
+            // デバッグ
+            if (this.LauncherControlFocused)
+                this.hilightPanel.BackColor = Color.FromArgb(128, 255, 0, 0);
+            else
+                this.hilightPanel.BackColor = Color.FromArgb(128, 255, 255, 255);
 
             // 子コントロールへも適用
             base.RefreshFocusState();

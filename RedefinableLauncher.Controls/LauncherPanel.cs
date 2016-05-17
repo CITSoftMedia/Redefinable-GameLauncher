@@ -19,7 +19,7 @@ namespace Redefinable.Applications.Launcher.Controls
         // 非公開フィールド
         private float currentScale;
         private LauncherTheme theme;
-        private int focusIndex;
+        private IScaleableControl focusedControl;
 
 
         // 非公開フィールド :: コントロール
@@ -63,11 +63,11 @@ namespace Redefinable.Applications.Launcher.Controls
         }
 
         /// <summary>
-        /// 現在LauncherPanel上のどのコントロールにフォーカスがあるかどうかをControlsのインデックス番号で取得します。
+        /// 現在LauncherPanel上でフォーカスがあるIScaleableControlを取得します。
         /// </summary>
-        public int FocusIndex
+        public IScaleableControl FocuedControl
         {
-            get { return this.focusIndex; }
+            get { return this.focusedControl; }
         }
         
 
@@ -105,6 +105,14 @@ namespace Redefinable.Applications.Launcher.Controls
             get { return this; }
         }
 
+        /// <summary>
+        /// 使用できません。
+        /// </summary>
+        bool IScaleableControl.LauncherControlFocused
+        {
+            get { throw new NotImplementedException(); }
+        }
+
 
         // 公開イベント
 
@@ -123,6 +131,7 @@ namespace Redefinable.Applications.Launcher.Controls
         {
             // データフィールドの初期化
             this.currentScale = 1.0f;
+            this.focusedControl = null;
 
             // コントロールの初期化
             this._initializeControls();
@@ -132,6 +141,8 @@ namespace Redefinable.Applications.Launcher.Controls
 
             // イベントの追加
             this.Click += (sender, e) => { this.ChangeScale(this.currentScale -= 0.1f); };
+            this.PreviewKeyDown += LauncherPanel_PreviewKeyDown;
+            this.KeyDown += (sender, e) => { Console.WriteLine("a"); };
         }
 
 
@@ -152,6 +163,17 @@ namespace Redefinable.Applications.Launcher.Controls
             this.Controls.Add(new LauncherButton(new Point(200, 200), new Size(130, 40)));
             this.Controls.Add(new LauncherButton(new Point(200, 250), new Size(200, 40)));
 
+            VariableScaleableControl c1 = new LauncherButton(new Point(200, 300), new Size(130, 40));
+            VariableScaleableControl c2 = new LauncherButton(new Point(200, 350), new Size(130, 40));
+            
+            c1.SetNeighborControls(null, c2, null, null);
+            c2.SetNeighborControls(c1, null, null, null);
+
+            this.Controls.Add(c1);
+            this.Controls.Add(c2);
+
+            // 初期状態で選択されているコントロール
+            this.focusedControl = c1;
         }
         
         private void _setScale(float value)
@@ -192,6 +214,41 @@ namespace Redefinable.Applications.Launcher.Controls
         }
 
 
+        // 非公開メソッド :: コントロールイベント
+        
+        private void LauncherPanel_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            Console.WriteLine("a");
+
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    this.focusedControl = this.focusedControl.UpControl;
+                    break;
+                case Keys.Down:
+                    this.focusedControl = this.focusedControl.DownControl;
+                    break;
+                case Keys.Left:
+                    this.focusedControl = this.focusedControl.LeftControl;
+                    break;
+                case Keys.Right:
+                    this.focusedControl = this.focusedControl.RightControl;
+                    break;
+            }
+
+            this.RefreshFocusState();
+        }
+
+
+        // 限定公開メソッド
+
+        protected override void OnParentChanged(EventArgs e)
+        {
+            base.OnParentChanged(e);
+            this.Focus();
+        }
+
+
         // 公開メソッド
 
         /// <summary>
@@ -214,15 +271,22 @@ namespace Redefinable.Applications.Launcher.Controls
         }
 
         /// <summary>
-        /// FocusIndexが変化した際に実行され、
+        /// FocusedControlが変化した際に実行され、このLauncherPanel上のすべてのコントロールにおいて、RefreshFocusState()を実行します。
         /// </summary>
         public void RefreshFocusState()
         {
-
+            foreach (var c in this.Controls)
+                if (c is IScaleableControl)
+                {
+                    Console.WriteLine(c.ToString());
+                    ((IScaleableControl)c).RefreshFocusState();
+                }
         }
+        
 
 
         // 公開メソッド :: インタフェースの明示的な実装
         
+
     }
 }

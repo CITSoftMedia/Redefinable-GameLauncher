@@ -62,7 +62,15 @@ namespace Redefinable.Applications.Launcher.Controls
         /// 右方のコントロールを取得します。
         /// </summary>
         public abstract IScaleableControl RightControl { get; }
-        
+
+        /// <summary>
+        /// LauncherPanelのFocuedControlの値から、現在このコントロールにフォーカスがあるかどうかを取得します。
+        /// </summary>
+        public virtual bool LauncherControlFocused
+        {
+            get { return this._isLauncherControlFocused(); }
+        }
+
 
 
         // 公開イベント
@@ -90,7 +98,49 @@ namespace Redefinable.Applications.Launcher.Controls
         }
 
 
+        // 非公開メソッド
+        
+
+        /// <summary>
+        /// 現在このコントロールにフォーカスがあるかどうかをLauncherPanelに問い合わせます。
+        /// </summary>
+        private bool _isLauncherControlFocused()
+        {
+            LauncherPanel lp = this.GetLauncherPanel();
+            if (lp == null)
+                return false;
+
+            return this == lp.FocuedControl;
+        }
+
+
         // 限定公開メソッド
+        
+        /// <summary>
+        /// このコントロールが所属しているLauncherPanelを取得します。
+        /// もし、このコントロールがLauncherPanel上に配置されていない場合は、nullを返します。
+        /// </summary>
+        /// <returns></returns>
+        protected LauncherPanel GetLauncherPanel()
+        {
+            try
+            {
+                Control control = this;
+                while (control != null)
+                {
+                    //Console.WriteLine(control.ToString());
+                    control = control.Parent;
+                    if (control is LauncherPanel)
+                        return (LauncherPanel) control;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("LauncherPanelの検出に失敗しました。", ex);
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// 現在のScaleの値を使用して、Size originのスケーリング後のサイズを計算します。
@@ -146,7 +196,7 @@ namespace Redefinable.Applications.Launcher.Controls
         public abstract void RefreshTheme();
 
         /// <summary>
-        /// LauncherPanelのFocusIndexが変化した際に自動的に実行され、もし、このコントロールにフォーカスが当てられた際は、フォーカス処理を実行します。
+        /// LauncherPanelのFocuedControlが変化した際に自動的に実行され、もし、このコントロールにフォーカスが当てられた際は、フォーカス処理を実行します。
         /// また、コントロール内部に配置されているチャイルドコントロールでもこのメソッドを実行するように実装してください。
         /// </summary>
         public abstract void RefreshFocusState();
@@ -241,33 +291,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
 
         // 限定公開メソッド
-
-        /// <summary>
-        /// このコントロールが所属しているLauncherPanelを取得します。
-        /// もし、このコントロールがLauncherPanel上に配置されていない場合は、nullを返します。
-        /// </summary>
-        /// <returns></returns>
-        protected LauncherPanel GetLauncherPanel()
-        {
-            try
-            {
-                Control control = this;
-                while (control != null)
-                {
-                    //Console.WriteLine(control.ToString());
-                    control = control.Parent;
-                    if (control is LauncherPanel)
-                        return (LauncherPanel) control;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("LauncherPanelの検出に失敗しました。", ex);
-            }
-
-            return null;
-        }
-
+        
         /// <summary>
         /// このコントロールが所属しているLauncherPanelのテーマを取得します。
         /// もし、このコントロールがLauncherPanel上に配置されていない場合は、nullを返します。
@@ -304,8 +328,8 @@ namespace Redefinable.Applications.Launcher.Controls
         }
 
         /// <summary>
-        /// LauncherPanelのFocusIndexが変化した際に自動的に実行され、もし、このコントロールにフォーカスが当てられた際は、フォーカス処理を実行します。
-        /// コントロール内部に配置されているチャイルドコントロールでもこのメソッドを実行するように実装してください。
+        /// LauncherPanelのFocuedControlが変化した際に自動的に実行され、もし、このコントロールにフォーカスが当てられた際は、フォーカス処理を実行します。
+        /// また、コントロール内部に配置されているチャイルドコントロールでもこのメソッドを実行するように実装してください。
         /// </summary>
         public override void RefreshFocusState()
         {
@@ -313,6 +337,37 @@ namespace Redefinable.Applications.Launcher.Controls
             foreach (var c in this.Controls)
                 if (c is IScaleableControl)
                     ((IScaleableControl) c).RefreshFocusState();
+        }
+
+        /// <summary>
+        /// 隣接コントロールを設定します。nullを指定した項目には、このインスタンス自身が設定されます。
+        /// </summary>
+        /// <param name="up">上方のコントロール</param>
+        /// <param name="down">下方のコントロール</param>
+        /// <param name="left">左方のコントロール</param>
+        /// <param name="right">右方のコントロール</param>
+        public void SetNeighborControls(IScaleableControl up, IScaleableControl down, IScaleableControl left, IScaleableControl right)
+        {
+            if (up == null)
+                this.upControl = this;
+            else
+                this.upControl = up;
+
+            if (down == null)
+                this.downControl = this;
+            else
+                this.downControl = down;
+
+            if (left == null)
+                this.leftControl = this;
+            else
+                this.leftControl = left;
+
+
+            if (right == null)
+                this.rightControl = this;
+            else
+                this.rightControl = right;
         }
     }
 }

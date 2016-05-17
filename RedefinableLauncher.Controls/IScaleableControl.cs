@@ -50,9 +50,9 @@ namespace Redefinable.Applications.Launcher.Controls
         IScaleableControl RightControl { get; }
         
         /// <summary>
-        /// LauncherPanelのControlsFocusedIndexの値から、現在このコントロールにフォーカスがあるかどうかを取得します。
+        /// LauncherPanelのFocuedControlの値から、現在このコントロールにフォーカスがあるかどうかを取得します。
         /// </summary>
-        bool Focused { get; }
+        bool LauncherControlFocused { get; }
 
 
         // 公開イベント
@@ -79,7 +79,7 @@ namespace Redefinable.Applications.Launcher.Controls
         void RefreshTheme();
 
         /// <summary>
-        /// LauncherPanelのFocusIndexが変化した際に自動的に実行され、もし、このコントロールにフォーカスが当てられた際は、フォーカス処理を実行します。
+        /// LauncherPanelのFocuedControlが変化した際に自動的に実行され、もし、このコントロールにフォーカスが当てられた際は、フォーカス処理を実行します。
         /// また、コントロール内部に配置されているチャイルドコントロールでもこのメソッドを実行するように実装してください。
         /// </summary>
         void RefreshFocusState();

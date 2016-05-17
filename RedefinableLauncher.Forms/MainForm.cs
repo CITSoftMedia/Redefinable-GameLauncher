@@ -41,6 +41,7 @@ namespace Redefinable.Applications.Launcher.Forms
             this.Controls.Add(launcherPanel);
             
             // イベントの追加
+            //this.KeyDown += (sender, e) => { Console.WriteLine(e.KeyCode); };
             this.launcherPanel.ScaleChanged += (sender, e) => { this.ClientSize = this.launcherPanel.Size; };
         }
     }
