@@ -15,13 +15,13 @@ namespace Redefinable.Applications.Launcher.Controls
     /// </summary>
     public abstract class NormalScaleableControl : UserControl, IScaleableControl
     {
-        // 非公開フィールド (protected)
+        // 限定公開フィールド (protected)
         
         /// <summary>
         /// コントロールの現在の比率を格納します。
         /// </summary>
         protected float currentScale;
-
+        
 
         // 公開フィールド・プロパティ
 
@@ -42,6 +42,27 @@ namespace Redefinable.Applications.Launcher.Controls
         {
             get { return this.currentScale; }
         }
+
+        /// <summary>
+        /// 上方のコントロールを取得します。
+        /// </summary>
+        public abstract IScaleableControl UpControl { get; }
+        
+        /// <summary>
+        /// 下方のコントロールを取得します。
+        /// </summary>
+        public abstract IScaleableControl DownControl { get; }
+        
+        /// <summary>
+        /// 左方のコントロールを取得します。
+        /// </summary>
+        public abstract IScaleableControl LeftControl { get; }
+        
+        /// <summary>
+        /// 右方のコントロールを取得します。
+        /// </summary>
+        public abstract IScaleableControl RightControl { get; }
+        
 
 
         // 公開イベント
@@ -134,6 +155,11 @@ namespace Redefinable.Applications.Launcher.Controls
         private Point defaultControlLocation;
         private Size defaultControlSize;
 
+        private IScaleableControl upControl;
+        private IScaleableControl downControl;
+        private IScaleableControl leftControl;
+        private IScaleableControl rightControl;
+
         
         // 公開フィールド
 
@@ -153,6 +179,38 @@ namespace Redefinable.Applications.Launcher.Controls
             get { return this.defaultControlSize; }
         }
 
+        /// <summary>
+        /// 上方のコントロールを取得します。
+        /// </summary>
+        public override IScaleableControl UpControl
+        {
+            get { return this.upControl; }
+        }
+
+        /// <summary>
+        /// 下方のコントロールを取得します。
+        /// </summary>
+        public override IScaleableControl DownControl
+        {
+            get { return this.downControl; }
+        }
+
+        /// <summary>
+        /// 左方のコントロールを取得します。
+        /// </summary>
+        public override IScaleableControl LeftControl
+        {
+            get { return this.leftControl; }
+        }
+
+        /// <summary>
+        /// 右方のコントロールを取得します。
+        /// </summary>
+        public override IScaleableControl RightControl
+        {
+            get { return this.rightControl; }
+        }
+
 
         // コンストラクタ
 
@@ -168,6 +226,11 @@ namespace Redefinable.Applications.Launcher.Controls
 
             this.Location = defaultControlLocation;
             this.Size = defaultControlSize;
+
+            this.upControl = this;
+            this.downControl = this;
+            this.leftControl = this;
+            this.rightControl = this;
         }
 
 

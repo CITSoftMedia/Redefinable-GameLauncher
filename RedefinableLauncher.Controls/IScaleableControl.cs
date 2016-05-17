@@ -28,7 +28,32 @@ namespace Redefinable.Applications.Launcher.Controls
         /// コントロールの現在の比率を取得します。
         /// </summary>
         float CurrentScale { get; }
+
+        /// <summary>
+        /// このコントロールの上側に隣接しているコントロールを取得します。
+        /// </summary>
+        IScaleableControl UpControl { get; }
+
+        /// <summary>
+        /// このコントロールの下側に隣接しているコントロールを取得します。
+        /// </summary>
+        IScaleableControl DownControl { get; }
+
+        /// <summary>
+        /// このコントロールの左側に隣接しているコントロールを取得します。
+        /// </summary>
+        IScaleableControl LeftControl { get; }
+
+        /// <summary>
+        /// このコントロールの右側に隣接しているコントロールを取得します。
+        /// </summary>
+        IScaleableControl RightControl { get; }
         
+        /// <summary>
+        /// LauncherPanelのControlsFocusedIndexの値から、現在このコントロールにフォーカスがあるかどうかを取得します。
+        /// </summary>
+        bool Focused { get; }
+
 
         // 公開イベント
 
@@ -52,6 +77,11 @@ namespace Redefinable.Applications.Launcher.Controls
         /// コントロールのテーマを現在のテーマで再描画します。
         /// </summary>
         void RefreshTheme();
+
+        /// <summary>
+        /// LauncherPanelの
+        /// </summary>
+        void RefreshFocusState();
     }
 
     /// <summary>
@@ -62,7 +92,7 @@ namespace Redefinable.Applications.Launcher.Controls
     public delegate void ScaleChangedEventHandler(Object sender, ScaleChangedEventArgs e);
 
     /// <summary>
-    /// IScaleableControlでChangeScaleが実行されたときに発生するイベントを処理するイベントにデータを提供します。
+    /// IScaleableControlでChangeScaleが実行されたときに発生するイベントにデータを提供します。
     /// </summary>
     public class ScaleChangedEventArgs : EventArgs
     {

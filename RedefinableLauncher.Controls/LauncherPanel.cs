@@ -19,6 +19,7 @@ namespace Redefinable.Applications.Launcher.Controls
         // 非公開フィールド
         private float currentScale;
         private LauncherTheme theme;
+        private int focusIndex;
 
 
         // 非公開フィールド :: コントロール
@@ -59,6 +60,49 @@ namespace Redefinable.Applications.Launcher.Controls
         {
             get { return this._getLaucncherTheme(); }
             set { this._setLauncherTheme(value); }
+        }
+
+        /// <summary>
+        /// 現在LauncherPanel上のどのコントロールにフォーカスがあるかどうかをControlsのインデックス番号で取得します。
+        /// </summary>
+        public int FocusIndex
+        {
+            get { return this.focusIndex; }
+        }
+        
+
+        // 公開フィールド・プロパティ :: 明示的な実装
+
+        /// <summary>
+        /// このLauncherPanel自身を返します。
+        /// </summary>
+        IScaleableControl IScaleableControl.UpControl
+        {
+            get { return this; }
+        }
+        
+        /// <summary>
+        /// このLauncherPanel自身を返します。
+        /// </summary>
+        IScaleableControl IScaleableControl.DownControl
+        {
+            get { return this; }
+        }
+        
+        /// <summary>
+        /// このLauncherPanel自身を返します。
+        /// </summary>
+        IScaleableControl IScaleableControl.LeftControl
+        {
+            get { return this; }
+        }
+        
+        /// <summary>
+        /// このLauncherPanel自身を返します。
+        /// </summary>
+        IScaleableControl IScaleableControl.RightControl
+        {
+            get { return this; }
         }
 
 
@@ -168,5 +212,10 @@ namespace Redefinable.Applications.Launcher.Controls
                 if (cont is IScaleableControl)
                     ((IScaleableControl) cont).RefreshTheme();
         }
+
+
+        // 公開メソッド :: インタフェースの明示的な実装
+
+        
     }
 }
