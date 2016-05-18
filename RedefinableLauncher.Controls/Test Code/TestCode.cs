@@ -55,6 +55,8 @@ namespace Redefinable.Applications.Launcher.Controls.Test_Code
     /// </summary>
     class TestControl : UserControl
     {
+        private SubTestControl subTestControl;
+
         /// <summary>
         /// 新しいTestControlクラスのインスタンスを初期化します。
         /// </summary>
@@ -63,11 +65,32 @@ namespace Redefinable.Applications.Launcher.Controls.Test_Code
             // コントロールの初期化
             this.BackColor = Color.Navy;
 
+            // カスタムコントロールの中にカスタムコントロールをもう１つ設けると、イベントが発生しなくなる
+            this.subTestControl = new SubTestControl();
+            this.subTestControl.Location = new Point(30, 30);
+            this.subTestControl.Size = new Size(100, 100);
+            this.Controls.Add(this.subTestControl);
+
+
             // イベントの初期化
             this.PreviewKeyDown += (sender, e) =>
             {
                 Console.Write(e.KeyCode);
             };
+        }
+    }
+
+    /// <summary>
+    /// TestControl中に配置する試験用のチャイルドコントロール
+    /// </summary>
+    class SubTestControl : UserControl
+    {
+        /// <summary>
+        /// 新しいSubTestControlクラスのインスタンスを初期化します。
+        /// </summary>
+        public SubTestControl()
+        {
+            this.BackColor = Color.Red;
         }
     }
 }
