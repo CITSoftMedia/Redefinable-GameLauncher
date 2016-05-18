@@ -44,5 +44,17 @@ namespace Redefinable.Applications.Launcher.Forms
             //this.KeyDown += (sender, e) => { Console.WriteLine(e.KeyCode); };
             this.launcherPanel.ScaleChanged += (sender, e) => { this.ClientSize = this.launcherPanel.Size; };
         }
+
+        
+        // 公開イベント
+
+        /// <summary>
+        /// 現在このウィンドウで使用しているLauncherPanelのインスタンスを取得します。
+        /// </summary>
+        /// <returns></returns>
+        public LauncherPanel GetLauncherPanel()
+        {
+            return this.launcherPanel;
+        }
     }
 }

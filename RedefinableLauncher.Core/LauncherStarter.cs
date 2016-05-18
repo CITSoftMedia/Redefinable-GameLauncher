@@ -122,7 +122,14 @@ namespace Redefinable.Applications.Launcher.Core
             // メインウィンドウの表示
             DebugConsole.Push("COR", "メインウィンドウを初期化します。");
             MainForm mainForm = new MainForm();
-            Application.Run(mainForm);
+            
+            mainForm.Show();
+            while (mainForm.Created)
+            {
+                //mainForm.GetLauncherPanel().Focus();
+                Application.DoEvents();
+                System.Threading.Thread.Sleep(1);
+            }
         }
     }
 }

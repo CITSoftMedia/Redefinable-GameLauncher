@@ -219,7 +219,7 @@ namespace Redefinable.Applications.Launcher.Controls
         private void LauncherPanel_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             Console.WriteLine("a");
-
+            
             switch (e.KeyCode)
             {
                 case Keys.Up:

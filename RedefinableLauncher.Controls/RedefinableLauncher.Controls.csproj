@@ -57,6 +57,7 @@
     <Compile Include="NormalScaleableTestPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <None Include="Test Code\TestCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
