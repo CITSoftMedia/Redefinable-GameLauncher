@@ -15,12 +15,25 @@ namespace Redefinable.Applications.Launcher.Controls
     /// </summary>
     public abstract class NormalScaleableControl : UserControl, IScaleableControl
     {
+        // 非公開フィールド
+        private bool callOwnersKeyEvents;
+
+
         // 限定公開フィールド (protected)
         
         /// <summary>
         /// コントロールの現在の比率を格納します。
         /// </summary>
         protected float currentScale;
+
+        /// <summary>
+        /// このコントロールでキー入力イベントを検知した際に、親コントロールでもイベントを発生させるかどうかを示す値を取得・設定します。
+        /// </summary>
+        protected bool CallOwnersKeyEvents
+        {
+            get { return this.callOwnersKeyEvents; }
+            set { this.callOwnersKeyEvents = value; }
+        }
         
 
         // 公開フィールド・プロパティ
@@ -90,17 +103,22 @@ namespace Redefinable.Applications.Launcher.Controls
         {
             // データフィールドの初期化
             this.currentScale = 1.0f;
+            this.callOwnersKeyEvents = true;
+            
 
             // コントロールの初期化
 
             // イベントハンドラの初期化
             this.ScaleChanged = (e, sender) => { };
+
+            // イベントの追加
+            this.PreviewKeyDown += NormalScaleableControl_PreviewKeyDown;
+            this.PreviewKeyDown += (sender, e) => { Console.WriteLine("{0}:{1}", this, e.KeyCode); };
         }
 
 
         // 非公開メソッド
         
-
         /// <summary>
         /// 現在このコントロールにフォーカスがあるかどうかをLauncherPanelに問い合わせます。
         /// </summary>
@@ -111,6 +129,45 @@ namespace Redefinable.Applications.Launcher.Controls
                 return false;
 
             return this == lp.FocuedControl;
+        }
+        
+
+        // 非公開メソッド :: コントロールイベント
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NormalScaleableControl_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            Object parent = this.Parent;
+
+            if (this.callOwnersKeyEvents || parent != null)
+            {
+                // リフレクションを使用して強制的にイベント処理を実行
+                // → 非常に強引な方法です。良い子の皆は真似しないでね！
+
+                try
+                {
+                    // Controls.OnPreviewKeyDown (protected) を呼び出す
+                    // その際、メソッドを呼び出すメソッドには parent を指定する
+                    // → parent.OnPreviewKeyDown() を本来呼び出せない場所 (クラスの外側) から無理やり呼び出す
+                    parent.GetType().InvokeMember(
+                        "OnPreviewKeyDown",                             // メソッド名
+                        System.Reflection.BindingFlags.InvokeMethod |   // 呼び出しの種類 (実行、非公開、インスタンスから呼び出す動的メソッド)
+                        System.Reflection.BindingFlags.NonPublic |
+                        System.Reflection.BindingFlags.Instance,
+                        null,                                           // バインダ (デフォルトのためnull)
+                        parent,                                         // 動的メソッドを呼び出すインスタンス
+                        new object[] { e });                            // 引数 (このPreviewKeyDownの引数をそのまま渡す)
+                }
+                catch (MissingMethodException)
+                {
+                    // メソッドが見つからなかった
+                    // →諦める
+                }
+            }
         }
 
 
