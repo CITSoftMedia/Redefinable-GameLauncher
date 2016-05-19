@@ -14,6 +14,7 @@ namespace Redefinable.Applications.Launcher.Informations
         // 非公開フィールド
         private string path;
         private GameDirectoryCollection directories;
+        private GameGenreCollection genreFullInformations;
 
 
         // 公開フィールド
@@ -36,26 +37,32 @@ namespace Redefinable.Applications.Launcher.Informations
         {
             this.path = null;
             this.directories = new GameDirectoryCollection();
+            this.genreFullInformations = new GameGenreCollection();
         }
 
         /// <summary>
         /// 指定したGameDirectoryのコレクションから、新しいGameFilesDirectoryクラスのインスタンスを初期化します。
         /// </summary>
         /// <param name="directories"></param>
-        public GameFilesDirectory(ICollection<GameDirectory> directories)
+        public GameFilesDirectory(ICollection<GameDirectory> directories, GameGenreCollection genreFullInformations)
             : this()
         {
             foreach (var dir in directories)
                 this.directories.Add(dir);
+
+            this.genreFullInformations = genreFullInformations;
         }
 
         /// <summary>
         /// 指定したGameFilesディレクトリのパスから、新しいGameFilesDirectoryのインスタンスを初期化します。
         /// </summary>
         /// <param name="path"></param>
-        public GameFilesDirectory(string path)
+        public GameFilesDirectory(string path, GameGenreCollection genreFullInformations)
             : this()
         {
+            this.genreFullInformations = genreFullInformations;
+
+
             // 厳密なディレクトリ形式へ修正
             if (path[path.Length - 1] == '\\')
                 path = path.Substring(0, path.Length - 1);
@@ -93,7 +100,7 @@ namespace Redefinable.Applications.Launcher.Informations
             
             // 追加処理
             foreach (string dir in directories)
-                this.directories.Add(new GameDirectory(dir));
+                this.directories.Add(new GameDirectory(dir, this.genreFullInformations));
         }
 
         /// <summary>

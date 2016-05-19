@@ -24,7 +24,7 @@ namespace Redefinable.Applications.Launcher.Informations
 
         // 非公開静的フィールド
 
-        public static string _MagicCode
+        private static string _MagicCode
         {
             get { return " Redefinable GameLauncher EXEC INFORMATION Binary "; }
         }

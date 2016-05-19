@@ -16,11 +16,14 @@ namespace Redefinable.Applications.Launcher.Core
         // 非公開フィールド
         private string windowText;
         private float windowScale;
-
+        
         private string gameFilesDirectory;
         private bool showPathErrorGame;
         private bool warningPathError;
         private bool useAutoInitializer;
+        
+        private string genreFilesDirectory;
+        private string controllersFilesDirectory;
 
         
         // 公開フィールド
@@ -78,6 +81,24 @@ namespace Redefinable.Applications.Launcher.Core
             get { return this.useAutoInitializer; }
             set { this.useAutoInitializer = value; }
         }
+
+        /// <summary>
+        /// GenreFilesのディレクトリを取得・設定します。
+        /// </summary>
+        public string GenreFilesDirectory
+        {
+            get { return this.genreFilesDirectory; }
+            set { this.genreFilesDirectory = value; }
+        }
+
+        /// <summary>
+        /// ControllerFilesのディレクトリを取得・設定します。
+        /// </summary>
+        public string ControllersFilesDirectory
+        {
+            get { return this.controllersFilesDirectory; }
+            set { this.controllersFilesDirectory = value; }
+        }
         
 
         // 公開静的フィールド
@@ -102,9 +123,13 @@ namespace Redefinable.Applications.Launcher.Core
             this.windowScale = -1.0f;
 
             this.gameFilesDirectory = "{var: Ini_AssemblyDirectory}\\Game Files";
+            
             this.showPathErrorGame = false;
-            this.warningPathError = true;
+            this.warningPathError = false;
             this.useAutoInitializer = false;
+
+            this.genreFilesDirectory = "{var: Ini_AssemblyDirectory}\\Genre Informations";
+            this.controllersFilesDirectory = "{var: Ini_AssemblyDirectory}\\Controllers Informations";
         }
 
 
@@ -141,6 +166,13 @@ namespace Redefinable.Applications.Launcher.Core
                 new IniValue("UseAutoInitializer", this.useAutoInitializer.ToString()),
             }, new string[] {
                 " Game Information Settings"
+            }, 1));
+
+            ini.Sections.Add(new IniSection("ClassificationInformation", new IniValue[] {
+                new IniValue("GenreFiles", this.genreFilesDirectory),
+                new IniValue("ControllerFiles", this.controllersFilesDirectory),
+            }, new string[] {
+                " Genre and Controllers informations"
             }, 1));
 
 
@@ -181,6 +213,10 @@ namespace Redefinable.Applications.Launcher.Core
                 ls.showPathErrorGame = Boolean.Parse(sec.Values["ShowPathErrorGame"].Value);
                 ls.warningPathError = Boolean.Parse(sec.Values["WarningPathError"].Value);
                 ls.useAutoInitializer = Boolean.Parse(sec.Values["UseAutoInitializer"].Value);
+
+                sec = ini.Sections["ClassificationInformation"];
+                ls.genreFilesDirectory = sec.Values["GenreFiles"].Value;
+                ls.controllersFilesDirectory = sec.Values["ControllerFiles"].Value;
             }
             catch (Exception ex)
             {

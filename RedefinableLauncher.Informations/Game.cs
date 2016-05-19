@@ -36,6 +36,7 @@ namespace Redefinable.Applications.Launcher.Informations
         private GameImageCollection images;
         private ExecInfo execInfo;
         private DisplayNumber displayNumber;
+        private GameGenreCollection genres;
 
         private string informationFilePath;
 
@@ -126,6 +127,14 @@ namespace Redefinable.Applications.Launcher.Informations
         }
 
         /// <summary>
+        /// このゲーム作品に関連付けられているジャンルのジャンル情報インスタンスコレクションを取得します。
+        /// </summary>
+        public GameGenreCollection Genres
+        {
+            get { return this.genres; }
+        }
+
+        /// <summary>
         /// ファイルからゲーム情報が読み込まれたあるいは保存した場合に、そのファイルのフルパスを示す値を取得します。
         /// </summary>
         public string InformationFilePath
@@ -147,7 +156,7 @@ namespace Redefinable.Applications.Launcher.Informations
         /// <param name="images"></param>
         /// <param name="execInfo"></param>
         /// <param name="number"></param>
-        public Game(string title, string description, string operationDescription, Team developerTeam, GameServerConnectInfo clientInfo, ICollection<GameImage> images, ExecInfo execInfo, DisplayNumber number)
+        public Game(string title, string description, string operationDescription, Team developerTeam, GameServerConnectInfo clientInfo, ICollection<GameImage> images, ExecInfo execInfo, DisplayNumber number, ICollection<Guid> genreGuids, GameGenreCollection genreFullInformations)
         {
             this.title = title;
             this.description = description;
@@ -165,6 +174,12 @@ namespace Redefinable.Applications.Launcher.Informations
             
             this.gameGuid = Guid.NewGuid();
             this.informationFilePath = "";
+
+            this.genres = new GameGenreCollection();
+            foreach (Guid guid in genreGuids)
+            {
+                this.genres.Add(genreFullInformations.GetGenre(guid));
+            }
         }
 
         
@@ -186,6 +201,8 @@ namespace Redefinable.Applications.Launcher.Informations
             dict.Add("ImageInfo", "__redef_launcher__game__imageinfo.dat");
             dict.Add("ExecInfo", "__redef_launcher__game__execinfo.dat");
             dict.Add("NumberInfo", "__redef_launcher__game__numberinfo.dat");
+            dict.Add("GenreGuids", "__redef_launcher__game__genreguids.dat");
+            //dict.Add("ControllersGuids", "__redef_launcher__game__controllerguids.dat");
             return dict;
         }
         
@@ -269,13 +286,18 @@ namespace Redefinable.Applications.Launcher.Informations
             ms = new MemoryStream();
             this.displayNumber.Save(ms);
             maker.ItemList.Add(new StoringStreamItem(nameList["NumberInfo"], ms));
+
+            // GameGenreGuids
+            ms = new MemoryStream();
+            this.genres.SaveGuids(ms);
+            maker.ItemList.Add(new StoringStreamItem(nameList["GenreGuids"], ms));
         }
 
         /// <summary>
         /// 指定したArchiveReaderからゲーム情報を読み取ります。
         /// </summary>
         /// <param name="reader"></param>
-        private void _loadFromArchive(ArchiveReader reader)
+        private void _loadFromArchive(ArchiveReader reader, GameGenreCollection genreFullInformations)
         {
             if (reader == null)
                 throw new ArgumentNullException("Gameを入力アーカイブから読み取れませんでした。readerがnullです。");
@@ -325,6 +347,10 @@ namespace Redefinable.Applications.Launcher.Informations
                 // DisplayNumberInfo
                 item = reader.Items.GetItem(nameList["NumberInfo"]);
                 this.displayNumber = DisplayNumber.Load(new SubStream(stream, (long)item.StartOffset, (long)item.Length));
+
+                // GameGenreGuids
+                item = reader.Items.GetItem(nameList["GenreGuids"]);
+                this.genres = GameGenreCollection.LoadCollection(new SubStream(stream, (long)item.StartOffset, (long)item.Length), genreFullInformations, true);
             }
             catch (Exception ex)
             {
@@ -457,9 +483,11 @@ namespace Redefinable.Applications.Launcher.Informations
         /// ゲームの基礎情報だけを読み込んだインスタンスを作成します (デバッグ用)
         /// </summary>
         /// <param name="stream"></param>
-        public static Game LoadBasicInfo(Stream stream)
+        /// <param name="genreFullInformations"></param>
+        /// <returns></returns>
+        public static Game LoadBasicInfo(Stream stream, GameGenreCollection genreFullInformations)
         {
-            Game game = new Game("", "", "", null, null, new GameImage[0], null, null);
+            Game game = new Game("", "", "", null, null, new GameImage[0], null, null, new Guid[0], genreFullInformations);
             game._loadBasicInfoFrom(stream);
             return game;
         }
@@ -468,11 +496,12 @@ namespace Redefinable.Applications.Launcher.Informations
         /// ゲームの基礎情報だけを読み込んだインスタンスを作成します (デバッグ用)
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="genreFullInformations"></param>
         /// <returns></returns>
-        public static Game LoadBasicInfo(string path)
+        public static Game LoadBasicInfo(string path, GameGenreCollection genreFullInformations)
         {
             FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-            Game result = Game.LoadBasicInfo(fs);
+            Game result = Game.LoadBasicInfo(fs, genreFullInformations);
 
             fs.Close();
             return result;
@@ -482,11 +511,12 @@ namespace Redefinable.Applications.Launcher.Informations
         /// 指定したStreamArchiveのReaderを使用して、StreamArchiveファイルからゲーム情報を読み込みます。
         /// </summary>
         /// <param name="reader"></param>
+        /// <param name="genreFullInformations"></param>
         /// <returns></returns>
-        public static Game LoadFromArchive(ArchiveReader reader)
+        public static Game LoadFromArchive(ArchiveReader reader, GameGenreCollection genreFullInformations)
         {
-            Game result = new Game("", "", "", null, null, new GameImage[0], null, null);
-            result._loadFromArchive(reader);
+            Game result = new Game("", "", "", null, null, new GameImage[0], null, null, new Guid[0], genreFullInformations);
+            result._loadFromArchive(reader, genreFullInformations);
             return result;
         }
 
@@ -494,8 +524,9 @@ namespace Redefinable.Applications.Launcher.Informations
         /// 指定したStreamArchiveファイルからゲーム情報を読み込みます。
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="genreFullInformations"></param>
         /// <returns></returns>
-        public static Game Load(string path)
+        public static Game Load(string path, GameGenreCollection genreFullInformations)
         {
             ArchiveReader reader = null;
             Game result = null;
@@ -503,7 +534,7 @@ namespace Redefinable.Applications.Launcher.Informations
             try
             {
                 reader = new ArchiveReader(path);
-                result = Game.LoadFromArchive(reader);
+                result = Game.LoadFromArchive(reader, genreFullInformations);
             }
             catch (Exception ex)
             {

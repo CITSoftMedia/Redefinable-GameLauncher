@@ -12,6 +12,7 @@ using Redefinable.Applications.Launcher;
 using Redefinable.Applications.Launcher.Forms;
 using Redefinable.Applications.Launcher.Informations;
 
+
 namespace Redefinable.Applications.Launcher.Core
 {
     public static class LauncherStarter
@@ -41,13 +42,30 @@ namespace Redefinable.Applications.Launcher.Core
 
         private static GameCollection _getTargetGames(LauncherSettings settings)
         {
+            // 
+            DebugConsole.Push("COR", "Genre> GenreFilesディレクトリの検索を開始します。");
+            DebugConsole.Push("COR", "Genre> " + settings.GenreFilesDirectory);
+
+            if (!Directory.Exists(settings.GenreFilesDirectory))
+                throw new DirectoryNotFoundException("GenreFilesDirectoryが見つかりません。 " + settings.GenreFilesDirectory);
+
+            GameGenreCollection genreFullInformations = new GameGenreCollection();
+            genreFullInformations.AddFromDirectory(settings.GenreFilesDirectory);
+
+            if (genreFullInformations.Count == 0)
+            {
+                genreFullInformations = GameGenreCollection.GetDefaultGenres();
+                genreFullInformations.SaveToDirectory(settings.GenreFilesDirectory);
+            }
+
+            // GameFilesディレクトリ
             DebugConsole.Push("COR", "Load> GameFilesディレクトリの検索を開始します。");
             DebugConsole.Push("COR", "Load> " + settings.GameFilesDirectory);
 
             if (!Directory.Exists(settings.GameFilesDirectory))
                 throw new DirectoryNotFoundException("GameFilesDirectoryが見つかりません。 " + settings.GameFilesDirectory);
             
-            var gfDir = new GameFilesDirectory(settings.GameFilesDirectory);
+            var gfDir = new GameFilesDirectory(settings.GameFilesDirectory, genreFullInformations);
             var gDirs = gfDir.GetValidDirectories();
             DebugConsole.Push("COR", "Load> 有効なディレクトリは、" + gDirs.Count + "個です。");
             

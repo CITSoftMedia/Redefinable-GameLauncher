@@ -140,9 +140,9 @@ namespace Redefinable.Applications.Launcher.Controls
             this.ScaleChanged = (sender, e) => { };
 
             // イベントの追加
-            this.Click += (sender, e) => { this.ChangeScale(this.currentScale -= 0.1f); };
+            //this.Click += (sender, e) => { this.ChangeScale(this.currentScale -= 0.1f); };
             this.PreviewKeyDown += LauncherPanel_PreviewKeyDown;
-            this.KeyDown += (sender, e) => { Console.WriteLine("a"); };
+            //this.KeyDown += (sender, e) => { Console.WriteLine("a"); };
         }
 
 
@@ -164,7 +164,8 @@ namespace Redefinable.Applications.Launcher.Controls
             this.Controls.Add(new LauncherButton(new Point(200, 200), new Size(130, 40)));
             this.Controls.Add(new LauncherButton(new Point(200, 250), new Size(200, 40)));
 
-            this.Controls.Add(new LauncherScrollBar(new Point(300, 10), new Size(30, 100)));
+            this.Controls.Add(new LauncherScrollBar(new Point(500, 10), new Size(30, 300)));
+            
 
             VariableScaleableControl c1 = new LauncherButton(new Point(200, 300), new Size(130, 40));
             VariableScaleableControl c2 = new LauncherButton(new Point(200, 350), new Size(130, 40));

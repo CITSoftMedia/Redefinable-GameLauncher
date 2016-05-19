@@ -35,6 +35,7 @@ namespace Redefinable.Applications.Launcher.Forms
             this.BackColor = Color.Black;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
 
             // コントロールの初期化 :: launcherPanel;
             this.launcherPanel = new LauncherPanel();

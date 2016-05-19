@@ -48,6 +48,7 @@
     <Compile Include="GameFilesDirectory.cs" />
     <Compile Include="Developer.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameGenre.cs" />
     <Compile Include="GameImage.cs" />
     <Compile Include="GameServerConnectInfo.cs" />
     <Compile Include="Team.cs" />
@@ -77,14 +78,21 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common Codes\External Solutions\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Controllers Informations\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game Files\directory.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Genre Informations\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="StreamArchive Tools\a32ApplicationUtility.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

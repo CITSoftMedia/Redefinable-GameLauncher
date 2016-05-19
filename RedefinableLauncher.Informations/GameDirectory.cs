@@ -38,6 +38,7 @@ namespace Redefinable.Applications.Launcher.Informations
     {
         // 非公開フィールド
         private string path;
+        private GameGenreCollection genreFullInformations;
         
         
         // 公開フィールド
@@ -92,8 +93,11 @@ namespace Redefinable.Applications.Launcher.Informations
         /// 新しいGameDirectoryクラスのインスタンスを初期化します。
         /// </summary>
         /// <param name="path"></param>
-        public GameDirectory(string path)
+        /// <param name="genreFullInformations">GameGenreのGuid値を完全な情報に変換する際に使用する完全なジャンル情報のコレクション</param>
+        public GameDirectory(string path, GameGenreCollection genreFullInformations)
         {
+            this.genreFullInformations = genreFullInformations;
+
             if (path == null)
                 throw new ArgumentNullException("path", "pathにnullを指定することは出来ません。");
 
@@ -137,7 +141,7 @@ namespace Redefinable.Applications.Launcher.Informations
 
             try
             {
-                Game gameInfo = Game.Load(this._getValueOf_gameInformationFilePath());
+                Game gameInfo = Game.Load(this._getValueOf_gameInformationFilePath(), this.genreFullInformations);
                 if (gameInfo == null)
                     // なんかよくわからんけど読み込み失敗
                     return false;
@@ -192,7 +196,9 @@ namespace Redefinable.Applications.Launcher.Informations
                 new GameServerConnectInfo("", "", ""),
                 new GameImage[0],
                 new ExecInfo(relativePath, "", true),
-                new DisplayNumber() );
+                new DisplayNumber(),
+                new Guid[] { GameGenre.CreateEmpty().GenreGuid },
+                this.genreFullInformations );
 
             gameInfo.Save(this._getValueOf_gameInformationFilePath());
         }
@@ -241,7 +247,7 @@ namespace Redefinable.Applications.Launcher.Informations
             if (!File.Exists(this._getValueOf_gameInformationFilePath()))
                 throw new FileNotFoundException("ゲームの情報ファイルが見つかりません。初期化してください。", this._getValueOf_gameInformationFilePath());
 
-            Game game = Game.Load(this._getValueOf_gameInformationFilePath());
+            Game game = Game.Load(this._getValueOf_gameInformationFilePath(), this.genreFullInformations);
 
             return game;
         }
