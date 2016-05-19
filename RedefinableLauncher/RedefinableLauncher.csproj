@@ -42,6 +42,7 @@
     <None Include="DebugCode.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="LauncherAssemblyUtility.cs" />
+    <None Include="RedefinableLibraries.zip" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.ExElements\Redefinable.ExElements.csproj">
