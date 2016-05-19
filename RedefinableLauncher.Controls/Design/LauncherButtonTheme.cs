@@ -115,7 +115,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         }
 
         /// <summary>
-        /// 
+        /// 新しいLauncherButtonThemeクラスのインスタンスを初期化します。
         /// </summary>
         /// <param name="left">左端イメージ</param>
         /// <param name="center">中央イメージ</param>

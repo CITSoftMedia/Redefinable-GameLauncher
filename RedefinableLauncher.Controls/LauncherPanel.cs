@@ -153,6 +153,7 @@ namespace Redefinable.Applications.Launcher.Controls
             // ランチャーパネル
             this.Location = this.DefaultControlLocation;
             this.Size = this.DefaultControlSize;
+            this.DoubleBuffered = true;
 
             // テーマ
             this.theme = new LauncherTheme(); // デバッグ用, サンプルテーマ
@@ -162,6 +163,8 @@ namespace Redefinable.Applications.Launcher.Controls
             this.Controls.Add(new NormalScaleableColorPanel(new Point(140, 50), new Size(100, 100), Color.Green));
             this.Controls.Add(new LauncherButton(new Point(200, 200), new Size(130, 40)));
             this.Controls.Add(new LauncherButton(new Point(200, 250), new Size(200, 40)));
+
+            this.Controls.Add(new LauncherScrollBar(new Point(300, 10), new Size(30, 100)));
 
             VariableScaleableControl c1 = new LauncherButton(new Point(200, 300), new Size(130, 40));
             VariableScaleableControl c2 = new LauncherButton(new Point(200, 350), new Size(130, 40));
@@ -174,6 +177,9 @@ namespace Redefinable.Applications.Launcher.Controls
 
             // 初期状態で選択されているコントロール
             this.focusedControl = c1;
+
+            // テーマの適用
+            this.RefreshTheme();
         }
         
         private void _setScale(float value)
@@ -265,6 +271,10 @@ namespace Redefinable.Applications.Launcher.Controls
         /// </summary>
         public void RefreshTheme()
         {
+            // 自身のテーマを更新
+            this.BackgroundImage = this.theme.PanelTheme.BackgroundImage;
+
+            // チャイルドのテーマを更新
             foreach (Control cont in this.Controls)
                 if (cont is IScaleableControl)
                     ((IScaleableControl) cont).RefreshTheme();

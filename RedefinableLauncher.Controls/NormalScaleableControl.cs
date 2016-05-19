@@ -105,8 +105,8 @@ namespace Redefinable.Applications.Launcher.Controls
             this.currentScale = 1.0f;
             this.callOwnersKeyEvents = true;
             
-
             // コントロールの初期化
+            this.DoubleBuffered = true;
 
             // イベントハンドラの初期化
             this.ScaleChanged = (e, sender) => { };

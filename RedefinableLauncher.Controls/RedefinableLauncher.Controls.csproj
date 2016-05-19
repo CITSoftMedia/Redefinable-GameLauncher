@@ -43,12 +43,16 @@
     </Compile>
     <Compile Include="Common Codes\LocalAssemblyInfo.cs" />
     <Compile Include="Design\LauncherButtonTheme.cs" />
+    <Compile Include="Design\LauncherPanelTheme.cs" />
     <Compile Include="Design\LauncherTheme.cs" />
     <Compile Include="IScaleableControl.cs" />
     <Compile Include="LauncherButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="LauncherPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LauncherScrollBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="NormalScaleableControl.cs">

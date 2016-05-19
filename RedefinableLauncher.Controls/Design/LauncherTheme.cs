@@ -18,8 +18,8 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         // 非公開フィールド
         private LauncherThemeInfo info;
         
+        private LauncherPanelTheme panelTheme;
         private LauncherButtonTheme buttonTheme;
-
 
 
         // 公開フィールド・プロパティ
@@ -30,6 +30,14 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         public LauncherThemeInfo Info
         {
             get { return this.info; }
+        }
+
+        /// <summary>
+        /// LauncherPanel用のテーマデータのインスタンスを取得します。
+        /// </summary>
+        public LauncherPanelTheme PanelTheme
+        {
+            get { return panelTheme; }
         }
 
         /// <summary>
@@ -50,6 +58,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         public LauncherTheme()
         {
             this.info = new LauncherThemeInfo("Sample Theme for DEBUG", null);
+            this.panelTheme = LauncherPanelTheme.GetSampleTheme();
             this.buttonTheme = LauncherButtonTheme.GetSampleTheme();
         }
     }
