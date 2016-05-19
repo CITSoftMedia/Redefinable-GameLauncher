@@ -39,6 +39,7 @@ namespace Redefinable.Applications.Launcher.Informations
         // 非公開フィールド
         private string path;
         private GameGenreCollection genreFullInformations;
+        private GameControllerCollection controllerFullInformations;
         
         
         // 公開フィールド
@@ -94,9 +95,10 @@ namespace Redefinable.Applications.Launcher.Informations
         /// </summary>
         /// <param name="path"></param>
         /// <param name="genreFullInformations">GameGenreのGuid値を完全な情報に変換する際に使用する完全なジャンル情報のコレクション</param>
-        public GameDirectory(string path, GameGenreCollection genreFullInformations)
+        public GameDirectory(string path, GameGenreCollection genreFullInformations, GameControllerCollection controllerFullInformations)
         {
             this.genreFullInformations = genreFullInformations;
+            this.controllerFullInformations = controllerFullInformations;
 
             if (path == null)
                 throw new ArgumentNullException("path", "pathにnullを指定することは出来ません。");
@@ -141,7 +143,7 @@ namespace Redefinable.Applications.Launcher.Informations
 
             try
             {
-                Game gameInfo = Game.Load(this._getValueOf_gameInformationFilePath(), this.genreFullInformations);
+                Game gameInfo = Game.Load(this._getValueOf_gameInformationFilePath(), this.genreFullInformations, this.controllerFullInformations);
                 if (gameInfo == null)
                     // なんかよくわからんけど読み込み失敗
                     return false;
@@ -198,7 +200,9 @@ namespace Redefinable.Applications.Launcher.Informations
                 new ExecInfo(relativePath, "", true),
                 new DisplayNumber(),
                 new Guid[] { GameGenre.CreateEmpty().GenreGuid },
-                this.genreFullInformations );
+                this.genreFullInformations,
+                new Guid[] { GameController.CreateEmpty().ControllerGuid },
+                this.controllerFullInformations );
 
             gameInfo.Save(this._getValueOf_gameInformationFilePath());
         }
@@ -247,7 +251,7 @@ namespace Redefinable.Applications.Launcher.Informations
             if (!File.Exists(this._getValueOf_gameInformationFilePath()))
                 throw new FileNotFoundException("ゲームの情報ファイルが見つかりません。初期化してください。", this._getValueOf_gameInformationFilePath());
 
-            Game game = Game.Load(this._getValueOf_gameInformationFilePath(), this.genreFullInformations);
+            Game game = Game.Load(this._getValueOf_gameInformationFilePath(), this.genreFullInformations, this.controllerFullInformations);
 
             return game;
         }

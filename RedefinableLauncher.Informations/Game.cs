@@ -37,6 +37,7 @@ namespace Redefinable.Applications.Launcher.Informations
         private ExecInfo execInfo;
         private DisplayNumber displayNumber;
         private GameGenreCollection genres;
+        private GameControllerCollection controllers;
 
         private string informationFilePath;
 
@@ -135,6 +136,14 @@ namespace Redefinable.Applications.Launcher.Informations
         }
 
         /// <summary>
+        /// このゲーム作品に関連付けられているコントローラのコントローラ情報インスタンスコレクションを取得します。
+        /// </summary>
+        public GameControllerCollection Controllers
+        {
+            get { return this.controllers; }
+        }
+
+        /// <summary>
         /// ファイルからゲーム情報が読み込まれたあるいは保存した場合に、そのファイルのフルパスを示す値を取得します。
         /// </summary>
         public string InformationFilePath
@@ -156,7 +165,7 @@ namespace Redefinable.Applications.Launcher.Informations
         /// <param name="images"></param>
         /// <param name="execInfo"></param>
         /// <param name="number"></param>
-        public Game(string title, string description, string operationDescription, Team developerTeam, GameServerConnectInfo clientInfo, ICollection<GameImage> images, ExecInfo execInfo, DisplayNumber number, ICollection<Guid> genreGuids, GameGenreCollection genreFullInformations)
+        public Game(string title, string description, string operationDescription, Team developerTeam, GameServerConnectInfo clientInfo, ICollection<GameImage> images, ExecInfo execInfo, DisplayNumber number, ICollection<Guid> genreGuids, GameGenreCollection genreFullInformations, ICollection<Guid> controllerGuids, GameControllerCollection controllerFullInformations)
         {
             this.title = title;
             this.description = description;
@@ -180,6 +189,12 @@ namespace Redefinable.Applications.Launcher.Informations
             {
                 this.genres.Add(genreFullInformations.GetGenre(guid));
             }
+
+            this.controllers = new GameControllerCollection();
+            foreach (Guid guid in controllerGuids)
+            {
+                this.controllers.Add(controllerFullInformations.GetController(guid));
+            }
         }
 
         
@@ -202,7 +217,7 @@ namespace Redefinable.Applications.Launcher.Informations
             dict.Add("ExecInfo", "__redef_launcher__game__execinfo.dat");
             dict.Add("NumberInfo", "__redef_launcher__game__numberinfo.dat");
             dict.Add("GenreGuids", "__redef_launcher__game__genreguids.dat");
-            //dict.Add("ControllersGuids", "__redef_launcher__game__controllerguids.dat");
+            dict.Add("ControllerGuids", "__redef_launcher__game__controllerguids.dat");
             return dict;
         }
         
@@ -291,13 +306,18 @@ namespace Redefinable.Applications.Launcher.Informations
             ms = new MemoryStream();
             this.genres.SaveGuids(ms);
             maker.ItemList.Add(new StoringStreamItem(nameList["GenreGuids"], ms));
+
+            // GameControllerGuids
+            ms = new MemoryStream();
+            this.controllers.SaveGuids(ms);
+            maker.ItemList.Add(new StoringStreamItem(nameList["ControllerGuids"], ms));
         }
 
         /// <summary>
         /// 指定したArchiveReaderからゲーム情報を読み取ります。
         /// </summary>
         /// <param name="reader"></param>
-        private void _loadFromArchive(ArchiveReader reader, GameGenreCollection genreFullInformations)
+        private void _loadFromArchive(ArchiveReader reader, GameGenreCollection genreFullInformations, GameControllerCollection controllerFullInformations)
         {
             if (reader == null)
                 throw new ArgumentNullException("Gameを入力アーカイブから読み取れませんでした。readerがnullです。");
@@ -351,6 +371,10 @@ namespace Redefinable.Applications.Launcher.Informations
                 // GameGenreGuids
                 item = reader.Items.GetItem(nameList["GenreGuids"]);
                 this.genres = GameGenreCollection.LoadCollection(new SubStream(stream, (long)item.StartOffset, (long)item.Length), genreFullInformations, true);
+
+                // GameControllerGuids
+                item = reader.Items.GetItem(nameList["ControllerGuids"]);
+                this.controllers = GameControllerCollection.LoadCollection(new SubStream(stream, (long)item.StartOffset, (long)item.Length), controllerFullInformations, true);
             }
             catch (Exception ex)
             {
@@ -485,9 +509,9 @@ namespace Redefinable.Applications.Launcher.Informations
         /// <param name="stream"></param>
         /// <param name="genreFullInformations"></param>
         /// <returns></returns>
-        public static Game LoadBasicInfo(Stream stream, GameGenreCollection genreFullInformations)
+        public static Game LoadBasicInfo(Stream stream, GameGenreCollection genreFullInformations, GameControllerCollection controllerFullInformations)
         {
-            Game game = new Game("", "", "", null, null, new GameImage[0], null, null, new Guid[0], genreFullInformations);
+            Game game = new Game("", "", "", null, null, new GameImage[0], null, null, new Guid[0], genreFullInformations, new Guid[0], controllerFullInformations);
             game._loadBasicInfoFrom(stream);
             return game;
         }
@@ -498,10 +522,10 @@ namespace Redefinable.Applications.Launcher.Informations
         /// <param name="path"></param>
         /// <param name="genreFullInformations"></param>
         /// <returns></returns>
-        public static Game LoadBasicInfo(string path, GameGenreCollection genreFullInformations)
+        public static Game LoadBasicInfo(string path, GameGenreCollection genreFullInformations, GameControllerCollection controllerFullInformations)
         {
             FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-            Game result = Game.LoadBasicInfo(fs, genreFullInformations);
+            Game result = Game.LoadBasicInfo(fs, genreFullInformations, controllerFullInformations);
 
             fs.Close();
             return result;
@@ -513,10 +537,10 @@ namespace Redefinable.Applications.Launcher.Informations
         /// <param name="reader"></param>
         /// <param name="genreFullInformations"></param>
         /// <returns></returns>
-        public static Game LoadFromArchive(ArchiveReader reader, GameGenreCollection genreFullInformations)
+        public static Game LoadFromArchive(ArchiveReader reader, GameGenreCollection genreFullInformations, GameControllerCollection controllerFullInformations)
         {
-            Game result = new Game("", "", "", null, null, new GameImage[0], null, null, new Guid[0], genreFullInformations);
-            result._loadFromArchive(reader, genreFullInformations);
+            Game result = new Game("", "", "", null, null, new GameImage[0], null, null, new Guid[0], genreFullInformations, new Guid[0], controllerFullInformations);
+            result._loadFromArchive(reader, genreFullInformations, controllerFullInformations);
             return result;
         }
 
@@ -526,7 +550,7 @@ namespace Redefinable.Applications.Launcher.Informations
         /// <param name="path"></param>
         /// <param name="genreFullInformations"></param>
         /// <returns></returns>
-        public static Game Load(string path, GameGenreCollection genreFullInformations)
+        public static Game Load(string path, GameGenreCollection genreFullInformations, GameControllerCollection controllerFullInformations)
         {
             ArchiveReader reader = null;
             Game result = null;
@@ -534,7 +558,7 @@ namespace Redefinable.Applications.Launcher.Informations
             try
             {
                 reader = new ArchiveReader(path);
-                result = Game.LoadFromArchive(reader, genreFullInformations);
+                result = Game.LoadFromArchive(reader, genreFullInformations, controllerFullInformations);
             }
             catch (Exception ex)
             {

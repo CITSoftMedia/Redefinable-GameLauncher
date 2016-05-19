@@ -42,7 +42,7 @@ namespace Redefinable.Applications.Launcher.Core
 
         private static GameCollection _getTargetGames(LauncherSettings settings)
         {
-            // 
+            // ジャンル情報
             DebugConsole.Push("COR", "Genre> GenreFilesディレクトリの検索を開始します。");
             DebugConsole.Push("COR", "Genre> " + settings.GenreFilesDirectory);
 
@@ -58,6 +58,24 @@ namespace Redefinable.Applications.Launcher.Core
                 genreFullInformations.SaveToDirectory(settings.GenreFilesDirectory);
             }
 
+
+            // コントローラ情報
+            DebugConsole.Push("COR", "Cntrl> ControllerFilesディレクトリの検索を開始します。");
+            DebugConsole.Push("COR", "Cntrl> " + settings.GenreFilesDirectory);
+
+            if (!Directory.Exists(settings.ControllersFilesDirectory))
+                throw new DirectoryNotFoundException("ControllerFilesDirectoryが見つかりません。 " + settings.GenreFilesDirectory);
+
+            GameControllerCollection controllerFullInformations = new GameControllerCollection();
+            controllerFullInformations.AddFromDirectory(settings.ControllersFilesDirectory);
+
+            if (controllerFullInformations.Count == 0)
+            {
+                controllerFullInformations = GameControllerCollection.GetDefaultControllers();
+                controllerFullInformations.SaveToDirectory(settings.ControllersFilesDirectory);
+            }
+
+
             // GameFilesディレクトリ
             DebugConsole.Push("COR", "Load> GameFilesディレクトリの検索を開始します。");
             DebugConsole.Push("COR", "Load> " + settings.GameFilesDirectory);
@@ -65,7 +83,7 @@ namespace Redefinable.Applications.Launcher.Core
             if (!Directory.Exists(settings.GameFilesDirectory))
                 throw new DirectoryNotFoundException("GameFilesDirectoryが見つかりません。 " + settings.GameFilesDirectory);
             
-            var gfDir = new GameFilesDirectory(settings.GameFilesDirectory, genreFullInformations);
+            var gfDir = new GameFilesDirectory(settings.GameFilesDirectory, genreFullInformations, controllerFullInformations);
             var gDirs = gfDir.GetValidDirectories();
             DebugConsole.Push("COR", "Load> 有効なディレクトリは、" + gDirs.Count + "個です。");
             

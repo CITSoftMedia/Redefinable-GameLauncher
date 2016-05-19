@@ -16,9 +16,9 @@ using BindingFlags = System.Reflection.BindingFlags;
 namespace Redefinable.Applications.Launcher.Informations
 {
     /// <summary>
-    /// ジャンル情報のコレクション機能を提供します。
+    /// コントローラー情報のコレクション機能を提供します。
     /// </summary>
-    public class GameGenreCollection : NativeEventDefinedList<GameGenre>
+    public class GameControllerCollection : NativeEventDefinedList<GameController>
     {
         // 非公開フィールド
 
@@ -26,7 +26,7 @@ namespace Redefinable.Applications.Launcher.Informations
 
         private static string _MagicCode
         {
-            get { return " Redefinable GameLauncher GENRE GUIDS Binary "; }
+            get { return " Redefinable GameLauncher CONTROLLER GUIDS Binary "; }
         }
 
 
@@ -39,13 +39,13 @@ namespace Redefinable.Applications.Launcher.Informations
         // 非公開メソッド
         
         /// <summary>
-        /// 完全な情報を含むジャンル情報をディレクトリから一括で読み込みます。
+        /// 完全な情報を含むコントローラー情報をディレクトリから一括で読み込みます。
         /// </summary>
         /// <param name="path"></param>
         private void _loadFromDirectory(string path)
         {
             if (!Directory.Exists(path))
-                throw new DirectoryNotFoundException("ジャンル情報コレクションの読み込み元のディレクトリが見つかりませんでした。");
+                throw new DirectoryNotFoundException("コントローラー情報コレクションの読み込み元のディレクトリが見つかりませんでした。");
 
             if (path[path.Length - 1] == '\\')
                 path = path.Substring(0, path.Length - 1);
@@ -57,35 +57,35 @@ namespace Redefinable.Applications.Launcher.Informations
 
                 try
                 {
-                    this.Add(GameGenre.Load(file));
+                    this.Add(GameController.Load(file));
                 }
                 catch (Exception ex)
                 {
-                    throw new IOException("ジャンル情報のファイルからの読み込みでエラーが発生しました。 " + file, ex);
+                    throw new IOException("コントローラー情報のファイルからの読み込みでエラーが発生しました。 " + file, ex);
                 }
             }
         }
 
         /// <summary>
-        /// 完全な情報を含むジャンル情報をディレクトリへ一括で出力します。
+        /// 完全な情報を含むコントローラー情報をディレクトリへ一括で出力します。
         /// </summary>
         /// <param name="path">保存先のディレクトリ</param>
         private void _saveToDirectory(string path)
         {
             if (!Directory.Exists(path))
-                throw new DirectoryNotFoundException("ジャンル情報コレクションの保存先のディレクトリが見つかりませんでした。");
+                throw new DirectoryNotFoundException("コントローラー情報コレクションの保存先のディレクトリが見つかりませんでした。");
 
             if (path[path.Length - 1] == '\\')
                 path = path.Substring(0, path.Length - 1);
-            
+
             FileStream fs = new FileStream(path + "\\info.txt", FileMode.Create, FileAccess.Write, FileShare.None);
             StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
             sw.WriteLine("以下に自動保存された情報のGUIDと中身の対応表を示します。");
             sw.WriteLine();
-            foreach (GameGenre genre in this)
+            foreach (GameController controller in this)
             {
-                genre.Save(path + "\\" + genre.GenreGuid.ToString() + ".xml");
-                sw.WriteLine("* {0}: {1}", genre.GenreGuid.ToString(), genre.Name);
+                controller.Save(path + "\\" + controller.ControllerGuid.ToString() + ".xml");
+                sw.WriteLine("* {0}: {1}", controller.ControllerGuid.ToString(), controller.Name);
             }
             sw.WriteLine();
             sw.WriteLine("以上");
@@ -95,7 +95,7 @@ namespace Redefinable.Applications.Launcher.Informations
         // 公開メソッド
         
         /// <summary>
-        /// 指定したディレクトリから完全なジャンル情報を読み取ります。
+        /// 指定したディレクトリから完全なコントローラー情報を読み取ります。
         /// </summary>
         /// <param name="dir"></param>
         public void AddFromDirectory(string dir)
@@ -104,7 +104,7 @@ namespace Redefinable.Applications.Launcher.Informations
         }
 
         /// <summary>
-        /// 指定したディレクトリへ完全なジャンル情報を保存します。
+        /// 指定したディレクトリへ完全なコントローラー情報を保存します。
         /// </summary>
         /// <param name="dir"></param>
         public void SaveToDirectory(string dir)
@@ -113,24 +113,24 @@ namespace Redefinable.Applications.Launcher.Informations
         }
 
         /// <summary>
-        /// Guidのコレクションに含まれるGuid値を持つGameGenre情報だけを集めた新しいコレクションを生成します。
+        /// Guidのコレクションに含まれるGuid値を持つGameController情報だけを集めた新しいコレクションを生成します。
         /// </summary>
         /// <param name="guids"></param>
         /// <returns></returns>
-        public GameGenreCollection GetGenres(ICollection<Guid> guids)
+        public GameControllerCollection GetControllers(ICollection<Guid> guids)
         {
-            return this.GetGenres(guids, false);
+            return this.GetControllers(guids, false);
         }
 
         /// <summary>
-        /// Guidのコレクションに含まれるGuid値を持つGameGenre情報だけを集めた新しいコレクションを生成します。
+        /// Guidのコレクションに含まれるGuid値を持つGameController情報だけを集めた新しいコレクションを生成します。
         /// </summary>
         /// <param name="guids"></param>
         /// <param name="throwException">trueを指定すると、無効なGuidを見つけた際、無視せず例外をスローします。</param>
         /// <returns></returns>
-        public GameGenreCollection GetGenres(ICollection<Guid> guids, bool throwException)
+        public GameControllerCollection GetControllers(ICollection<Guid> guids, bool throwException)
         {
-            GameGenreCollection genres = new GameGenreCollection();
+            GameControllerCollection controllers = new GameControllerCollection();
             foreach (Guid guid in guids)
             {
                 bool contains = this.ContainsGuid(guid);
@@ -139,87 +139,87 @@ namespace Redefinable.Applications.Launcher.Informations
                     throw new KeyNotFoundException("無効なGuidを検出しました。" + guid.ToString());
                 
                 if (contains)
-                    genres.Add(this.GetGenre(guid));
+                    controllers.Add(this.GetController(guid));
             }
 
-            return genres;
+            return controllers;
         }
 
         /// <summary>
-        /// このコレクションに含まれるすべてのGameGenreのGuidのみを集めた配列を取得します。
+        /// このコレクションに含まれるすべてのGameControllerのGuidのみを集めた配列を取得します。
         /// </summary>
         /// <returns></returns>
         public Guid[] GetGuids()
         {
             Guid[] guids = new Guid[this.Count];
             for (int i = 0; i < this.Count; i++)
-                guids[i] = this[i].GenreGuid;
+                guids[i] = this[i].ControllerGuid;
 
             return guids;
         }
 
         /// <summary>
-        /// 指定したGuidを保持するGameGenreのインスタンスを取得します。
+        /// 指定したGuidを保持するGameControllerのインスタンスを取得します。
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public GameGenre GetGenre(Guid guid)
+        public GameController GetController(Guid guid)
         {
-            foreach (GameGenre genre in this)
-                if (genre.GenreGuid == guid)
-                    return genre;
+            foreach (GameController controller in this)
+                if (controller.ControllerGuid == guid)
+                    return controller;
 
-            throw new KeyNotFoundException("指定したGuidを持つGameGenreはコレクションに含まれていません。");
+            throw new KeyNotFoundException("指定したGuidを持つGameControllerはコレクションに含まれていません。");
         }
 
         /// <summary>
-        /// 指定した名前を持つGameGenreのインスタンスを取得します。
+        /// 指定した名前を持つGameControllerのインスタンスを取得します。
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public GameGenre GetGenre(string name)
+        public GameController GetController(string name)
         {
-            foreach (GameGenre genre in this)
-                if (genre.Name == name)
-                    return genre;
+            foreach (GameController controller in this)
+                if (controller.Name == name)
+                    return controller;
 
-            throw new KeyNotFoundException("指定したnameを持つGameGenreはコレクションに含まれていません。");
+            throw new KeyNotFoundException("指定したnameを持つGameControllerはコレクションに含まれていません。");
         }
 
         /// <summary>
-        /// GameGenreをコレクションに追加します。
+        /// GameControllerをコレクションに追加します。
         /// </summary>
         /// <param name="item"></param>
-        public override void Add(GameGenre item)
+        public override void Add(GameController item)
         {
             if (this.ContainsGuid(item))
-                throw new ArgumentException("指定されたGameGenreと同一のGuidを保持するインスタンスがすでにコレクションに含まれています。");
+                throw new ArgumentException("指定されたGameControllerと同一のGuidを保持するインスタンスがすでにコレクションに含まれています。");
 
             base.Add(item);
         }
 
         /// <summary>
-        /// 指定したGuidを保有するGameGenreがこのコレクションに含まれているか判断します。
+        /// 指定したGuidを保有するGameControllerがこのコレクションに含まれているか判断します。
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
         public bool ContainsGuid(Guid guid)
         {
-            foreach (GameGenre genre in this)
-                if (genre.GenreGuid == guid)
+            foreach (GameController controller in this)
+                if (controller.ControllerGuid == guid)
                     return true;
 
             return false;
         }
 
         /// <summary>
-        /// 指定したGameGenreと同一のGuidを保有するGameGenreがこのコレクションに含まれているか判断します。
+        /// 指定したGameControllerと同一のGuidを保有するGameControllerがこのコレクションに含まれているか判断します。
         /// </summary>
-        /// <param name="genre"></param>
+        /// <param name="controller"></param>
         /// <returns></returns>
-        public bool ContainsGuid(GameGenre genre)
+        public bool ContainsGuid(GameController controller)
         {
-            return this.ContainsGuid(genre.GenreGuid);
+            return this.ContainsGuid(controller.ControllerGuid);
         }
 
         /// <summary>
@@ -228,14 +228,14 @@ namespace Redefinable.Applications.Launcher.Informations
         /// <param name="stream"></param>
         public void SaveGuids(Stream stream)
         {
-            GameGenreCollection.SaveGuids(stream, this.GetGuids());
+            GameControllerCollection.SaveGuids(stream, this.GetGuids());
         }
         
 
         // 公開静的メソッド
 
         /// <summary>
-        /// Guidの配列をGameGenreのGuidデータの一覧として書き込みます。
+        /// Guidの配列をGameControllerのGuidデータの一覧として書き込みます。
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="guids"></param>
@@ -249,7 +249,7 @@ namespace Redefinable.Applications.Launcher.Informations
 
 
             // マジックコード
-            bw.Write(bc.GetBytes(GameGenreCollection._MagicCode));
+            bw.Write(bc.GetBytes(GameControllerCollection._MagicCode));
 
             // mainData
             string[] guidsArray = new string[guids.Count];
@@ -264,7 +264,7 @@ namespace Redefinable.Applications.Launcher.Informations
         }
 
         /// <summary>
-        /// 指定したストリームからGameGenreのGuidデータの一覧として読み込みます。
+        /// 指定したストリームからGameControllerのGuidデータの一覧として読み込みます。
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
@@ -278,8 +278,8 @@ namespace Redefinable.Applications.Launcher.Informations
 
 
             // マジックコードの検査
-            int magicCodeLength = bc.GetBytes(GameGenreCollection._MagicCode).Length;
-            if (bc.GetString(br.ReadBytes(magicCodeLength)) != GameGenreCollection._MagicCode)
+            int magicCodeLength = bc.GetBytes(GameControllerCollection._MagicCode).Length;
+            if (bc.GetString(br.ReadBytes(magicCodeLength)) != GameControllerCollection._MagicCode)
                 throw new NotSupportedException("ゲーム起動情報の読み込みに失敗しました。ヘッダの値が不正です。");
 
             // mainData
@@ -294,65 +294,72 @@ namespace Redefinable.Applications.Launcher.Informations
         }
 
         /// <summary>
-        /// 指定したストリームからGuidデータの一覧を読み取り、fullInformationsから完全なGameGenre情報を取得して、新たなコレクションを作成します。
+        /// 指定したストリームからGuidデータの一覧を読み取り、fullInformationsから完全なGameController情報を取得して、新たなコレクションを作成します。
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="fullInformations"></param>
         /// <param name="throwException"></param>
         /// <returns></returns>
-        public static GameGenreCollection LoadCollection(Stream stream, GameGenreCollection fullInformations, bool throwException)
+        public static GameControllerCollection LoadCollection(Stream stream, GameControllerCollection fullInformations, bool throwException)
         {
             Guid[] guids = LoadGuids(stream);
-            return fullInformations.GetGenres(guids);
+            return fullInformations.GetControllers(guids);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public static GameGenreCollection GetDefaultGenres()
+        public static GameControllerCollection GetDefaultControllers()
         {
-            GameGenreCollection genres = new GameGenreCollection();
-            GameGenre gg = null;
+            GameControllerCollection controllers = new GameControllerCollection();
+            GameController gc = null;
             FieldInfo guidField = null;
             BindingFlags bFlags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
 
             // Empty
-            gg = GameGenre.CreateEmpty();
-            genres.Add(gg);
+            gc = GameController.CreateEmpty();
+            controllers.Add(gc);
 
-            // RPG
-            gg = new GameGenre("ＲＰＧ", "ローププレイング方式のゲーム作品です。");
-            guidField = gg.GetType().GetField("genreGuid", bFlags);
-            guidField.SetValue(gg, Guid.Parse("37D04978-1D6D-4D02-99DF-E417B41BABCC"));
-            genres.Add(gg);
+            // マウス
+            gc = new GameController("マウス", "ポインティングデバイスです。");
+            guidField = gc.GetType().GetField("controllerGuid", bFlags);
+            guidField.SetValue(gc, Guid.Parse("1D076FE3-ED05-4BF8-9EAD-F48D05835DA8"));
+            controllers.Add(gc);
 
-            // シューティング
-            gg = new GameGenre("シューティング", "シューティング方式のゲーム作品です。");
-            guidField = gg.GetType().GetField("genreGuid", bFlags);
-            guidField.SetValue(gg, Guid.Parse("A91F7292-6A43-46D5-AF6E-D9A8582DFC40"));
-            genres.Add(gg);
+            // キーボード
+            gc = new GameController("キーボード", "デフォルトの入力デバイスです。");
+            guidField = gc.GetType().GetField("controllerGuid", bFlags);
+            guidField.SetValue(gc, Guid.Parse("AA0DDEB2-66D2-4198-B9F1-3B43B84FC86C"));
+            controllers.Add(gc);
 
-            return genres;
+            // ゲームパッド
+            gc = new GameController("ゲームパッド", "ゲーム用のコントローラーデバイスです。");
+            guidField = gc.GetType().GetField("controllerGuid", bFlags);
+            guidField.SetValue(gc, Guid.Parse("A555A683-B336-4691-BB23-6B939E26F461"));
+            controllers.Add(gc);
+
+            return controllers;
         }
     }
 
+
     /// <summary>
-    /// ゲーム作品のジャンルに関する情報を格納します。
+    /// ゲーム作品のコントローラーに関する情報を格納します。
     /// </summary>
     [Serializable]
-    public class GameGenre
+    public class GameController
     {
         // 非公開フィールド
         private string name;
         private string description;
-        private Guid genreGuid;
-        
+        private Guid controllerGuid;
+
 
         // 公開フィールド
-        
+
         /// <summary>
-        /// ジャンル名を取得・設定します。
+        /// コントローラー名を取得・設定します。
         /// </summary>
         public string Name
         {
@@ -361,7 +368,7 @@ namespace Redefinable.Applications.Launcher.Informations
         }
 
         /// <summary>
-        /// ジャンルに関する説明を取得・設定します。
+        /// コントローラーに関する説明を取得・設定します。
         /// </summary>
         public string Description
         {
@@ -372,43 +379,43 @@ namespace Redefinable.Applications.Launcher.Informations
         /// <summary>
         /// Guidを取得します。
         /// </summary>
-        public Guid GenreGuid
+        public Guid ControllerGuid
         {
-            get { return this.genreGuid; }
+            get { return this.controllerGuid; }
         }
 
 
         // コンストラクタ
 
         /// <summary>
-        /// 新しいGameGenreクラスのインスタンスを初期化します。
+        /// 新しいGameControllerクラスのインスタンスを初期化します。
         /// </summary>
         /// <param name="name"></param>
         /// <param name="description"></param>
-        public GameGenre(string name, string description)
+        public GameController(string name, string description)
         {
             this.name = name;
             this.description = description;
-            this.genreGuid = Guid.NewGuid();
+            this.controllerGuid = Guid.NewGuid();
         }
 
-        
+
         // 非公開メソッド
 
         /// <summary>
-        /// 指定したストリームからSoap形式でジャンル情報を読み取ります。
+        /// 指定したストリームからSoap形式でコントローラー情報を読み取ります。
         /// </summary>
         /// <param name="stream"></param>
         private void _loadFrom(Stream stream)
         {
             SoapFormatter sf = new SoapFormatter();
-            GameGenre gg = (GameGenre) sf.Deserialize(stream);
+            GameController gc = (GameController)sf.Deserialize(stream);
 
-            this.name = gg.name;
-            this.description = gg.description;
-            this.genreGuid = gg.genreGuid;
+            this.name = gc.name;
+            this.description = gc.description;
+            this.controllerGuid = gc.controllerGuid;
         }
-        
+
         /// <summary>
         /// Soap形式で指定したストリームにGuidを含む全データを出力します。
         /// </summary>
@@ -429,7 +436,7 @@ namespace Redefinable.Applications.Launcher.Informations
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            return (((GameGenre) obj).genreGuid == this.genreGuid);
+            return (((GameController)obj).controllerGuid == this.controllerGuid);
         }
 
         /// <summary>
@@ -442,7 +449,7 @@ namespace Redefinable.Applications.Launcher.Informations
         }
 
         /// <summary>
-        /// 指定したストリームにジャンル情報を出力します。
+        /// 指定したストリームにコントローラー情報を出力します。
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)
@@ -451,7 +458,7 @@ namespace Redefinable.Applications.Launcher.Informations
         }
 
         /// <summary>
-        /// 指定したファイルへジャンル情報を保存します。
+        /// 指定したファイルへコントローラー情報を保存します。
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -465,38 +472,38 @@ namespace Redefinable.Applications.Launcher.Informations
         // 公開静的メソッド
 
         /// <summary>
-        /// 指定したストリームからジャンル情報をロードします。
+        /// 指定したストリームからコントローラー情報をロードします。
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public static GameGenre Load(Stream stream)
+        public static GameController Load(Stream stream)
         {
-            GameGenre result = new GameGenre(null, null);
+            GameController result = new GameController(null, null);
             result._loadFrom(stream);
             return result;
         }
 
         /// <summary>
-        /// 指定したファイルからジャンル情報をロードします。
+        /// 指定したファイルからコントローラー情報をロードします。
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static GameGenre Load(string path)
+        public static GameController Load(string path)
         {
             FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-            GameGenre result = new GameGenre(null, null);
+            GameController result = new GameController(null, null);
 
             result._loadFrom(fs);
             fs.Close();
 
-            return result;            
+            return result;
         }
 
-        public static GameGenre CreateEmpty()
+        public static GameController CreateEmpty()
         {
-            GameGenre gg = new GameGenre("Empty", "Empty");
-            gg.genreGuid = Guid.Parse("00000000-0000-0000-0000-000000000000");
-            return gg;
+            GameController gc = new GameController("Empty", "Empty");
+            gc.controllerGuid = Guid.Parse("00000000-0000-0000-0000-000000000000");
+            return gc;
         }
     }
 }

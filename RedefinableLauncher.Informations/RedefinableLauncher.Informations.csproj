@@ -44,6 +44,7 @@
     <Compile Include="Common Codes\LocalAssemblyInfo.cs" />
     <Compile Include="DisplayNumber.cs" />
     <Compile Include="ExecInfo.cs" />
+    <Compile Include="GameController.cs" />
     <Compile Include="GameDirectory.cs" />
     <Compile Include="GameFilesDirectory.cs" />
     <Compile Include="Developer.cs" />

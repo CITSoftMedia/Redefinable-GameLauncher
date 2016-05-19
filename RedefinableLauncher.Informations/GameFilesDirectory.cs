@@ -15,6 +15,7 @@ namespace Redefinable.Applications.Launcher.Informations
         private string path;
         private GameDirectoryCollection directories;
         private GameGenreCollection genreFullInformations;
+        private GameControllerCollection controllerFullInformations;
 
 
         // 公開フィールド
@@ -38,29 +39,32 @@ namespace Redefinable.Applications.Launcher.Informations
             this.path = null;
             this.directories = new GameDirectoryCollection();
             this.genreFullInformations = new GameGenreCollection();
+            this.controllerFullInformations = new GameControllerCollection();
         }
 
         /// <summary>
         /// 指定したGameDirectoryのコレクションから、新しいGameFilesDirectoryクラスのインスタンスを初期化します。
         /// </summary>
         /// <param name="directories"></param>
-        public GameFilesDirectory(ICollection<GameDirectory> directories, GameGenreCollection genreFullInformations)
+        public GameFilesDirectory(ICollection<GameDirectory> directories, GameGenreCollection genreFullInformations, GameControllerCollection controllerFullInformations)
             : this()
         {
             foreach (var dir in directories)
                 this.directories.Add(dir);
 
             this.genreFullInformations = genreFullInformations;
+            this.controllerFullInformations = controllerFullInformations;
         }
 
         /// <summary>
         /// 指定したGameFilesディレクトリのパスから、新しいGameFilesDirectoryのインスタンスを初期化します。
         /// </summary>
         /// <param name="path"></param>
-        public GameFilesDirectory(string path, GameGenreCollection genreFullInformations)
+        public GameFilesDirectory(string path, GameGenreCollection genreFullInformations, GameControllerCollection controllerFullInformations)
             : this()
         {
             this.genreFullInformations = genreFullInformations;
+            this.controllerFullInformations = controllerFullInformations;
 
 
             // 厳密なディレクトリ形式へ修正
@@ -100,7 +104,7 @@ namespace Redefinable.Applications.Launcher.Informations
             
             // 追加処理
             foreach (string dir in directories)
-                this.directories.Add(new GameDirectory(dir, this.genreFullInformations));
+                this.directories.Add(new GameDirectory(dir, this.genreFullInformations, this.controllerFullInformations));
         }
 
         /// <summary>
