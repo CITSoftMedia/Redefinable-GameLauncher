@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Text;
 
 using Redefinable;
 using Redefinable.IO;
+
+using ImageFormat = System.Drawing.Imaging.ImageFormat;
 
 
 namespace Redefinable.Applications.Launcher.Controls.Design
@@ -34,6 +37,14 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         // コンストラクタ
 
         /// <summary>
+        /// 内部用コンストラクタ
+        /// </summary>
+        private LauncherPanelTheme()
+        {
+            // 実装なし
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="backgroundImage"></param>
@@ -52,6 +63,32 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         public void SetImage(Image backgroundImage)
         {
             this.backgroundImage = backgroundImage;
+        }
+        
+        /// <summary>
+        /// 指定したストリームへ現在このインスタンスが保持している情報を出力します。
+        /// </summary>
+        /// <param name="stream"></param>
+        public void Save(Stream stream)
+        {
+            BinaryWriter bw = new BinaryWriter(stream);
+            BinaryConverter bc = new BinaryConverter(BinaryConverterByteOrder.LittleEndian, Encoding.UTF8);
+
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("type", "LauncherPanelTheme");
+            headers.Add("guid", Guid.NewGuid().ToString());
+
+            // 画像をバイトバッファへ
+            MemoryStream ms = new MemoryStream();
+            this.backgroundImage.Save(ms, ImageFormat.Png);
+            byte[] buf = ms.ToArray();
+
+            // バッファ長の書き込み
+            ulong bufLen = (ulong) buf.Length;
+            bw.Write(bc.GetBytes(bufLen));
+
+            // バッファの書き込み
+            bw.Write(buf);
         }
 
 
@@ -77,6 +114,40 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             g.Dispose();
 
             return new LauncherPanelTheme(bmp);
+        }
+
+        /// <summary>
+        /// 指定したストリームからLauncherPanelThemeクラスのインスタンスを生成します。
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static LauncherPanelTheme Load(Stream stream)
+        {
+            LauncherPanelTheme result = new LauncherPanelTheme();
+            
+            BinaryReader br = new BinaryReader(stream);
+            BinaryConverter bc = new BinaryConverter(BinaryConverterByteOrder.LittleEndian, Encoding.UTF8);
+
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            bc.ReadDictionary(headers, stream);
+
+            if (headers["type"] != "LauncherPanelTheme")
+                throw new NotSupportedException("LauncherPanelThemeの読み込みに失敗しました。ヘッダの値が不正です。");
+
+            // 画像バッファの長さを取得
+            ulong imageLen = bc.ToUInt64(br.ReadBytes(sizeof(UInt64)));
+
+            // 画像バッファを取得
+            byte[] buf = br.ReadBytes((int) imageLen);
+
+            // 画像へ変換し、インスタンスへ設定
+            MemoryStream ms = new MemoryStream(buf);
+            ms.Position = 0;
+
+            result.backgroundImage = Image.FromStream(ms);
+
+            // おわり
+            return result;
         }
     }
 }

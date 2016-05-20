@@ -21,6 +21,11 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         private LauncherPanelTheme panelTheme;
         private LauncherButtonTheme buttonTheme;
 
+        private string _MagicCode
+        {
+            get { return "Redefinable GameLauncher Theme File :: "; }
+        }
+        
 
         // 公開フィールド・プロパティ
 
@@ -60,6 +65,19 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             this.info = new LauncherThemeInfo("Sample Theme for DEBUG", null);
             this.panelTheme = LauncherPanelTheme.GetSampleTheme();
             this.buttonTheme = LauncherButtonTheme.GetSampleTheme();
+        }
+
+
+        // 非公開メソッド
+        
+        private void _saveTo(Stream stream)
+        {
+            BinaryWriter bw = new BinaryWriter(stream);
+        }
+
+        private void _loadFrom()
+        {
+
         }
     }
 

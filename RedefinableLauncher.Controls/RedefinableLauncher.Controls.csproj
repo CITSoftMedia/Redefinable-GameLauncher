@@ -45,10 +45,13 @@
     <Compile Include="Design\LauncherButtonTheme.cs" />
     <Compile Include="Design\LauncherPanelTheme.cs" />
     <Compile Include="Design\LauncherTheme.cs" />
-    <Compile Include="IScaleableControl.cs" />
-    <Compile Include="LauncherButton.cs">
+    <Compile Include="GameBanner.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="IScaleableControl.cs" />
+    <None Include="LauncherButton.cs">
+      <SubType>UserControl</SubType>
+    </None>
     <Compile Include="LauncherPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
