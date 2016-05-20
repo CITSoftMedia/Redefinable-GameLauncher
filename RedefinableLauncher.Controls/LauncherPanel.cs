@@ -6,7 +6,12 @@ using System.Text;
 using System.Windows.Forms;
 
 using Redefinable;
+using Redefinable.IO;
+
 using Redefinable.Applications.Launcher.Controls.Design;
+
+using Stream = System.IO.Stream;
+using StreamWriter = System.IO.StreamWriter;
 
 
 namespace Redefinable.Applications.Launcher.Controls
@@ -20,6 +25,9 @@ namespace Redefinable.Applications.Launcher.Controls
         private float currentScale;
         private LauncherTheme theme;
         private IScaleableControl focusedControl;
+
+        private DebugConsoleHelper consoleHelper;
+        private StreamWriter debugOut;
 
 
         // 非公開フィールド :: コントロール
@@ -68,6 +76,15 @@ namespace Redefinable.Applications.Launcher.Controls
         public IScaleableControl FocuedControl
         {
             get { return this.focusedControl; }
+        }
+
+        /// <summary>
+        /// ConsoleHelperを設定・取得します。
+        /// </summary>
+        public DebugConsoleHelper ConsoleHelper
+        {
+            get { return this.consoleHelper; }
+            set { this.consoleHelper = value; }
         }
         
 
@@ -132,6 +149,7 @@ namespace Redefinable.Applications.Launcher.Controls
             // データフィールドの初期化
             this.currentScale = 1.0f;
             this.focusedControl = null;
+            this._initializeDebugOutput();
 
             // コントロールの初期化
             this._initializeControls();
@@ -148,8 +166,27 @@ namespace Redefinable.Applications.Launcher.Controls
 
         // 非公開メソッド
 
+        private void _initializeDebugOutput()
+        {
+            this.consoleHelper = null;
+            
+            StringEventStream stream = new StringEventStream(Encoding.UTF8);
+            stream.Wrote += (sender, e) =>
+            {
+                if (this.consoleHelper == null)
+                    return;
+
+                this.consoleHelper.Out.Write(e.Text);
+            };
+            
+            this.debugOut = new StreamWriter(stream);
+            this.debugOut.AutoFlush = true;
+        }
+
         private void _initializeControls()
         {
+            this.debugOut.WriteLine("LauncherPanel上のコントロールを初期化します。");
+
             // ランチャーパネル
             this.Location = this.DefaultControlLocation;
             this.Size = this.DefaultControlSize;
@@ -185,6 +222,8 @@ namespace Redefinable.Applications.Launcher.Controls
         
         private void _setScale(float value)
         {
+            this.debugOut.WriteLine("LauncherPanelのスケールを変更します。");
+
             this.currentScale = value;
 
             // 自身のサイズ変更
@@ -225,7 +264,7 @@ namespace Redefinable.Applications.Launcher.Controls
         
         private void LauncherPanel_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            Console.WriteLine("a");
+            this.debugOut.WriteLine("LauncherPanelでPreviewKeyDownを検知しました: {0}", e.KeyCode);
             
             switch (e.KeyCode)
             {
@@ -255,6 +294,11 @@ namespace Redefinable.Applications.Launcher.Controls
             this.Focus();
         }
 
+        protected StreamWriter GetDebugWriter()
+        {
+            return this.debugOut;
+        }
+
 
         // 公開メソッド
 
@@ -272,6 +316,8 @@ namespace Redefinable.Applications.Launcher.Controls
         /// </summary>
         public void RefreshTheme()
         {
+            this.debugOut.WriteLine("LauncherPanelのコントロールテーマを再描画します。");
+
             // 自身のテーマを更新
             this.BackgroundImage = this.theme.PanelTheme.BackgroundImage;
 
@@ -286,10 +332,12 @@ namespace Redefinable.Applications.Launcher.Controls
         /// </summary>
         public void RefreshFocusState()
         {
+            this.debugOut.WriteLine("フォーカスが変更されました。: {0}", this.FocuedControl);
+
             foreach (var c in this.Controls)
                 if (c is IScaleableControl)
                 {
-                    Console.WriteLine(c.ToString());
+                    this.debugOut.WriteLine(c.ToString());
                     ((IScaleableControl)c).RefreshFocusState();
                 }
         }

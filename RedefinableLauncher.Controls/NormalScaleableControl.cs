@@ -7,6 +7,8 @@ using System.Windows.Forms;
 
 using Redefinable.Applications.Launcher.Controls.Design;
 
+using StreamWriter = System.IO.StreamWriter;
+
 
 namespace Redefinable.Applications.Launcher.Controls
 {
@@ -17,6 +19,7 @@ namespace Redefinable.Applications.Launcher.Controls
     {
         // 非公開フィールド
         private bool callOwnersKeyEvents;
+        private StreamWriter dummyWriter;
 
 
         // 限定公開フィールド (protected)
@@ -104,6 +107,7 @@ namespace Redefinable.Applications.Launcher.Controls
             // データフィールドの初期化
             this.currentScale = 1.0f;
             this.callOwnersKeyEvents = true;
+            this.dummyWriter = new StreamWriter(new System.IO.MemoryStream());
             
             // コントロールの初期化
             this.DoubleBuffered = true;
@@ -113,7 +117,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
             // イベントの追加
             this.PreviewKeyDown += NormalScaleableControl_PreviewKeyDown;
-            this.PreviewKeyDown += (sender, e) => { Console.WriteLine("{0}:{1}", this, e.KeyCode); };
+            this.PreviewKeyDown += (sender, e) => { this.GetDebugWriter().WriteLine("C: {0}:{1}", this, e.KeyCode); };
         }
 
 
@@ -213,6 +217,33 @@ namespace Redefinable.Applications.Launcher.Controls
             h *= this.currentScale;
 
             return new Size((int) w, (int) h);
+        }
+
+        /// <summary>
+        /// デバッグメッセージの出力用のStreamWriterを取得します。
+        /// </summary>
+        /// <returns></returns>
+        protected StreamWriter GetDebugWriter()
+        {
+            // Controls.OnPreviewKeyDown (protected) を呼び出す
+            // その際、メソッドを呼び出すメソッドには parent を指定する
+            // → parent.OnPreviewKeyDown() を本来呼び出せない場所 (クラスの外側) から無理やり呼び出す
+            StreamWriter result = null;
+            
+            if (this.GetLauncherPanel() != null)
+                result = (StreamWriter)this.GetLauncherPanel().GetType().InvokeMember(
+                    "GetDebugWriter",                               // メソッド名
+                    System.Reflection.BindingFlags.InvokeMethod |   // 呼び出しの種類 (実行、非公開、インスタンスから呼び出す動的メソッド)
+                    System.Reflection.BindingFlags.NonPublic |
+                    System.Reflection.BindingFlags.Instance,
+                    null,                                           // バインダ (デフォルトのためnull)
+                    this.GetLauncherPanel(),                        // 動的メソッドを呼び出すインスタンス
+                    new object[0]);                                 // 引数 (このPreviewKeyDownの引数をそのまま渡す)
+
+            if (result == null)
+                return this.dummyWriter;
+            
+            return result;
         }
 
 

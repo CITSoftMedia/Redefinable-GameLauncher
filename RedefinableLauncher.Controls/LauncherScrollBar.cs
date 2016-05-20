@@ -169,14 +169,16 @@ namespace Redefinable.Applications.Launcher.Controls
                     int knobTop = e.Y - origin.Y;   // 縦方向のみ移動
                     origin = new Point(e.X, e.Y);
 
-                    if (knobTop < 0)
+                    this.GetDebugWriter().WriteLine("knobTop(計算前): {0}", knobTop);
+
+                    if (knobTop <= 0)
                         knobTop = 0;
                     else if (knobTop + this.knob.Height >= this.tray.Height)
                         knobTop = this.tray.Height - this.knob.Height;
 
                     this.knob.Top = knobTop;
 
-                    Console.WriteLine("knobTop: {0}", this.knob.Top);
+                    this.GetDebugWriter().WriteLine("knobTop(計算後): {0}", this.knob.Top);
                     
                     this.ResumeLayout();
                 }
@@ -214,8 +216,8 @@ namespace Redefinable.Applications.Launcher.Controls
             int knobLeft = (int)((float)3 * this.CurrentScale);
             int knobWidth = this.Width - (knobLeft * 2);
             int knobHeight = (int)(((double)this.Height / (double)this.targetLength) * (double)this.tray.Height);
-            Console.WriteLine("knobHeight: {0}", knobHeight);
-            Console.WriteLine("knobTop: {0}", knob.Top);
+            this.GetDebugWriter().WriteLine("knobHeight: {0}", knobHeight);
+            this.GetDebugWriter().WriteLine("knobTop: {0}", knob.Top);
 
             // knob配置
             this.knob.SetBounds(knobLeft, this.knob.Top, knobWidth, knobHeight);

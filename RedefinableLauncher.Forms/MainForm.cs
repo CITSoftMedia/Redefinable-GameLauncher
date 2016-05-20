@@ -39,6 +39,7 @@ namespace Redefinable.Applications.Launcher.Forms
 
             // コントロールの初期化 :: launcherPanel;
             this.launcherPanel = new LauncherPanel();
+            this.launcherPanel.ConsoleHelper = new DebugConsoleHelper("LPC");
             this.Controls.Add(launcherPanel);
             
             // イベントの追加
