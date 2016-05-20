@@ -165,12 +165,18 @@ namespace Redefinable.Applications.Launcher.Controls
                 {
                     // マウスが押下されたまま移動
                     this.SuspendLayout();
-                    this.knob.Top = e.Y - origin.Y; // 縦方向のみ移動
+                    //this.knob.Top = e.Y - origin.Y; // 縦方向のみ移動
+                    int knobTop = e.Y - origin.Y;   // 縦方向のみ移動
+                    origin = new Point(e.X, e.Y);
 
-                    if (this.knob.Top < 0)
-                        this.knob.Top = 0;
-                    else if (this.knob.Top + this.knob.Height >= this.tray.Height)
-                        this.knob.Top = this.tray.Height - this.knob.Height;
+                    if (knobTop < 0)
+                        knobTop = 0;
+                    else if (knobTop + this.knob.Height >= this.tray.Height)
+                        knobTop = this.tray.Height - this.knob.Height;
+
+                    this.knob.Top = knobTop;
+
+                    Console.WriteLine("knobTop: {0}", this.knob.Top);
                     
                     this.ResumeLayout();
                 }
@@ -209,10 +215,11 @@ namespace Redefinable.Applications.Launcher.Controls
             int knobWidth = this.Width - (knobLeft * 2);
             int knobHeight = (int)(((double)this.Height / (double)this.targetLength) * (double)this.tray.Height);
             Console.WriteLine("knobHeight: {0}", knobHeight);
+            Console.WriteLine("knobTop: {0}", knob.Top);
 
             // knob配置
-            this.knob.SetBounds(knobLeft, 30, knobWidth, knobHeight);
-
+            this.knob.SetBounds(knobLeft, this.knob.Top, knobWidth, knobHeight);
+            
             // knobHighlight
             this.knobHighlight.Size = this.knob.Size;
         }
@@ -276,6 +283,9 @@ namespace Redefinable.Applications.Launcher.Controls
         {
             // 先に処理
             base.RefreshTheme();
+
+
+
         }
 
         public override void RefreshFocusState()
