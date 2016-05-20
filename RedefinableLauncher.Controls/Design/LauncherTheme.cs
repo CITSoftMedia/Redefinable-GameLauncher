@@ -6,6 +6,7 @@ using System.Text;
 
 using Redefinable;
 using Redefinable.IO;
+using Redefinable.StreamArchive;
 
 
 namespace Redefinable.Applications.Launcher.Controls.Design
@@ -20,12 +21,8 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         
         private LauncherPanelTheme panelTheme;
         private LauncherButtonTheme buttonTheme;
-
-        private string _MagicCode
-        {
-            get { return "Redefinable GameLauncher Theme File :: "; }
-        }
         
+
 
         // 公開フィールド・プロパティ
 
@@ -70,9 +67,33 @@ namespace Redefinable.Applications.Launcher.Controls.Design
 
         // 非公開メソッド
         
-        private void _saveTo(Stream stream)
+        private Dictionary<string, string> _getInternalItems()
         {
-            BinaryWriter bw = new BinaryWriter(stream);
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("info", "__redef_launcher_theme_info.dat");
+            dict.Add("panel", "__redef_launcher_theme_panel.dat");
+            dict.Add("button", "__redef_launcher_theme_button.dat");
+
+            return dict;
+        }
+
+        private void _saveTo(ArchiveMaker maker)
+        {
+            MemoryStream ms = null;
+            StoringStreamItem item = null;
+            Dictionary<string, string> nameDict = this._getInternalItems();
+            
+            // info
+            ms = new MemoryStream();
+            this.info.Save(ms);
+            item = new StoringStreamItem(nameDict["info"], ms);
+            maker.ItemList.Add(item);
+
+            // panel
+            ms = new MemoryStream();
+            this.panelTheme.Save(ms);
+            item = new StoringStreamItem(nameDict["panel"], ms);
+            maker.ItemList.Add(item);
         }
 
         private void _loadFrom()
@@ -142,7 +163,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         /// 内部でRedefinable Dictionary Binaryを使用しています。
         /// </summary>
         /// <param name="stream"></param>
-        public void _saveTo(Stream stream)
+        private void _saveTo(Stream stream)
         {
             BinaryConverter bc = new BinaryConverter(BinaryConverterByteOrder.LittleEndian, Encoding.UTF8);
             Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -168,7 +189,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         /// 指定したストリームの現在の位置からこのインスタンスに各種データを読み込みます。
         /// </summary>
         /// <param name="steam"></param>
-        public void _loadFrom(Stream stream)
+        private void _loadFrom(Stream stream)
         {
             BinaryConverter bc = new BinaryConverter(BinaryConverterByteOrder.LittleEndian, Encoding.UTF8);
             Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -184,6 +205,18 @@ namespace Redefinable.Applications.Launcher.Controls.Design
                 this.baseThemeFile = dict["BaseThemeFile"];
             else
                 this.baseThemeFile = null;
+        }
+
+
+        // 公開メソッド
+
+        /// <summary>
+        /// 現在のインスタンスが保持するデータを指定したストリームへ出力します。
+        /// </summary>
+        /// <param name="stream"></param>
+        public void Save(Stream stream)
+        {
+            this._saveTo(stream);
         }
     }
 }

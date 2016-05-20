@@ -18,7 +18,7 @@ namespace Redefinable.Applications.Launcher.LauncherAssemblyInformation
         /// </summary>
         public static string Guid
         {
-            get { return "{6A4225D8-FA1B-446D-99E9-AC4F02DBBA98}"; }
+            get { return "{6A4225D8-FA1B-446D-99E9-AC4F02DBBB00}"; }
         }
 
         
