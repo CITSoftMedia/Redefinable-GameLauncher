@@ -55,6 +55,19 @@ namespace Redefinable.Applications.Launcher.Controls
             set { this._setTargetControl(value); }
         }
 
+        /// <summary>
+        /// このスクロールバーが現在示している値を取得します。
+        /// </summary>
+        public int Value
+        {
+            get { return this._getValue(); }
+            set { this._setValue(value); }
+        }
+
+        // 公開イベント
+
+        public event EventHandler ValueChanged;
+
 
         // コンストラクタ
 
@@ -81,9 +94,12 @@ namespace Redefinable.Applications.Launcher.Controls
                 // targetLengthを更新する
                 this._setTargetLength(-1);
             };
+            
+            this.ValueChanged += (sender, e) => { this.GetDebugWriter().WriteLine("value = {0}", this._getValue()); };
 
             // イベントの追加
             this.ScaleChanged += (sender, e) => { this._arrangementElements(); };
+            this.SizeChanged += (sender, e) => { this._arrangementElements(); if (this.targetControl != null) this._setTargetLength(-1); };
             this._initializeKnobEvents();
         }
 
@@ -165,9 +181,8 @@ namespace Redefinable.Applications.Launcher.Controls
                 {
                     // マウスが押下されたまま移動
                     this.SuspendLayout();
-                    //this.knob.Top = e.Y - origin.Y; // 縦方向のみ移動
-                    int knobTop = e.Y - origin.Y;   // 縦方向のみ移動
-                    origin = new Point(e.X, e.Y);
+                    int knobTop = this.knob.Top;
+                    knobTop += e.Y - origin.Y;   // 縦方向のみ移動
 
                     this.GetDebugWriter().WriteLine("knobTop(計算前): {0}", knobTop);
 
@@ -175,11 +190,11 @@ namespace Redefinable.Applications.Launcher.Controls
                         knobTop = 0;
                     else if (knobTop + this.knob.Height >= this.tray.Height)
                         knobTop = this.tray.Height - this.knob.Height;
-
                     this.knob.Top = knobTop;
 
+                    this.ValueChanged(this, new EventArgs());
+
                     this.GetDebugWriter().WriteLine("knobTop(計算後): {0}", this.knob.Top);
-                    
                     this.ResumeLayout();
                 }
             };
@@ -197,6 +212,11 @@ namespace Redefinable.Applications.Launcher.Controls
         /// </summary>
         private void _arrangementElements()
         {
+            // 先に現在の値を記憶
+            int currentValue = this._getValue();
+            if (currentValue < 0) currentValue = 0;
+
+
             // リサイズと再配置
             this.upButton.Width = this.Width;
             this.downButton.Width = this.Width;
@@ -224,6 +244,10 @@ namespace Redefinable.Applications.Launcher.Controls
             
             // knobHighlight
             this.knobHighlight.Size = this.knob.Size;
+
+
+            // 最後に現在の値を再設定
+            this._setValue(currentValue);
         }
 
         /// <summary>
@@ -250,7 +274,7 @@ namespace Redefinable.Applications.Launcher.Controls
             if (this.targetControl == null)
                 this.targetLength = value;
             else
-                this.targetLength = this.targetControl.Height;
+                this.targetLength = this.targetControl.Height - this.Height;
 
             this._arrangementElements();
         }
@@ -264,7 +288,14 @@ namespace Redefinable.Applications.Launcher.Controls
         {
             if (this.targetControl != null)
                 // targetControlがすでに存在する場合、SizeChangedに設定したイベントハンドラを削除する
-                this.targetControl.SizeChanged -= this.targetControlSizeChangedEventHandler;
+                try
+                {
+                    this.targetControl.SizeChanged -= this.targetControlSizeChangedEventHandler;
+                }
+                catch
+                {
+                    // なにもしない
+                }
 
             if (value == null)
             {
@@ -274,8 +305,43 @@ namespace Redefinable.Applications.Launcher.Controls
             else
             {
                 // 新規設定・更新
+                this.targetControl = value;
                 this.targetControl.SizeChanged += this.targetControlSizeChangedEventHandler;
+                this._setTargetLength(-1);
             }
+        }
+
+        /// <summary>
+        /// 現在のKnobのTopを元にValueを算出します。
+        /// </summary>
+        /// <returns></returns>
+        private int _getValue()
+        {
+            // knobのtopの値が取りうる範囲
+            int knobMovableRange = this.tray.Height - this.knob.Height;
+
+            // 現在のknobの位置
+            int knobTop = this.knob.Top;
+
+            // 算出した値
+            int value = (int)((double) this.targetLength * ((double) knobTop / (double) knobMovableRange));
+            
+            return value;
+        }
+
+        /// <summary>
+        /// Knobの位置を値を元に算出し設定します。
+        /// </summary>
+        /// <param name="value"></param>
+        private void _setValue(int value)
+        {
+            // knobのtopの値が取りうる範囲
+            int knobMovableRange = this.tray.Height - this.knob.Height;
+
+            // 計算
+            this.knob.Top = (int)((double) knobMovableRange * (double) value / (double) this.targetLength);
+
+            Console.WriteLine("v={0}, t={1}", value, this.knob.Top);
         }
 
 

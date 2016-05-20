@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedefinableLauncher.Forms",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedefinableLauncher.InfoEditor", "RedefinableLauncher.InfoEditor\RedefinableLauncher.InfoEditor.csproj", "{FFB63F5C-99E1-4454-A13D-656D5C17C1F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedefinableLauncher.ScrollTester", "RedefinableLauncher.ScrollTester\RedefinableLauncher.ScrollTester.csproj", "{4918CB99-4E18-4CFB-BF04-89FE0874D47C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{FFB63F5C-99E1-4454-A13D-656D5C17C1F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFB63F5C-99E1-4454-A13D-656D5C17C1F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFB63F5C-99E1-4454-A13D-656D5C17C1F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4918CB99-4E18-4CFB-BF04-89FE0874D47C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4918CB99-4E18-4CFB-BF04-89FE0874D47C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4918CB99-4E18-4CFB-BF04-89FE0874D47C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4918CB99-4E18-4CFB-BF04-89FE0874D47C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
