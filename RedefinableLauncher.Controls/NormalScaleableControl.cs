@@ -193,6 +193,8 @@ namespace Redefinable.Applications.Launcher.Controls
                     control = control.Parent;
                     if (control is LauncherPanel)
                         return (LauncherPanel) control;
+                    else if (control == null)
+                        break;
                 }
             }
             catch (Exception ex)

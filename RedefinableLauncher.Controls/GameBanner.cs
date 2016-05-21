@@ -131,11 +131,12 @@ namespace Redefinable.Applications.Launcher.Controls
         }
 
         /// <summary>
-        /// 
+        /// スケーリングの値が更新された際に、このTopの位置変更を抑止するかどうかを示す値を取得・設定します。
         /// </summary>
         public bool SuspendChangeTopOnChangeScale
         {
-
+            get { return this.suspendChangeTopOnChangeScale; }
+            set { this.suspendChangeTopOnChangeScale = value; }
         }
 
 

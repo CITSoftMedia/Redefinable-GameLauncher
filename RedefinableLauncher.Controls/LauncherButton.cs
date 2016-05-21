@@ -108,7 +108,7 @@ namespace Redefinable.Applications.Launcher.Controls
             {
                 // テーマが推奨する高さを使用する
                 this.SetDefaultControlSize(new Size(this.Width, bt.RecommendedHeight));
-                this.ChangeScale(this.currentScale);
+                //this.ChangeScale(this.currentScale);
             }
 
             // 背景描画

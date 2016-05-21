@@ -31,6 +31,9 @@ namespace Redefinable.Applications.Launcher.Controls
 
         // 非公開フィールド :: コントロール
         private GameBannerListView gameBannerListView;
+        private LauncherButton genreSelectButton;
+        private LauncherButton controllerSelectButton;
+        
 
 
         // 公開フィールド
@@ -220,8 +223,15 @@ namespace Redefinable.Applications.Launcher.Controls
             this.focusedControl = c1;
             */
 
-            this.gameBannerListView = new GameBannerListView(new Point(10, 10), this.DefaultControlSize.Height - 100);
+            this.gameBannerListView = new GameBannerListView(new Point(10, 10), 500);
             this.Controls.Add(this.gameBannerListView);
+
+            this.genreSelectButton = new LauncherButton(new Point(10, 520), new Size(this.gameBannerListView.Width, 40));
+            //this.genreSelectButton.ApplyThemesHeight = true;
+            this.Controls.Add(this.genreSelectButton);
+
+
+            // リストビューのデバッグ
 
             this.gameBannerListView.SuspendRefreshItem();
             for (int i = 0; i < 40; i++)
