@@ -37,6 +37,8 @@ namespace Redefinable.Applications.Launcher.Controls
 
         private Image backgroundImage;
 
+        private bool suspendChangeTopOnChangeScale;
+
 
         // 非公開フィールド :: コントロール
         private NormalScaleableColorPanel hilightPanel;
@@ -128,6 +130,14 @@ namespace Redefinable.Applications.Launcher.Controls
             set { base.Font = value; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool SuspendChangeTopOnChangeScale
+        {
+
+        }
+
 
         // イベント
 
@@ -146,6 +156,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.currentTop = 5;
             this.defaultSize = new Size(220, 50);
             this.text = "";
+            this.suspendChangeTopOnChangeScale = true;
 
             // 近隣コントロールの設定
             this.upControl = this;
@@ -273,6 +284,15 @@ namespace Redefinable.Applications.Launcher.Controls
             foreach (Control c in this.Controls)
                 if (c is IScaleableControl)
                     ((IScaleableControl) c).RefreshFocusState();
+        }
+
+        public override void ChangeScale(float scale)
+        {
+            int top = this.Top;
+            base.ChangeScale(scale);
+
+            if (this.suspendChangeTopOnChangeScale)
+                this.Top = top;
         }
 
         /// <summary>

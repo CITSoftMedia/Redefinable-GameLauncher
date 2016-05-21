@@ -30,7 +30,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
 
         // 非公開フィールド :: コントロール
-        
+        private GameBannerListView gameBannerListView;
 
 
         // 公開フィールド
@@ -220,7 +220,15 @@ namespace Redefinable.Applications.Launcher.Controls
             this.focusedControl = c1;
             */
 
-            
+            this.gameBannerListView = new GameBannerListView(new Point(10, 10), this.DefaultControlSize.Height - 100);
+            this.Controls.Add(this.gameBannerListView);
+
+            this.gameBannerListView.SuspendRefreshItem();
+            for (int i = 0; i < 40; i++)
+            {
+                this.gameBannerListView.Items.Add(new GameBanner() { Text = String.Format("{0:00}個目のバナー", i + 1) });
+            }
+            this.gameBannerListView.ResumeRefreshItem();
 
             // テーマの適用
             this.RefreshTheme();
