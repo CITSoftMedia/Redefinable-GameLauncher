@@ -145,7 +145,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             MemoryStream ms = new MemoryStream(buf);
             ms.Position = 0;
 
-            result.backgroundImage = Image.FromStream(ms);
+            result.backgroundImage = (Image) Image.FromStream(ms).Clone();
 
             // おわり
             return result;

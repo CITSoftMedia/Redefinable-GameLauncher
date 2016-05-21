@@ -202,7 +202,8 @@ namespace Redefinable.Applications.Launcher.Informations
                 new Guid[] { GameGenre.CreateEmpty().GenreGuid },
                 this.genreFullInformations,
                 new Guid[] { GameController.CreateEmpty().ControllerGuid },
-                this.controllerFullInformations );
+                this.controllerFullInformations,
+                new Banner(null) );
 
             gameInfo.Save(this._getValueOf_gameInformationFilePath());
         }

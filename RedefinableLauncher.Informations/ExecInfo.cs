@@ -88,7 +88,7 @@ namespace Redefinable.Applications.Launcher.Informations
 
         // 非公開メソッド
 
-        public void _saveTo(Stream stream)
+        private void _saveTo(Stream stream)
         {
             if (!stream.CanWrite)
                 throw new ArgumentException("指定されたストリームは書き込みが許可されていません。");
@@ -117,7 +117,7 @@ namespace Redefinable.Applications.Launcher.Informations
             bc.WriteDictionary(dict, stream);
         }
 
-        public void _loadFrom(Stream stream)
+        private void _loadFrom(Stream stream)
         {
             if (!stream.CanRead)
                 throw new ArgumentException("指定されたストリームは読み取りが許可されていません。");

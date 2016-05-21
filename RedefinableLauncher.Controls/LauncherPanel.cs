@@ -190,6 +190,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.Location = this.DefaultControlLocation;
             this.Size = this.DefaultControlSize;
             this.DoubleBuffered = true;
+            this.BackgroundImageLayout = ImageLayout.Stretch;
 
             // テーマ
             this.theme = LauncherTheme.GetDefaultTheme(); // デバッグ用, サンプルテーマ

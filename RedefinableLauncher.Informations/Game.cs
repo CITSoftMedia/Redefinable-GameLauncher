@@ -38,6 +38,7 @@ namespace Redefinable.Applications.Launcher.Informations
         private DisplayNumber displayNumber;
         private GameGenreCollection genres;
         private GameControllerCollection controllers;
+        private Banner banner;
 
         private string informationFilePath;
 
@@ -165,7 +166,7 @@ namespace Redefinable.Applications.Launcher.Informations
         /// <param name="images"></param>
         /// <param name="execInfo"></param>
         /// <param name="number"></param>
-        public Game(string title, string description, string operationDescription, Team developerTeam, GameServerConnectInfo clientInfo, ICollection<GameImage> images, ExecInfo execInfo, DisplayNumber number, ICollection<Guid> genreGuids, GameGenreCollection genreFullInformations, ICollection<Guid> controllerGuids, GameControllerCollection controllerFullInformations)
+        public Game(string title, string description, string operationDescription, Team developerTeam, GameServerConnectInfo clientInfo, ICollection<GameImage> images, ExecInfo execInfo, DisplayNumber number, ICollection<Guid> genreGuids, GameGenreCollection genreFullInformations, ICollection<Guid> controllerGuids, GameControllerCollection controllerFullInformations, Banner banner)
         {
             this.title = title;
             this.description = description;
@@ -195,6 +196,8 @@ namespace Redefinable.Applications.Launcher.Informations
             {
                 this.controllers.Add(controllerFullInformations.GetController(guid));
             }
+
+            this.banner = banner;
         }
 
         
@@ -218,6 +221,7 @@ namespace Redefinable.Applications.Launcher.Informations
             dict.Add("NumberInfo", "__redef_launcher__game__numberinfo.dat");
             dict.Add("GenreGuids", "__redef_launcher__game__genreguids.dat");
             dict.Add("ControllerGuids", "__redef_launcher__game__controllerguids.dat");
+            dict.Add("BannerInfo", "__redef_launcher__game__bannerinfo.dat");
             return dict;
         }
         
@@ -311,6 +315,11 @@ namespace Redefinable.Applications.Launcher.Informations
             ms = new MemoryStream();
             this.controllers.SaveGuids(ms);
             maker.ItemList.Add(new StoringStreamItem(nameList["ControllerGuids"], ms));
+
+            // BannerInfo
+            ms = new MemoryStream();
+            this.banner.Save(ms);
+            maker.ItemList.Add(new StoringStreamItem(nameList["BannerInfo"], ms));
         }
 
         /// <summary>
@@ -375,6 +384,10 @@ namespace Redefinable.Applications.Launcher.Informations
                 // GameControllerGuids
                 item = reader.Items.GetItem(nameList["ControllerGuids"]);
                 this.controllers = GameControllerCollection.LoadCollection(new SubStream(stream, (long)item.StartOffset, (long)item.Length), controllerFullInformations, true);
+
+                // ExecInfo
+                item = reader.Items.GetItem(nameList["BannerInfo"]);
+                this.banner = Banner.Load(new SubStream(stream, (long)item.StartOffset, (long)item.Length));
             }
             catch (Exception ex)
             {
@@ -511,7 +524,7 @@ namespace Redefinable.Applications.Launcher.Informations
         /// <returns></returns>
         public static Game LoadBasicInfo(Stream stream, GameGenreCollection genreFullInformations, GameControllerCollection controllerFullInformations)
         {
-            Game game = new Game("", "", "", null, null, new GameImage[0], null, null, new Guid[0], genreFullInformations, new Guid[0], controllerFullInformations);
+            Game game = new Game("", "", "", null, null, new GameImage[0], null, null, new Guid[0], genreFullInformations, new Guid[0], controllerFullInformations, new Banner(null));
             game._loadBasicInfoFrom(stream);
             return game;
         }
@@ -539,7 +552,7 @@ namespace Redefinable.Applications.Launcher.Informations
         /// <returns></returns>
         public static Game LoadFromArchive(ArchiveReader reader, GameGenreCollection genreFullInformations, GameControllerCollection controllerFullInformations)
         {
-            Game result = new Game("", "", "", null, null, new GameImage[0], null, null, new Guid[0], genreFullInformations, new Guid[0], controllerFullInformations);
+            Game result = new Game("", "", "", null, null, new GameImage[0], null, null, new Guid[0], genreFullInformations, new Guid[0], controllerFullInformations, new Banner(null));
             result._loadFromArchive(reader, genreFullInformations, controllerFullInformations);
             return result;
         }
