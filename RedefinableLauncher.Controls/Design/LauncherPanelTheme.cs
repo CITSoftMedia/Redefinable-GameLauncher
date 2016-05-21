@@ -17,7 +17,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
     /// <summary>
     /// LauncherPanel自体のテーマデータを格納します。
     /// </summary>
-    public class LauncherPanelTheme
+    public class LauncherPanelTheme : ILauncherThemeElement
     {
         // 非公開フィールド
         private Image backgroundImage;
@@ -77,6 +77,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("type", "LauncherPanelTheme");
             headers.Add("guid", Guid.NewGuid().ToString());
+            bc.WriteDictionary(headers, stream);
 
             // 画像をバイトバッファへ
             MemoryStream ms = new MemoryStream();
@@ -105,7 +106,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             LinearGradientBrush gb = new LinearGradientBrush(
                 g.VisibleClipBounds,
                 Color.White,
-                Color.Black,
+                Color.Blue,
                 LinearGradientMode.Vertical);
             g.FillRectangle(Brushes.White, g.VisibleClipBounds);
             g.FillRectangle(gb, g.VisibleClipBounds);

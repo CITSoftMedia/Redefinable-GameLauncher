@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using Redefinable;
 using Redefinable.Applications.Launcher.Controls;
 
+using LauncherTheme = Redefinable.Applications.Launcher.Controls.Design.LauncherTheme;
+
 namespace Redefinable.Applications.Launcher.Forms
 {
     public class MainForm : Form
@@ -20,6 +22,18 @@ namespace Redefinable.Applications.Launcher.Forms
 
 
         // 公開フィールド
+
+        /// <summary>
+        /// LauncherPanelのテーマを取得・設定します。
+        /// </summary>
+        public LauncherTheme LauncherTheme
+        {
+            get { return this.launcherPanel.Theme; }
+            set { this.launcherPanel.Theme = value; }
+        }
+
+
+        // コンストラクタ
 
         /// <summary>
         /// 新しいMainFormクラスのインスタンスを初期化します。

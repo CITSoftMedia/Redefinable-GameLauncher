@@ -55,13 +55,13 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         // コンストラクタ
 
         /// <summary>
-        /// デバッグ用のサンプルテーマとしてLauncherThemeクラスのインスタンスを初期化します。
+        /// 空のテーマ情報のインスタンスを初期化します。
         /// </summary>
-        public LauncherTheme()
+        private LauncherTheme()
         {
-            this.info = new LauncherThemeInfo("Sample Theme for DEBUG", null);
-            this.panelTheme = LauncherPanelTheme.GetSampleTheme();
-            this.buttonTheme = LauncherButtonTheme.GetSampleTheme();
+            this.info = null;
+            this.panelTheme = null;
+            this.buttonTheme = null;
         }
 
 
@@ -77,35 +77,152 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             return dict;
         }
 
+        /// <summary>
+        /// nullでない項目をアーカイブへ追加します。
+        /// </summary>
+        /// <param name="maker"></param>
         private void _saveTo(ArchiveMaker maker)
         {
             MemoryStream ms = null;
             StoringStreamItem item = null;
             Dictionary<string, string> nameDict = this._getInternalItems();
-            
+
             // info
-            ms = new MemoryStream();
-            this.info.Save(ms);
-            item = new StoringStreamItem(nameDict["info"], ms);
-            maker.ItemList.Add(item);
+            if (this.info != null)
+            {
+                ms = new MemoryStream();
+                this.info.Save(ms);
+                item = new StoringStreamItem(nameDict["info"], ms);
+                maker.ItemList.Add(item);
+            }
 
             // panel
-            ms = new MemoryStream();
-            this.panelTheme.Save(ms);
-            item = new StoringStreamItem(nameDict["panel"], ms);
-            maker.ItemList.Add(item);
+            if (this.panelTheme != null)
+            {
+                ms = new MemoryStream();
+                this.panelTheme.Save(ms);
+                item = new StoringStreamItem(nameDict["panel"], ms);
+                maker.ItemList.Add(item);
+            }
+
+            // button
+            if (this.buttonTheme != null)
+            {
+                ms = new MemoryStream();
+                this.buttonTheme.Save(ms);
+                item = new StoringStreamItem(nameDict["button"], ms);
+                maker.ItemList.Add(item);
+            }
         }
 
-        private void _loadFrom()
+        /// <summary>
+        /// 指定したアーカイブからthemeを読み込みます。アーカイブ内に存在しない項目はnullが設定されます。
+        /// </summary>
+        /// <param name="archive"></param>
+        private void _loadFrom(ArchiveReader archive)
         {
+            // アイテム名一覧
+            IDictionary<string, string> nameDict = this._getInternalItems();
 
+            // アイテムのオフセット情報を利用して、直に読み込む
+            FileStream stream = new FileStream(archive.ArchivePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            IArchiveItem item;
+
+
+            // info
+            if (archive.Items.Contains(nameDict["info"]))
+            {
+                item = archive.Items.GetItem(nameDict["info"]);
+                this.info = LauncherThemeInfo.Load(new SubStream(stream, (long)item.StartOffset, (long)item.Length));
+            }
+            else
+                this.info = null;
+
+            // panel
+            if (archive.Items.Contains(nameDict["panel"]))
+            {
+                item = archive.Items.GetItem(nameDict["panel"]);
+                this.panelTheme = LauncherPanelTheme.Load(new SubStream(stream, (long)item.StartOffset, (long)item.Length));
+            }
+            else
+                this.panelTheme = null;
+
+            // panel
+            if (archive.Items.Contains(nameDict["button"]))
+            {
+                item = archive.Items.GetItem(nameDict["button"]);
+                this.buttonTheme = LauncherButtonTheme.Load(new SubStream(stream, (long)item.StartOffset, (long)item.Length));
+            }
+            else
+                this.buttonTheme = null;
+        }
+
+        /// <summary>
+        /// 指定したthemeのうち、info以外の情報で現在のthemeを上書きします。指定したthemeの中でnullの項目は、上書きされません。
+        /// </summary>
+        /// <param name="theme"></param>
+        private void _overrideFrom(LauncherTheme theme)
+        {
+            if (theme.panelTheme != null)
+                this.panelTheme = theme.panelTheme;
+            
+        }
+
+
+        // 公開メソッド
+
+        public void Save(ArchiveMaker archive)
+        {
+            this._saveTo(archive);
+        }
+
+        public void Save(string path)
+        {
+            ArchiveMaker maker = new ArchiveMaker(path);
+            this._saveTo(maker);
+
+            maker.Save();
+        }
+
+        
+        // 公開静的メソッド
+
+        /// <summary>
+        /// デバッグ用のデフォルトテーマを取得します。
+        /// </summary>
+        /// <returns></returns>
+        public static LauncherTheme GetDefaultTheme()
+        {
+            LauncherTheme theme = new LauncherTheme();
+            theme.info = new LauncherThemeInfo("Default", null);
+            theme.panelTheme = LauncherPanelTheme.GetSampleTheme();
+            theme.buttonTheme = LauncherButtonTheme.GetSampleTheme();
+
+            return theme;
+        }
+        
+        public static LauncherTheme Load(ArchiveReader archive)
+        {
+            LauncherTheme theme = new LauncherTheme();
+            theme._loadFrom(archive);
+            
+            return theme;
+        }
+
+        public static LauncherTheme Load(string path)
+        {
+            ArchiveReader reader = new ArchiveReader(path);
+            LauncherTheme theme = LauncherTheme.Load(reader);
+            reader.Close();
+
+            return theme;
         }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public class LauncherThemeInfo
+    public class LauncherThemeInfo : ILauncherThemeElement
     {
         // 非公開フィールド
         private string name;
@@ -143,6 +260,15 @@ namespace Redefinable.Applications.Launcher.Controls.Design
 
 
         // コンストラクタ
+
+        /// <summary>
+        /// 空のインスタンスを初期化します。
+        /// </summary>
+        private LauncherThemeInfo()
+        {
+            this.name = null;
+            this.baseThemeFile = null;
+        }
 
         /// <summary>
         /// LauncherThemeInfoクラスの新しいインスタンスを初期化します。
@@ -218,5 +344,32 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         {
             this._saveTo(stream);
         }
+
+
+        // 公開静的メソッド
+
+        /// <summary>
+        /// 指定したストリームからLauncherThemeInfoを読み込みます。
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static LauncherThemeInfo Load(Stream stream)
+        {
+            LauncherThemeInfo info = new LauncherThemeInfo();
+            info._loadFrom(stream);
+
+            return info;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface ILauncherThemeElement
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        void Save(Stream stream);
     }
 }

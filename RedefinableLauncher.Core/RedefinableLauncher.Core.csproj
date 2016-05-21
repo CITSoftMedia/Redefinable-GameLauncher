@@ -56,6 +56,10 @@
       <Project>{1d944a8e-79e6-4151-a58c-9594a95b91ac}</Project>
       <Name>Redefinable.IniHandler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.StreamArchive\Redefinable.StreamArchive.csproj">
+      <Project>{7309dee9-2bb4-42df-88e9-c9ca7e15f06b}</Project>
+      <Name>Redefinable.StreamArchive</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable\Redefinable.csproj">
       <Project>{283b9c50-3ba4-4559-96dd-b83a567c84ed}</Project>
       <Name>Redefinable</Name>

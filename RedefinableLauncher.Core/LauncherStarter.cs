@@ -9,6 +9,7 @@ using Redefinable;
 using Redefinable.IO;
 
 using Redefinable.Applications.Launcher;
+using Redefinable.Applications.Launcher.Controls.Design;
 using Redefinable.Applications.Launcher.Forms;
 using Redefinable.Applications.Launcher.Informations;
 
@@ -138,6 +139,31 @@ namespace Redefinable.Applications.Launcher.Core
 
             return games;
         }
+        
+        private static LauncherTheme _getLauncherTheme(LauncherSettings settings)
+        {
+            if (settings.ThemeDirectory[settings.ThemeDirectory.Length - 1] == '\\')
+                settings.ThemeDirectory = settings.ThemeDirectory.Substring(0, settings.ThemeDirectory.Length - 1);
+
+            DebugConsole.Push("COR", "Theme> Themesディレクトリの検索を開始します。");
+            DebugConsole.Push("COR", "Theme> " + settings.ThemeDirectory);
+
+            string[] files = Directory.GetFiles(settings.ThemeDirectory, "*.rlt", SearchOption.TopDirectoryOnly);
+            for (int i = 0; i < files.Length; i++)
+                files[i] = Path.GetFileName(files[i]);
+
+            if (files.Length == 0)
+            {
+                // 検出なし
+                DebugConsole.Push("COR", "Theme> デフォルトテーマを初期化します。");
+                LauncherTheme def = LauncherTheme.GetDefaultTheme();
+                def.Save(settings.ThemeDirectory + "\\" + settings.ThemeFile);
+            }
+            else
+                DebugConsole.Push("COR", "Theme> " + String.Join(", ", files));
+
+            return LauncherTheme.Load(settings.ThemeDirectory + "\\" + settings.ThemeFile);
+        }
 
         /// <summary>
         /// ランチャーを開始します。
@@ -155,10 +181,15 @@ namespace Redefinable.Applications.Launcher.Core
             DebugConsole.Push("COR", "ゲーム情報を読み込みます。");
             GameCollection games = _getTargetGames(settings);
 
+            // テーマのロード
+            DebugConsole.Push("COR", "テーマ情報を読み込みます。");
+            LauncherTheme theme = _getLauncherTheme(settings);
+
             // メインウィンドウの表示
             DebugConsole.Push("COR", "メインウィンドウを初期化します。");
             MainForm mainForm = new MainForm();
             
+            mainForm.LauncherTheme = theme;
             mainForm.Show();
             while (mainForm.Created)
             {

@@ -25,6 +25,9 @@ namespace Redefinable.Applications.Launcher.Core
         private string genreFilesDirectory;
         private string controllersFilesDirectory;
 
+        private string themeDirectory;
+        private string themeFile;
+
         
         // 公開フィールド
 
@@ -100,6 +103,24 @@ namespace Redefinable.Applications.Launcher.Core
             set { this.controllersFilesDirectory = value; }
         }
         
+        /// <summary>
+        /// テーマディレクトリのパスを取得・設定します。
+        /// </summary>
+        public string ThemeDirectory
+        {
+            get { return this.themeDirectory; }
+            set { this.themeDirectory = value; }
+        }
+
+        /// <summary>
+        /// テーマファイルのファイル名を取得・設定します。ファイル名はテーマディレクトリ内に存在する有効なテーマファイルを指定なくてはなりません。
+        /// </summary>
+        public string ThemeFile
+        {
+            get { return this.themeFile; }
+            set { this.themeFile = value; }
+        }
+
 
         // 公開静的フィールド
 
@@ -128,8 +149,11 @@ namespace Redefinable.Applications.Launcher.Core
             this.warningPathError = false;
             this.useAutoInitializer = false;
 
-            this.genreFilesDirectory = "{var: Ini_AssemblyDirectory}\\Genre Informations";
-            this.controllersFilesDirectory = "{var: Ini_AssemblyDirectory}\\Controllers Informations";
+            this.genreFilesDirectory = "{var: Ini_AssemblyDirectory}\\Launcher System\\Genre Informations";
+            this.controllersFilesDirectory = "{var: Ini_AssemblyDirectory}\\Launcher System\\Controllers Informations";
+
+            this.themeDirectory = "{var: Ini_AssemblyDirectory}\\Launcher System\\Themes";
+            this.themeFile = "default.rlt";
         }
 
 
@@ -172,7 +196,14 @@ namespace Redefinable.Applications.Launcher.Core
                 new IniValue("GenreFiles", this.genreFilesDirectory),
                 new IniValue("ControllerFiles", this.controllersFilesDirectory),
             }, new string[] {
-                " Genre and Controllers informations"
+                " Genre and Controllers informations Settings"
+            }, 1));
+
+            ini.Sections.Add(new IniSection("ThemeLoader", new IniValue[] {
+                new IniValue("Directory", this.themeDirectory),
+                new IniValue("CurrentTheme", this.themeFile),
+            }, new string[] {
+                " LauncherPanel Theme Settings"
             }, 1));
 
 
@@ -217,6 +248,10 @@ namespace Redefinable.Applications.Launcher.Core
                 sec = ini.Sections["ClassificationInformation"];
                 ls.genreFilesDirectory = sec.Values["GenreFiles"].Value;
                 ls.controllersFilesDirectory = sec.Values["ControllerFiles"].Value;
+
+                sec = ini.Sections["ThemeLoader"];
+                ls.themeDirectory = sec.Values["Directory"].Value;
+                ls.themeFile = sec.Values["CurrentTheme"].Value;
             }
             catch (Exception ex)
             {

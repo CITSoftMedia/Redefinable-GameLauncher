@@ -45,13 +45,13 @@
     <Compile Include="Design\LauncherButtonTheme.cs" />
     <Compile Include="Design\LauncherPanelTheme.cs" />
     <Compile Include="Design\LauncherTheme.cs" />
-    <Compile Include="GameBanner.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="IScaleableControl.cs" />
-    <None Include="LauncherButton.cs">
+    <None Include="GameBanner.cs">
       <SubType>UserControl</SubType>
     </None>
+    <Compile Include="IScaleableControl.cs" />
+    <Compile Include="LauncherButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="LauncherPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -82,6 +82,11 @@
       <Project>{283b9c50-3ba4-4559-96dd-b83a567c84ed}</Project>
       <Name>Redefinable</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Launcher System\Themes\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

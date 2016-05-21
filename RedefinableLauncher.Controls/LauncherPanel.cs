@@ -7,7 +7,6 @@ using System.Windows.Forms;
 
 using Redefinable;
 using Redefinable.IO;
-
 using Redefinable.Applications.Launcher.Controls.Design;
 
 using Stream = System.IO.Stream;
@@ -193,7 +192,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.DoubleBuffered = true;
 
             // テーマ
-            this.theme = new LauncherTheme(); // デバッグ用, サンプルテーマ
+            this.theme = LauncherTheme.GetDefaultTheme(); // デバッグ用, サンプルテーマ
 
             // テストコントロール
             this.Controls.Add(new NormalScaleableColorPanel(new Point(20, 20), new Size(100, 100), Color.Blue));

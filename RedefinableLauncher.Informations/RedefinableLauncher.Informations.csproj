@@ -86,13 +86,13 @@
     <Folder Include="Common Codes\External Solutions\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Controllers Informations\readme.txt">
+    <Content Include="Launcher System\Controllers Informations\readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Game Files\directory.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Genre Informations\readme.txt">
+    <Content Include="Launcher System\Genre Informations\readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="StreamArchive Tools\a32ApplicationUtility.dll">
