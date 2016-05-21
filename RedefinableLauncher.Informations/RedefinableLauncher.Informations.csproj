@@ -41,6 +41,7 @@
     <Compile Include="..\Common Codes\LauncherAssembly.cs">
       <Link>Common Codes\LauncherAssembly.cs</Link>
     </Compile>
+    <Compile Include="Banner.cs" />
     <Compile Include="Common Codes\LocalAssemblyInfo.cs" />
     <Compile Include="DisplayNumber.cs" />
     <Compile Include="ExecInfo.cs" />

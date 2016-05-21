@@ -45,9 +45,13 @@
     <Compile Include="Design\LauncherButtonTheme.cs" />
     <Compile Include="Design\LauncherPanelTheme.cs" />
     <Compile Include="Design\LauncherTheme.cs" />
-    <None Include="GameBanner.cs">
+    <Compile Include="DrawingExtensions\SizeExtension.cs" />
+    <Compile Include="GameBanner.cs">
       <SubType>UserControl</SubType>
-    </None>
+    </Compile>
+    <Compile Include="GameBannerListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="IScaleableControl.cs" />
     <Compile Include="LauncherButton.cs">
       <SubType>UserControl</SubType>

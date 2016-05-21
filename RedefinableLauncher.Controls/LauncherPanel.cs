@@ -157,7 +157,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.ScaleChanged = (sender, e) => { };
 
             // イベントの追加
-            //this.Click += (sender, e) => { this.ChangeScale(this.currentScale -= 0.1f); };
+            this.Click += (sender, e) => { this.ChangeScale(this.currentScale -= 0.1f); };
             this.PreviewKeyDown += LauncherPanel_PreviewKeyDown;
             //this.KeyDown += (sender, e) => { Console.WriteLine("a"); };
         }
@@ -195,6 +195,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.theme = LauncherTheme.GetDefaultTheme(); // デバッグ用, サンプルテーマ
 
             // テストコントロール
+            /*
             this.Controls.Add(new NormalScaleableColorPanel(new Point(20, 20), new Size(100, 100), Color.Blue));
             this.Controls.Add(new NormalScaleableColorPanel(new Point(140, 50), new Size(100, 100), Color.Green));
             this.Controls.Add(new LauncherButton(new Point(200, 200), new Size(130, 40)));
@@ -205,15 +206,20 @@ namespace Redefinable.Applications.Launcher.Controls
 
             VariableScaleableControl c1 = new LauncherButton(new Point(200, 300), new Size(130, 40));
             VariableScaleableControl c2 = new LauncherButton(new Point(200, 350), new Size(130, 40));
+            GameBanner c3 = new GameBanner() { CurrentTop = 150, Text = "ほげ" };
             
             c1.SetNeighborControls(null, c2, null, null);
             c2.SetNeighborControls(c1, null, null, null);
-
+            
             this.Controls.Add(c1);
             this.Controls.Add(c2);
+            this.Controls.Add(c3);
 
             // 初期状態で選択されているコントロール
             this.focusedControl = c1;
+            */
+
+            
 
             // テーマの適用
             this.RefreshTheme();
@@ -339,6 +345,16 @@ namespace Redefinable.Applications.Launcher.Controls
                     this.debugOut.WriteLine(c.ToString());
                     ((IScaleableControl)c).RefreshFocusState();
                 }
+        }
+
+        /// <summary>
+        /// FocusedControlを設定します。
+        /// </summary>
+        /// <param name="cont"></param>
+        public void SetFocus(IScaleableControl cont)
+        {
+            this.focusedControl = cont;
+            this.RefreshFocusState();
         }
         
 

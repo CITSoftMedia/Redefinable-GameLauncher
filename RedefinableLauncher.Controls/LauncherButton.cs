@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 using Redefinable;
 using Redefinable.Applications.Launcher.Controls.Design;
+using Redefinable.Applications.Launcher.Controls.DrawingExtensions;
 
 namespace Redefinable.Applications.Launcher.Controls
 {
@@ -54,6 +55,10 @@ namespace Redefinable.Applications.Launcher.Controls
             this.ScaleChanged += (sender, e) => { this.RefreshTheme(); };
             this.MouseMove += (sender, e) => { this.hilightPanel.Visible = true; };
             this.hilightPanel.MouseLeave += (sender, e) => { this.hilightPanel.Visible = false; };
+            this.hilightPanel.MouseClick += (sender, e) => { var p = this.GetLauncherPanel(); if (p != null) p.SetFocus(this); };
+            this.hilightPanel.MouseClick += (sender, e) => { this.OnMouseClick(e); };
+            this.hilightPanel.MouseDown += (sender, e) => { this.OnMouseDown(e); };
+            this.hilightPanel.Click += (sender, e) => { this.OnClick(e); };
 
 
             // テーマの適用
@@ -123,11 +128,21 @@ namespace Redefinable.Applications.Launcher.Controls
 
         public override void RefreshFocusState()
         {
-            // デバッグ
+            // フォーカスがある場合は、テーマのイメージを描画し、
+            // その上にフォーカスを表すイメージを描画
             if (this.LauncherControlFocused)
-                this.hilightPanel.BackColor = Color.FromArgb(128, 255, 0, 0);
+            {
+                this.RefreshTheme();
+
+                float borderWidth = (float)((double) 3 * (double)this.currentScale);
+                Graphics g = Graphics.FromImage(this.BackgroundImage);
+                g.DrawRectangle(new Pen(Color.LightBlue, borderWidth), 0, 0, this.Width - 1, this.Height - 1);
+                g.Dispose();
+            }
             else
-                this.hilightPanel.BackColor = Color.FromArgb(128, 255, 255, 255);
+            {
+                this.RefreshTheme();
+            }
 
             // 子コントロールへも適用
             base.RefreshFocusState();

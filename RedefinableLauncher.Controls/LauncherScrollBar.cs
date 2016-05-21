@@ -341,7 +341,7 @@ namespace Redefinable.Applications.Launcher.Controls
             // 計算
             this.knob.Top = (int)((double) knobMovableRange * (double) value / (double) this.targetLength);
 
-            Console.WriteLine("v={0}, t={1}", value, this.knob.Top);
+            //Console.WriteLine("v={0}, t={1}", value, this.knob.Top);
         }
 
 

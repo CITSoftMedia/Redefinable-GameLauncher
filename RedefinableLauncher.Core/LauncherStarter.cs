@@ -197,6 +197,9 @@ namespace Redefinable.Applications.Launcher.Core
                 Application.DoEvents();
                 System.Threading.Thread.Sleep(1);
             }
+
+            mainForm.Dispose();
+            GC.Collect();
         }
     }
 }
