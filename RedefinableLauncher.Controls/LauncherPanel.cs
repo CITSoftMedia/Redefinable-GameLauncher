@@ -230,6 +230,9 @@ namespace Redefinable.Applications.Launcher.Controls
             //this.genreSelectButton.ApplyThemesHeight = true;
             this.Controls.Add(this.genreSelectButton);
 
+            this.controllerSelectButton = new LauncherButton(new Point(10, 570), new Size(this.genreSelectButton.Width, 40));
+            this.Controls.Add(this.controllerSelectButton);
+
 
             // リストビューのデバッグ
 
