@@ -112,6 +112,18 @@ namespace Redefinable.Applications.Launcher.Controls
                 b.CurrentTop = currentTop;
                 b.RefreshTheme();
                 b.ChangeScale(this.currentScale);
+                
+                // 近隣コントロールの設定
+                if (i >= 1)
+                    // 上のコントロールが存在する
+                    b.SetNeighborControls(this.items[i - 1], b.DownControl, null, null);
+                if (i + 1 < this.items.Count)
+                    // 下のコントロールが存在する
+                    b.SetNeighborControls(b.UpControl, this.items[i + 1], null, null);
+
+                // デバッグ
+                //b.Click += (sender, e) => { MessageBox.Show(b.Text); };
+
                 this.bannersTray.Controls.Add(b);
 
                 currentTop += b.Height;
@@ -172,6 +184,9 @@ namespace Redefinable.Applications.Launcher.Controls.GameBannerListViewElements
     /// </summary>
     public class ScaleablePanel : Panel, IScaleableControl
     {
+
+        // 公開フィールド :: インターフェイスの明示的実装
+
         /// <summary>
         /// 利用できません。
         /// </summary>
@@ -260,6 +275,9 @@ namespace Redefinable.Applications.Launcher.Controls.GameBannerListViewElements
             }
         }
 
+
+        // 公開イベント :: インターフェイスの明示的実装
+
         /// <summary>
         /// 利用できません。
         /// </summary>
@@ -275,6 +293,56 @@ namespace Redefinable.Applications.Launcher.Controls.GameBannerListViewElements
                 throw new NotImplementedException();
             }
         }
+
+
+        // コンストラクタ
+
+        public ScaleablePanel()
+        {
+            this.PreviewKeyDown += ScaleablePanel_PreviewKeyDown;
+        }
+
+
+        // 非公開メソッド
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ScaleablePanel_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            Object parent = this.Parent;
+
+            if (parent != null)
+            {
+                // リフレクションを使用して強制的にイベント処理を実行
+                // → 非常に強引な方法です。良い子の皆は真似しないでね！
+
+                try
+                {
+                    // Controls.OnPreviewKeyDown (protected) を呼び出す
+                    // その際、メソッドを呼び出すメソッドには parent を指定する
+                    // → parent.OnPreviewKeyDown() を本来呼び出せない場所 (クラスの外側) から無理やり呼び出す
+                    parent.GetType().InvokeMember(
+                        "OnPreviewKeyDown",                             // メソッド名
+                        System.Reflection.BindingFlags.InvokeMethod |   // 呼び出しの種類 (実行、非公開、インスタンスから呼び出す動的メソッド)
+                        System.Reflection.BindingFlags.NonPublic |
+                        System.Reflection.BindingFlags.Instance,
+                        null,                                           // バインダ (デフォルトのためnull)
+                        parent,                                         // 動的メソッドを呼び出すインスタンス
+                        new object[] { e });                            // 引数 (このPreviewKeyDownの引数をそのまま渡す)
+                }
+                catch (MissingMethodException)
+                {
+                    // メソッドが見つからなかった
+                    // →諦める
+                }
+            }
+        }
+
+
+        // 公開メソッド :: インターフェイスの明示的実装
 
         /// <summary>
         /// 無視されます。

@@ -307,6 +307,25 @@ namespace Redefinable.Applications.Launcher.Controls
                 case Keys.Right:
                     this.focusedControl = this.focusedControl.RightControl;
                     break;
+                case Keys.Enter:
+                    if (this.focusedControl is Control)
+                    {
+                        // コントロールがクリックされたことにする。
+                        Control cont = (Control)this.focusedControl;
+
+                        // Controls.OnPreviewKeyDown (protected) を呼び出す
+                        // その際、メソッドを呼び出すメソッドには parent を指定する
+                        // → parent.OnPreviewKeyDown() を本来呼び出せない場所 (クラスの外側) から無理やり呼び出す
+                        cont.GetType().InvokeMember(
+                            "OnClick",                                      // メソッド名
+                            System.Reflection.BindingFlags.InvokeMethod |   // 呼び出しの種類 (実行、非公開、インスタンスから呼び出す動的メソッド)
+                            System.Reflection.BindingFlags.NonPublic |
+                            System.Reflection.BindingFlags.Instance,
+                            null,                                           // バインダ (デフォルトのためnull)
+                            cont,                                           // 動的メソッドを呼び出すインスタンス
+                            new object[] { new EventArgs() });              // 引数
+                    }
+                    break;
             }
 
             this.RefreshFocusState();
