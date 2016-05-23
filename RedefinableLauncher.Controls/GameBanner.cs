@@ -240,6 +240,10 @@ namespace Redefinable.Applications.Launcher.Controls
         /// </summary>
         public override void RefreshTheme()
         {
+            LauncherButtonTheme bt = Design.LauncherButtonTheme.GetSampleTheme();
+            LauncherPanel p = this.GetLauncherPanel();
+            if (p != null) bt = p.Theme.ButtonTheme;
+
             if (this.backgroundImage == null)
             {
                 // デフォルトテーマの上にテキストを描画
@@ -268,7 +272,7 @@ namespace Redefinable.Applications.Launcher.Controls
             {
                 float borderWidth = (float)((double) 3 * (double)this.currentScale);
                 Graphics g = Graphics.FromImage(base.BackgroundImage);
-                g.DrawRectangle(new Pen(Color.LightBlue, borderWidth), 0, 0, this.Width - 1, this.Height - 1);
+                g.DrawRectangle(new Pen(bt.FocusBorderColor, borderWidth), 0, 0, this.Width - 1, this.Height - 1);
                 g.Dispose();
             }
         }

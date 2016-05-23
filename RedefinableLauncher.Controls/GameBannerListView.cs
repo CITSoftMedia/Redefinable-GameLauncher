@@ -299,6 +299,7 @@ namespace Redefinable.Applications.Launcher.Controls.GameBannerListViewElements
 
         public ScaleablePanel()
         {
+            this.DoubleBuffered = true;
             this.PreviewKeyDown += ScaleablePanel_PreviewKeyDown;
         }
 

@@ -45,6 +45,7 @@
     <Compile Include="Design\LauncherButtonTheme.cs" />
     <Compile Include="Design\LauncherPanelTheme.cs" />
     <Compile Include="Design\LauncherTheme.cs" />
+    <Compile Include="Design\ScrollBarTheme.cs" />
     <Compile Include="DrawingExtensions\SizeExtension.cs" />
     <Compile Include="GameBanner.cs">
       <SubType>UserControl</SubType>

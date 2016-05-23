@@ -105,8 +105,8 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             Graphics g = Graphics.FromImage(bmp);
             LinearGradientBrush gb = new LinearGradientBrush(
                 g.VisibleClipBounds,
-                Color.White,
-                Color.Blue,
+                Color.FromArgb(131, 173, 255),
+                Color.FromArgb(177, 203, 255),
                 LinearGradientMode.Vertical);
             g.FillRectangle(Brushes.White, g.VisibleClipBounds);
             g.FillRectangle(gb, g.VisibleClipBounds);

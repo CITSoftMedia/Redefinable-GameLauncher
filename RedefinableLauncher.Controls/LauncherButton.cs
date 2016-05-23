@@ -19,6 +19,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
         // 非公開フィールド :: コントロール
         private NormalScaleableColorPanel hilightPanel;
+        private Color focusBorderColor;
 
 
         // 公開フィールド
@@ -103,6 +104,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
             LauncherButtonTheme bt = theme.ButtonTheme;
             
+            this.focusBorderColor = bt.FocusBorderColor;
 
             if (this.applyThemesHeight)
             {
@@ -136,7 +138,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
                 float borderWidth = (float)((double) 3 * (double)this.currentScale);
                 Graphics g = Graphics.FromImage(this.BackgroundImage);
-                g.DrawRectangle(new Pen(Color.LightBlue, borderWidth), 0, 0, this.Width - 1, this.Height - 1);
+                g.DrawRectangle(new Pen(this.focusBorderColor, borderWidth), 0, 0, this.Width - 1, this.Height - 1);
                 g.Dispose();
             }
             else
