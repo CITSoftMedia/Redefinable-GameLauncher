@@ -29,6 +29,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         private int rightPaddingSize;
 
         private Color focusBorderColor;
+        private Color foreColor;
 
 
         // 公開フィールド
@@ -84,6 +85,11 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         public Color FocusBorderColor
         {
             get { return this.focusBorderColor; }
+        }
+
+        public Color ForeColor
+        {
+            get { return this.foreColor; }
         }
 
 
@@ -151,7 +157,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         /// <param name="leftPadding">左端部分の幅 (内部余白)</param>
         /// <param name="rightPadding">右端部分の幅 (内部余白)</param>
         /// <param name="focusBorderColor"></param>
-        public LauncherButtonTheme(Image left, Image center, Image right, int height, int leftPadding, int rightPadding, Color focusBorderColor)
+        public LauncherButtonTheme(Image left, Image center, Image right, int height, int leftPadding, int rightPadding, Color focusBorderColor, Color foreColor)
             : this(left, center, right, height, leftPadding, rightPadding)
         {
             this.focusBorderColor = focusBorderColor;
@@ -207,7 +213,13 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             headers.Add("RecommendedHeight", this.recommendedHeight.ToString());
             headers.Add("LeftPaddingSize", this.leftPaddingSize.ToString());
             headers.Add("RightPaddingSize", this.rightPaddingSize.ToString());
+            
+            
+            // 追加データ
+            //headers.Add("UsePrivateFont", this.usePrivateFont.ToString());
+            //headers.Add("Font", this.fontName);
             headers.Add("FocusBorderColor", this.focusBorderColor.ToArgb().ToString());
+            headers.Add("ForeColor", this.foreColor.ToArgb().ToString());
 
 
             // ヘッダの書き込み
@@ -274,7 +286,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             g.FillRectangle(Brushes.Red, 0, 0, 10, 10);
             g.Dispose();
 
-            return new LauncherButtonTheme(left, center, right, 40, 10, 10, Color.LightBlue);
+            return new LauncherButtonTheme(left, center, right, 40, 10, 10, Color.LightBlue, Color.Black);
         }
 
         /// <summary>
@@ -301,7 +313,9 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             result.recommendedHeight = Int32.Parse(headers["RecommendedHeight"]);
             result.leftPaddingSize = Int32.Parse(headers["LeftPaddingSize"]);
             result.rightPaddingSize = Int32.Parse(headers["RightPaddingSize"]);
+
             result.focusBorderColor = Color.FromArgb(Int32.Parse(headers["FocusBorderColor"]));
+            result.foreColor = Color.FromArgb(Int32.Parse(headers["ForeColor"]));
 
 
             // 各種画像の読み込み

@@ -15,11 +15,13 @@ namespace Redefinable.Applications.Launcher.Controls
     {
         // 非公開フィールド
         private bool applyThemesHeight;
+        private string text;
 
 
         // 非公開フィールド :: コントロール
         private NormalScaleableColorPanel hilightPanel;
         private Color focusBorderColor;
+        private Image backgroundImage;
 
 
         // 公開フィールド
@@ -31,6 +33,24 @@ namespace Redefinable.Applications.Launcher.Controls
         {
             get { return this.applyThemesHeight; }
             set { this.applyThemesHeight = value; }
+        }
+
+        /// <summary>
+        /// コントロールのテキストを取得・設定します。
+        /// </summary>
+        public override string Text
+        {
+            get { return this._getText(); }
+            set { this._setText(value); }
+        }
+
+        /// <summary>
+        /// コントロールの背景を取得・設定します。
+        /// </summary>
+        public new Image BackgroundImage
+        {
+            get { return this._getBackgroundImage(); }
+            set { this._setBackgroundImage(value); }
         }
 
 
@@ -45,6 +65,8 @@ namespace Redefinable.Applications.Launcher.Controls
             : base(location, size)
         {
             // データフィールドの初期化
+            this.Text = "";
+            this.Font = new Font("MS UI Gothic", 12, FontStyle.Bold);
 
             // コントロールの初期化
             this._initializeControls();
@@ -82,7 +104,45 @@ namespace Redefinable.Applications.Launcher.Controls
             this.Controls.Add(this.hilightPanel);
         }
 
+        private string _getText()
+        {
+            return this.text;
+        }
 
+        private void _setText(string value)
+        {
+            this.text = value;
+            this.RefreshTheme();
+        }
+
+        private Image _getBackgroundImage()
+        {
+            return this.backgroundImage;
+        }
+
+        private void _setBackgroundImage(Image image)
+        {
+            this.backgroundImage = image;
+            base.BackgroundImage = new Bitmap(image, this.Size);
+            this._drawText();
+        }
+
+        private void _drawText()
+        {
+            Graphics g = Graphics.FromImage(base.BackgroundImage);
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+            Font font = new Font(this.Font.FontFamily, (this.Font.Size * this.currentScale), this.Font.Style);
+
+            SizeF m = g.MeasureString(this.Text, font);
+            PointF p = new PointF((this.Size.Width / 2) - (m.Width / 2), (this.Size.Height / 2) - (m.Height / 2));
+            g.DrawString(this.Text, font, new SolidBrush(this.ForeColor), p);
+
+            font.Dispose();
+        }
+
+        
+        
         // 公開メソッド
 
         /// <summary>
@@ -114,18 +174,19 @@ namespace Redefinable.Applications.Launcher.Controls
             }
 
             // 背景描画
-            this.BackgroundImage = new Bitmap(this.Width, this.Height);
-
-            Graphics g = Graphics.FromImage(this.BackgroundImage);
-            g.DrawImage(bt.CenterDecoration, 0, 0, this.Width, this.Height);
-
+            base.BackgroundImage = new Bitmap(this.Width, this.Height);
+            
             int leftw = (int)((float)bt.LeftPaddingSize * this.currentScale);
             int rightw = (int)((float)bt.RightPaddingSize * this.currentScale);
 
+            Graphics g = Graphics.FromImage(base.BackgroundImage);
+            g.DrawImage(bt.CenterDecoration, leftw, 0, this.Width, this.Height);
             g.DrawImage(bt.LeftDecoration, 0, 0, leftw, this.Height);
             g.DrawImage(bt.RightDecoration, this.Width - rightw, 0, rightw, this.Height);
 
             g.Dispose();
+
+            this._drawText();
         }
 
         public override void RefreshFocusState()
@@ -134,12 +195,17 @@ namespace Redefinable.Applications.Launcher.Controls
             // その上にフォーカスを表すイメージを描画
             if (this.LauncherControlFocused)
             {
+                //Console.WriteLine("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
                 this.RefreshTheme();
 
                 float borderWidth = (float)((double) 3 * (double)this.currentScale);
-                Graphics g = Graphics.FromImage(this.BackgroundImage);
-                g.DrawRectangle(new Pen(this.focusBorderColor, borderWidth), 0, 0, this.Width - 1, this.Height - 1);
+                Graphics g = Graphics.FromImage(base.BackgroundImage);
+                Pen p = new Pen(this.focusBorderColor, borderWidth);
+                //p = Pens.Black;
+                g.DrawRectangle(p, 0, 0, this.Width - 1, this.Height - 1);
                 g.Dispose();
+                //this.OnParentBackgroundImageChanged(new EventArgs());
             }
             else
             {

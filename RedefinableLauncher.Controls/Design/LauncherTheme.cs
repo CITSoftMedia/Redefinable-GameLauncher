@@ -24,7 +24,6 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         private ScrollBarTheme scrollBarTheme;
         
 
-
         // 公開フィールド・プロパティ
 
         /// <summary>

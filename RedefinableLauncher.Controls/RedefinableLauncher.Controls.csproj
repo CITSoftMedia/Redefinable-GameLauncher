@@ -69,6 +69,9 @@
     <Compile Include="NormalScaleableTestPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="TitleBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <None Include="Test Code\ScrollBarTest.cs" />
     <None Include="Test Code\BuildOnFX4.bat" />
     <None Include="Test Code\TestCode.cs" />

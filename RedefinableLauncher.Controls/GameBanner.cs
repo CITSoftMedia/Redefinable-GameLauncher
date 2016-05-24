@@ -261,6 +261,7 @@ namespace Redefinable.Applications.Launcher.Controls
                 // 縦位置のみを調整して描画
                 g.DrawString(this.text, f, new SolidBrush(this.ForeColor), new PointF(10, (this.Height / 2) - (size.Height / 2)));
                 g.Dispose();
+                f.Dispose();
             }
             else
             {

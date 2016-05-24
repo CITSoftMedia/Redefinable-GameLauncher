@@ -103,10 +103,15 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         {
             Bitmap bmp = new Bitmap(1080, 810);
             Graphics g = Graphics.FromImage(bmp);
+            //LinearGradientBrush gb = new LinearGradientBrush(
+            //    g.VisibleClipBounds,
+            //    Color.FromArgb(131, 173, 255),
+            //    Color.FromArgb(177, 203, 255),
+            //    LinearGradientMode.Vertical);
             LinearGradientBrush gb = new LinearGradientBrush(
                 g.VisibleClipBounds,
-                Color.FromArgb(131, 173, 255),
-                Color.FromArgb(177, 203, 255),
+                Color.Silver,
+                Color.Gray,
                 LinearGradientMode.Vertical);
             g.FillRectangle(Brushes.White, g.VisibleClipBounds);
             g.FillRectangle(gb, g.VisibleClipBounds);

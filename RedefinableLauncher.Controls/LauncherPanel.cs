@@ -33,6 +33,7 @@ namespace Redefinable.Applications.Launcher.Controls
         private GameBannerListView gameBannerListView;
         private LauncherButton genreSelectButton;
         private LauncherButton controllerSelectButton;
+        private LauncherButton helpButton;
         
 
 
@@ -197,41 +198,22 @@ namespace Redefinable.Applications.Launcher.Controls
 
             // テーマ
             this.theme = LauncherTheme.GetDefaultTheme(); // デバッグ用, サンプルテーマ
-
-            // テストコントロール
-            /*
-            this.Controls.Add(new NormalScaleableColorPanel(new Point(20, 20), new Size(100, 100), Color.Blue));
-            this.Controls.Add(new NormalScaleableColorPanel(new Point(140, 50), new Size(100, 100), Color.Green));
-            this.Controls.Add(new LauncherButton(new Point(200, 200), new Size(130, 40)));
-            this.Controls.Add(new LauncherButton(new Point(200, 250), new Size(200, 40)));
-
-            this.Controls.Add(new LauncherScrollBar(new Point(500, 10), new Size(30, 300)));
             
-
-            VariableScaleableControl c1 = new LauncherButton(new Point(200, 300), new Size(130, 40));
-            VariableScaleableControl c2 = new LauncherButton(new Point(200, 350), new Size(130, 40));
-            GameBanner c3 = new GameBanner() { CurrentTop = 150, Text = "ほげ" };
-            
-            c1.SetNeighborControls(null, c2, null, null);
-            c2.SetNeighborControls(c1, null, null, null);
-            
-            this.Controls.Add(c1);
-            this.Controls.Add(c2);
-            this.Controls.Add(c3);
-
-            // 初期状態で選択されているコントロール
-            this.focusedControl = c1;
-            */
-
-            this.gameBannerListView = new GameBannerListView(new Point(10, 10), 500);
+            this.gameBannerListView = new GameBannerListView(new Point(20, 20), 600);
             this.Controls.Add(this.gameBannerListView);
 
-            this.genreSelectButton = new LauncherButton(new Point(10, 520), new Size(this.gameBannerListView.Width, 40));
+            this.genreSelectButton = new LauncherButton(new Point(20, 640), new Size(this.gameBannerListView.Width, 40));
+            this.genreSelectButton.Text = "ジャンル";
             //this.genreSelectButton.ApplyThemesHeight = true;
             this.Controls.Add(this.genreSelectButton);
 
-            this.controllerSelectButton = new LauncherButton(new Point(10, 570), new Size(this.genreSelectButton.Width, 40));
+            this.controllerSelectButton = new LauncherButton(new Point(20, 690), new Size(this.genreSelectButton.Width, 40));
+            this.controllerSelectButton.Text = "コントローラ";
             this.Controls.Add(this.controllerSelectButton);
+            
+            this.helpButton = new LauncherButton(new Point(20, 740), new Size(this.genreSelectButton.Width, 40));
+            this.helpButton.Text = "ヘルプ";
+            this.Controls.Add(this.helpButton);
 
 
             // リストビューのデバッグ
@@ -243,8 +225,8 @@ namespace Redefinable.Applications.Launcher.Controls
             }
             this.gameBannerListView.ResumeRefreshItem();
 
-            // テーマの適用
-            this.RefreshTheme();
+            // テーマの適用 → コア内で正規テーマを描画
+            //this.RefreshTheme();
         }
         
         private void _setScale(float value)
@@ -371,6 +353,8 @@ namespace Redefinable.Applications.Launcher.Controls
             foreach (Control cont in this.Controls)
                 if (cont is IScaleableControl)
                     ((IScaleableControl) cont).RefreshTheme();
+
+            GC.Collect();
         }
 
         /// <summary>
@@ -386,6 +370,8 @@ namespace Redefinable.Applications.Launcher.Controls
                     this.debugOut.WriteLine(c.ToString());
                     ((IScaleableControl)c).RefreshFocusState();
                 }
+
+            GC.Collect();
         }
 
         /// <summary>
