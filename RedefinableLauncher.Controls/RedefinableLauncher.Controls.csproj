@@ -71,6 +71,9 @@
     <Compile Include="NormalScaleableTestPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <None Include="SlideshowPanel.cs">
+      <SubType>UserControl</SubType>
+    </None>
     <Compile Include="TitleBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
