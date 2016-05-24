@@ -24,6 +24,8 @@ namespace Redefinable.Applications.Launcher.Controls
 
         private int buttonsDefaultHeight;
 
+        private int largeChange;
+
 
         // 非公開フィールド :: コントロール
         private Panel upButton;
@@ -64,6 +66,16 @@ namespace Redefinable.Applications.Launcher.Controls
             set { this._setValue(value); }
         }
 
+        /// <summary>
+        /// 取得または設定に追加したりから減算する値、 Value プロパティ スクロール ボックスがある場合は、大規模な距離を移動します。
+        /// </summary>
+        public int LargeChange
+        {
+            get { return this.largeChange; }
+            set { this.largeChange = value; }
+        }
+
+
         // 公開イベント
 
         public event EventHandler ValueChanged;
@@ -83,6 +95,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.targetLength = 1000;
             this.targetControl = null;
             this.buttonsDefaultHeight = 20;
+            this.largeChange = 20;
 
             // コントロールの初期化
             this._initializeElements();
@@ -101,6 +114,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.ScaleChanged += (sender, e) => { this._arrangementElements(); };
             this.SizeChanged += (sender, e) => { this._arrangementElements(); if (this.targetControl != null) this._setTargetLength(-1); };
             this._initializeKnobEvents();
+            this._initializeButtonsEvents();
         }
 
 
@@ -205,6 +219,56 @@ namespace Redefinable.Applications.Launcher.Controls
 
             this.knobHighlight.MouseDown += mDown;
             this.knobHighlight.MouseMove += mMove;
+        }
+
+        /// <summary>
+        /// 上下ボタンに対するイベントを初期化します。
+        /// </summary>
+        private void _initializeButtonsEvents()
+        {
+            // knobの移動に関する実装は _initializeKnobEvents() を参照
+            
+            this.upButton.MouseClick += (sender, e) =>
+            {
+                if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+                {
+                    // マウスのボタンが押下された
+                    // →knobを上に移動
+                    int knobTop = this.knob.Top;
+
+                    // 加算
+                    knobTop -= this.largeChange;
+
+                    // 壁抜け回避
+                    if (knobTop < 0)
+                        knobTop = 0;
+
+                    // 設定と適用
+                    this.knob.Top = knobTop;
+                    this.ValueChanged(this, new EventArgs());
+                }
+            };
+
+            this.downButton.MouseClick += (sender, e) =>
+            {
+                if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+                {
+                    // マウスのボタンが押下された
+                    // →knobを上に移動
+                    int knobTop = this.knob.Top;
+
+                    // 加算
+                    knobTop += this.largeChange;
+
+                    // 壁抜け回避
+                    if (knobTop + this.knob.Height >= this.tray.Height)
+                        knobTop = this.tray.Height - this.knob.Height;
+
+                    // 設定と適用
+                    this.knob.Top = knobTop;
+                    this.ValueChanged(this, new EventArgs());
+                }
+            };
         }
 
         /// <summary>
@@ -351,9 +415,19 @@ namespace Redefinable.Applications.Launcher.Controls
         {
             // 先に処理
             base.RefreshTheme();
+            
+            LauncherTheme lt = this.GetLauncherTheme();
+            if (lt != null)
+            {
+                // テーマ有効
+                ScrollBarTheme theme = lt.ScrollBarTheme;
 
-
-
+                this.BackColor = Color.Black;
+                this.tray.BackColor = theme.TrayColor;
+                this.upButton.BackColor = theme.UpButtonColor;
+                this.downButton.BackColor = theme.DownButtonColor;
+                this.knob.BackColor = theme.KnobColor;
+            }
         }
 
         public override void RefreshFocusState()

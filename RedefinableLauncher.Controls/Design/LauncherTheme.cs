@@ -21,6 +21,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         
         private LauncherPanelTheme panelTheme;
         private LauncherButtonTheme buttonTheme;
+        private ScrollBarTheme scrollBarTheme;
         
 
 
@@ -50,6 +51,14 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             get { return this.buttonTheme; }
         }
 
+        /// <summary>
+        /// LauncherScrollBar用のテーマデータを取得します。
+        /// </summary>
+        public ScrollBarTheme ScrollBarTheme
+        {
+            get { return this.scrollBarTheme; }
+        }
+
 
 
         // コンストラクタ
@@ -62,6 +71,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             this.info = null;
             this.panelTheme = null;
             this.buttonTheme = null;
+            this.scrollBarTheme = null;
         }
 
 
@@ -73,6 +83,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             dict.Add("info", "__redef_launcher_theme_info.dat");
             dict.Add("panel", "__redef_launcher_theme_panel.dat");
             dict.Add("button", "__redef_launcher_theme_button.dat");
+            dict.Add("scrollbar", "__redef_launcher_theme_scrollbar.dat");
 
             return dict;
         }
@@ -113,6 +124,15 @@ namespace Redefinable.Applications.Launcher.Controls.Design
                 item = new StoringStreamItem(nameDict["button"], ms);
                 maker.ItemList.Add(item);
             }
+
+            // button
+            if (this.scrollBarTheme != null)
+            {
+                ms = new MemoryStream();
+                this.scrollBarTheme.Save(ms);
+                item = new StoringStreamItem(nameDict["scrollbar"], ms);
+                maker.ItemList.Add(item);
+            }
         }
 
         /// <summary>
@@ -147,7 +167,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             else
                 this.panelTheme = null;
 
-            // panel
+            // button
             if (archive.Items.Contains(nameDict["button"]))
             {
                 item = archive.Items.GetItem(nameDict["button"]);
@@ -155,6 +175,15 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             }
             else
                 this.buttonTheme = null;
+
+            // scrollbar
+            if (archive.Items.Contains(nameDict["scrollbar"]))
+            {
+                item = archive.Items.GetItem(nameDict["scrollbar"]);
+                this.scrollBarTheme = ScrollBarTheme.Load(new SubStream(stream, (long)item.StartOffset, (long)item.Length));
+            }
+            else
+                this.scrollBarTheme = null;
         }
 
         /// <summary>
@@ -197,6 +226,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             theme.info = new LauncherThemeInfo("Default", null);
             theme.panelTheme = LauncherPanelTheme.GetSampleTheme();
             theme.buttonTheme = LauncherButtonTheme.GetSampleTheme();
+            theme.scrollBarTheme = ScrollBarTheme.GetSampleTheme();
 
             return theme;
         }

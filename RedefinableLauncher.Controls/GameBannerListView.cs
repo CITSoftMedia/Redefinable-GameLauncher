@@ -174,6 +174,12 @@ namespace Redefinable.Applications.Launcher.Controls
             // トレイの幅の変更
             this.bannersTray.Width = this.scrollBar.Left;
         }
+
+        public override void RefreshTheme()
+        {
+            this.scrollBar.RefreshTheme();
+            base.RefreshTheme();
+        }
     }
 }
 
