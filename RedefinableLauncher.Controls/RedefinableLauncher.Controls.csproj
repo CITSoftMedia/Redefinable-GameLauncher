@@ -46,6 +46,8 @@
     <Compile Include="Design\LauncherPanelTheme.cs" />
     <Compile Include="Design\LauncherTheme.cs" />
     <Compile Include="Design\ScrollBarTheme.cs" />
+    <Compile Include="Design\ThemeUtility.cs" />
+    <Compile Include="Design\TitleBarTheme.cs" />
     <Compile Include="DrawingExtensions\SizeExtension.cs" />
     <Compile Include="GameBanner.cs">
       <SubType>UserControl</SubType>
@@ -72,6 +74,11 @@
     <Compile Include="TitleBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <None Include="Launcher System\Theme Debug\LauncherButton.All.psd" />
+    <None Include="Launcher System\Theme Debug\LauncherButton.Settings.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Launcher System\Theme Debug\LauncherPanel.BackgroundImage.psd" />
     <None Include="Test Code\ScrollBarTest.cs" />
     <None Include="Test Code\BuildOnFX4.bat" />
     <None Include="Test Code\TestCode.cs" />
@@ -82,6 +89,10 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.IniHandler\Redefinable.IniHandler.csproj">
+      <Project>{1d944a8e-79e6-4151-a58c-9594a95b91ac}</Project>
+      <Name>Redefinable.IniHandler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.StreamArchive\Redefinable.StreamArchive.csproj">
       <Project>{7309dee9-2bb4-42df-88e9-c9ca7e15f06b}</Project>
       <Name>Redefinable.StreamArchive</Name>
@@ -92,10 +103,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Launcher System\Theme Debug\LauncherButton.CenterDecoration.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Launcher System\Theme Debug\LauncherButton.LeftDecoration.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Launcher System\Theme Debug\LauncherButton.RightDecoration.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Launcher System\Theme Debug\LauncherPanel.BackgroundImage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Launcher System\Theme Debug\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Launcher System\Themes\readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

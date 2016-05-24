@@ -165,6 +165,7 @@ namespace Redefinable.Applications.Launcher.Controls
             LauncherButtonTheme bt = theme.ButtonTheme;
             
             this.focusBorderColor = bt.FocusBorderColor;
+            this.ForeColor = bt.ForeColor;
 
             if (this.applyThemesHeight)
             {

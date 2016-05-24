@@ -22,7 +22,8 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         private LauncherPanelTheme panelTheme;
         private LauncherButtonTheme buttonTheme;
         private ScrollBarTheme scrollBarTheme;
-        
+        private TitleBarTheme titileBarTheme;
+
 
         // 公開フィールド・プロパティ
 
@@ -56,6 +57,14 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         public ScrollBarTheme ScrollBarTheme
         {
             get { return this.scrollBarTheme; }
+        }
+
+        /// <summary>
+        /// TitleBar用のテーマデータを取得します。
+        /// </summary>
+        public TitleBarTheme TitleBarTheme
+        {
+            get { return this.titileBarTheme; }
         }
 
 

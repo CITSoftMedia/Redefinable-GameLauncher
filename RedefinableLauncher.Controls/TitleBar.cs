@@ -16,10 +16,12 @@ namespace Redefinable.Applications.Launcher.Controls
         // 非公開フィールド
         private string displayNumberField;
         private string titleField;
+        private TitleBarTheme currentTheme;
         
 
         // 非公開静的フィールド
-        private static int defaultHeight = 60;
+        private static int defaultWidth = 780; // 固定幅
+        private static int defaultHeight = 60; // 固定高さ
 
         
         // 公開フィールド
@@ -44,18 +46,40 @@ namespace Redefinable.Applications.Launcher.Controls
         // コンストラクタ
 
         /// <summary>
-        /// 新しいTitleBarクラスのインスタンスを初期化します。このコントロールの高さは固定されています。
+        /// 新しいTitleBarクラスのインスタンスを初期化します。このコントロールのサイズは固定されています。
         /// </summary>
         /// <param name="location"></param>
-        /// <param name="width"></param>
-        public TitleBar(Point location, int width)
-            : base(location, new Size(width, defaultHeight))
+        public TitleBar(Point location)
+            : base(location, new Size(defaultWidth, defaultHeight))
         {
             // データフィールドの初期化
             this.displayNumberField = "";
             this.titleField = "";
 
-            
+            // デバッグ
+            this.BackColor = Color.Beige;
+        }
+
+
+        // 非公開メソッド
+
+        /// <summary>
+        /// 現在のテーマで再描画します。
+        /// </summary>
+        private void _redraw()
+        {
+
+        }
+
+
+        // 公開メソッド
+
+        public override void RefreshTheme()
+        {
+            LauncherTheme t = this.GetLauncherTheme();
+            if (t != null && t.TitleBarTheme != null)
+                this.currentTheme = t.TitleBarTheme;
+            base.RefreshTheme();
         }
     }
 }

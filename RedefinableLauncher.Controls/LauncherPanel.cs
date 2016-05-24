@@ -34,6 +34,7 @@ namespace Redefinable.Applications.Launcher.Controls
         private LauncherButton genreSelectButton;
         private LauncherButton controllerSelectButton;
         private LauncherButton helpButton;
+        private TitleBar titleBar;
         
 
 
@@ -161,7 +162,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.ScaleChanged = (sender, e) => { };
 
             // イベントの追加
-            this.Click += (sender, e) => { this.ChangeScale(this.currentScale -= 0.1f); };
+            //this.Click += (sender, e) => { this.ChangeScale(this.currentScale -= 0.1f); };
             this.PreviewKeyDown += LauncherPanel_PreviewKeyDown;
             //this.KeyDown += (sender, e) => { Console.WriteLine("a"); };
         }
@@ -215,6 +216,8 @@ namespace Redefinable.Applications.Launcher.Controls
             this.helpButton.Text = "ヘルプ";
             this.Controls.Add(this.helpButton);
 
+            this.titleBar = new TitleBar(new Point(280, 20));
+            this.Controls.Add(this.titleBar);
 
             // リストビューのデバッグ
 

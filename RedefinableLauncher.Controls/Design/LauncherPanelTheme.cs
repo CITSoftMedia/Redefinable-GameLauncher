@@ -108,15 +108,24 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             //    Color.FromArgb(131, 173, 255),
             //    Color.FromArgb(177, 203, 255),
             //    LinearGradientMode.Vertical);
-            LinearGradientBrush gb = new LinearGradientBrush(
-                g.VisibleClipBounds,
-                Color.Silver,
-                Color.Gray,
-                LinearGradientMode.Vertical);
-            g.FillRectangle(Brushes.White, g.VisibleClipBounds);
-            g.FillRectangle(gb, g.VisibleClipBounds);
-
-            gb.Dispose();
+            string backgroundPath = ThemeUtility.ThemeDebugDir + "\\LauncherPanel.BackgroundImage.png";
+            if (File.Exists(backgroundPath))
+            {
+                Image img = Image.FromFile(backgroundPath);
+                g.DrawImage(img, 0, 0, bmp.Width, bmp.Height);
+            }
+            else
+            {
+                LinearGradientBrush gb = new LinearGradientBrush(
+                    g.VisibleClipBounds,
+                    Color.Silver,
+                    Color.Gray,
+                    LinearGradientMode.Vertical);
+                g.FillRectangle(Brushes.White, g.VisibleClipBounds);
+                g.FillRectangle(gb, g.VisibleClipBounds);
+                gb.Dispose();
+            }
+            
             g.Dispose();
 
             return new LauncherPanelTheme(bmp);

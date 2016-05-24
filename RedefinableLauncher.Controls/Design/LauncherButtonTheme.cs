@@ -10,6 +10,7 @@ using Redefinable;
 using Redefinable.IO;
 
 using ImageFormat = System.Drawing.Imaging.ImageFormat;
+using IniFile = Redefinable.IniHandler.IniFile;
 
 
 namespace Redefinable.Applications.Launcher.Controls.Design
@@ -161,6 +162,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             : this(left, center, right, height, leftPadding, rightPadding)
         {
             this.focusBorderColor = focusBorderColor;
+            this.foreColor = foreColor;
         }
         
 
@@ -270,23 +272,51 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         {
             Image left, center, right;
             Graphics g;
+            
+            int height = 40;
+            int leftdecWidth = 10;
+            int rightdecWidth = 10;
+            Color focus = Color.LightBlue;
+            Color text = Color.Black;
 
-            left = new Bitmap(10, 10);
-            g = Graphics.FromImage(left);
-            g.FillRectangle(Brushes.Blue, 0, 0, 10, 10);
-            g.Dispose();
+            string settingFile = ThemeUtility.ThemeDebugDir + "\\LauncherButton.Settings.ini";
+            string leftdecImage = ThemeUtility.ThemeDebugDir + "\\LauncherButton.LeftDecoration.png";
+            string centerdecImage = ThemeUtility.ThemeDebugDir + "\\LauncherButton.CenterDecoration.png";
+            string rightdecImage = ThemeUtility.ThemeDebugDir + "\\LauncherButton.RightDecoration.png";
 
-            center = new Bitmap(10, 10);
-            g = Graphics.FromImage(center);
-            g.FillRectangle(Brushes.White, 0, 0, 10, 10);
-            g.Dispose();
+            if (File.Exists(settingFile) && File.Exists(settingFile) && File.Exists(settingFile) && File.Exists(settingFile))
+            {
+                IniFile ini = new IniFile(settingFile);
+                height = Int32.Parse(ini.Sections["Size"].Values["height"].RawValue);
+                focus = Color.FromName(ini.Sections["Colors"].Values["focus"].RawValue);
+                text = Color.FromName(ini.Sections["Colors"].Values["text"].RawValue);
+                
+                left = Image.FromFile(leftdecImage);
+                center = Image.FromFile(centerdecImage);
+                right = Image.FromFile(rightdecImage);
 
-            right = new Bitmap(10, 10);
-            g = Graphics.FromImage(right);
-            g.FillRectangle(Brushes.Red, 0, 0, 10, 10);
-            g.Dispose();
+                leftdecWidth = left.Width;
+                rightdecWidth = right.Width;
+            }
+            else
+            {
+                left = new Bitmap(10, 40);
+                g = Graphics.FromImage(left);
+                g.FillRectangle(Brushes.Blue, 0, 0, 10, 40);
+                g.Dispose();
 
-            return new LauncherButtonTheme(left, center, right, 40, 10, 10, Color.LightBlue, Color.Black);
+                center = new Bitmap(10, 40);
+                g = Graphics.FromImage(center);
+                g.FillRectangle(Brushes.White, 0, 0, 10, 40);
+                g.Dispose();
+
+                right = new Bitmap(10, 40);
+                g = Graphics.FromImage(right);
+                g.FillRectangle(Brushes.Red, 0, 0, 10, 40);
+                g.Dispose();
+            }
+
+            return new LauncherButtonTheme(left, center, right, height, leftdecWidth, rightdecWidth, focus, text);
         }
 
         /// <summary>
