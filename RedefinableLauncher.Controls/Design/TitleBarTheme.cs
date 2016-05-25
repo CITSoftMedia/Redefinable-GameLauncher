@@ -197,15 +197,15 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             result.background = img;
 
             result.displayNumberPoint = new Point(10, 10);
-            result.displayNumberSize = 18;
+            result.displayNumberSize = 37;
             result.displayNumberColor = Color.LightGray;
-            result.displayNumberFontName = "MS UI Gothic";
+            result.displayNumberFontName = "MS Gothic";
             result.displayNumberShadow = true;
             result.displayNumberBorder = true;
             result.displayNumberBorderColor = Color.Black;
 
             result.titlePoint = new Point(70, 10);
-            result.titleSize = 20;
+            result.titleSize = 40;
             result.titleColor = Color.White;
             result.titleFontName = "MS UI Gothic";
             result.titleShadow = true;
