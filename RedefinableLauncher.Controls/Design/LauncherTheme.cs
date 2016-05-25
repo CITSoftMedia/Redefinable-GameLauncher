@@ -22,7 +22,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         private LauncherPanelTheme panelTheme;
         private LauncherButtonTheme buttonTheme;
         private ScrollBarTheme scrollBarTheme;
-        private TitleBarTheme titileBarTheme;
+        private TitleBarTheme titleBarTheme;
 
 
         // 公開フィールド・プロパティ
@@ -64,7 +64,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         /// </summary>
         public TitleBarTheme TitleBarTheme
         {
-            get { return this.titileBarTheme; }
+            get { return this.titleBarTheme; }
         }
 
 
@@ -92,6 +92,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             dict.Add("panel", "__redef_launcher_theme_panel.dat");
             dict.Add("button", "__redef_launcher_theme_button.dat");
             dict.Add("scrollbar", "__redef_launcher_theme_scrollbar.dat");
+            dict.Add("titlebar", "__redef_launcher_theme_titlebar.dat");
 
             return dict;
         }
@@ -139,6 +140,15 @@ namespace Redefinable.Applications.Launcher.Controls.Design
                 ms = new MemoryStream();
                 this.scrollBarTheme.Save(ms);
                 item = new StoringStreamItem(nameDict["scrollbar"], ms);
+                maker.ItemList.Add(item);
+            }
+
+            // titlebar
+            if (this.titleBarTheme != null)
+            {
+                ms = new MemoryStream();
+                this.titleBarTheme.Save(ms);
+                item = new StoringStreamItem(nameDict["titlebar"], ms);
                 maker.ItemList.Add(item);
             }
         }
@@ -192,6 +202,15 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             }
             else
                 this.scrollBarTheme = null;
+
+            // titlebar
+            if (archive.Items.Contains(nameDict["titlebar"]))
+            {
+                item = archive.Items.GetItem(nameDict["titlebar"]);
+                this.titleBarTheme = TitleBarTheme.Load(new SubStream(stream, (long)item.StartOffset, (long)item.Length));
+            }
+            else
+                this.titleBarTheme = null;
         }
 
         /// <summary>
@@ -235,6 +254,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             theme.panelTheme = LauncherPanelTheme.GetSampleTheme();
             theme.buttonTheme = LauncherButtonTheme.GetSampleTheme();
             theme.scrollBarTheme = ScrollBarTheme.GetSampleTheme();
+            theme.titleBarTheme = TitleBarTheme.GetSampleTheme();
 
             return theme;
         }

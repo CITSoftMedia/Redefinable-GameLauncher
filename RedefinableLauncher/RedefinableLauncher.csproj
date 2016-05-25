@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Common Codes\CommonAssemblyInfo.cs">
       <Link>Common Codes\CommonAssemblyInfo.cs</Link>
@@ -39,6 +42,7 @@
       <Link>Common Codes\LauncherAssembly.cs</Link>
     </Compile>
     <Compile Include="Common Codes\LocalAssemblyInfo.cs" />
+    <None Include="app.manifest" />
     <None Include="DebugCode.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="LauncherAssemblyUtility.cs" />

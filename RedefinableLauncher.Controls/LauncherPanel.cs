@@ -36,6 +36,7 @@ namespace Redefinable.Applications.Launcher.Controls
         private LauncherButton helpButton;
         private TitleBar titleBar;
         
+        
 
 
         // 公開フィールド
@@ -217,6 +218,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.Controls.Add(this.helpButton);
 
             this.titleBar = new TitleBar(new Point(280, 20));
+            this.titleBar.RefreshFields("00", "ほげええええ");
             this.Controls.Add(this.titleBar);
 
             // リストビューのデバッグ
