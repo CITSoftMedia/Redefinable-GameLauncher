@@ -169,7 +169,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             result.titleFontName = headers["TitleFontName"];
             result.titleShadow = Boolean.Parse(headers["TitleShadow"]);
             result.titleBorder = Boolean.Parse(headers["TitleBorder"]);
-            result.displayNumberBorderColor = Color.FromArgb(Int32.Parse(headers["TitleBorderColor"]));
+            result.titleBorderColor = Color.FromArgb(Int32.Parse(headers["TitleBorderColor"]));
 
             ulong imageBufLen = bc.ToUInt64(br.ReadBytes(sizeof(UInt64)));
             MemoryStream imageStream = new MemoryStream(br.ReadBytes((int) imageBufLen));
@@ -202,7 +202,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             result.displayNumberFontName = "MS Gothic";
             result.displayNumberShadow = true;
             result.displayNumberBorder = true;
-            result.displayNumberBorderColor = Color.Black;
+            result.displayNumberBorderColor = Color.FromArgb(160, Color.Black);
 
             result.titlePoint = new Point(70, 10);
             result.titleSize = 40;
@@ -210,7 +210,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             result.titleFontName = "MS UI Gothic";
             result.titleShadow = true;
             result.titleBorder = true;
-            result.titleBorderColor = Color.Black;
+            result.titleBorderColor = Color.FromArgb(160, Color.Black);
 
             return result;
         }

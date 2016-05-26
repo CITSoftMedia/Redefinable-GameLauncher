@@ -35,9 +35,8 @@ namespace Redefinable.Applications.Launcher.Controls
         private LauncherButton controllerSelectButton;
         private LauncherButton helpButton;
         private TitleBar titleBar;
-        
-        
-
+        private MiddlePanel middlePanel;
+        private SlideshowPanel slideshowPanel;
 
         // 公開フィールド
 
@@ -220,6 +219,12 @@ namespace Redefinable.Applications.Launcher.Controls
             this.titleBar = new TitleBar(new Point(280, 20));
             this.titleBar.RefreshFields("00", "ほげええええ");
             this.Controls.Add(this.titleBar);
+            
+            this.middlePanel = new MiddlePanel(new Point(280, 100));
+            this.Controls.Add(this.middlePanel);
+            
+            this.slideshowPanel = this.middlePanel.SlideshowPanel;
+
 
             // リストビューのデバッグ
 
@@ -229,6 +234,20 @@ namespace Redefinable.Applications.Launcher.Controls
                 this.gameBannerListView.Items.Add(new GameBanner() { Text = String.Format("{0:00}個目のバナー", i + 1) });
             }
             this.gameBannerListView.ResumeRefreshItem();
+
+            // スライドショーパネルのデバッグ
+            SlideshowPanelImageCollection simages = new SlideshowPanelImageCollection();
+            Image simage;
+            simage = new Bitmap(640, 360);
+            using (var g = Graphics.FromImage(simage))
+                g.FillRectangle(Brushes.Red, 0, 0, simage.Width, simage.Height);
+            simages.Add(simage);
+            simage = new Bitmap(360, 640);
+            using (var g = Graphics.FromImage(simage))
+                g.FillRectangle(Brushes.Blue, 0, 0, simage.Width, simage.Height);
+            simages.Add(simage);
+            this.slideshowPanel.SetImages(simages);
+            this.slideshowPanel.Start();
 
             // テーマの適用 → コア内で正規テーマを描画
             //this.RefreshTheme();

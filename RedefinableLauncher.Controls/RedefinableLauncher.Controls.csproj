@@ -48,6 +48,7 @@
     <Compile Include="Design\ScrollBarTheme.cs" />
     <Compile Include="Design\ThemeUtility.cs" />
     <Compile Include="Design\TitleBarTheme.cs" />
+    <Compile Include="DrawingExtensions\PaddingExtension.cs" />
     <Compile Include="DrawingExtensions\SizeExtension.cs" />
     <Compile Include="GameBanner.cs">
       <SubType>UserControl</SubType>
@@ -65,15 +66,18 @@
     <Compile Include="LauncherScrollBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="MiddlePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="NormalScaleableControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="NormalScaleableTestPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <None Include="SlideshowPanel.cs">
+    <Compile Include="SlideshowPanel.cs">
       <SubType>UserControl</SubType>
-    </None>
+    </Compile>
     <Compile Include="TitleBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
