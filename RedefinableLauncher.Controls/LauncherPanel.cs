@@ -37,6 +37,10 @@ namespace Redefinable.Applications.Launcher.Controls
         private TitleBar titleBar;
         private MiddlePanel middlePanel;
         private SlideshowPanel slideshowPanel;
+        private DescriptionPanel descriptionPanel;
+        private LauncherButton playButton;
+        private LauncherButton movieButton;
+
 
         // 公開フィールド
 
@@ -162,7 +166,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.ScaleChanged = (sender, e) => { };
 
             // イベントの追加
-            //this.Click += (sender, e) => { this.ChangeScale(this.currentScale -= 0.1f); };
+            this.Click += (sender, e) => { this.ChangeScale(this.currentScale -= 0.1f); };
             this.PreviewKeyDown += LauncherPanel_PreviewKeyDown;
             //this.KeyDown += (sender, e) => { Console.WriteLine("a"); };
         }
@@ -205,25 +209,41 @@ namespace Redefinable.Applications.Launcher.Controls
 
             this.genreSelectButton = new LauncherButton(new Point(20, 640), new Size(this.gameBannerListView.Width, 40));
             this.genreSelectButton.Text = "ジャンル";
-            //this.genreSelectButton.ApplyThemesHeight = true;
+            this.genreSelectButton.ApplyThemesHeight = true;
             this.Controls.Add(this.genreSelectButton);
 
             this.controllerSelectButton = new LauncherButton(new Point(20, 690), new Size(this.genreSelectButton.Width, 40));
             this.controllerSelectButton.Text = "コントローラ";
+            this.controllerSelectButton.ApplyThemesHeight = true;
             this.Controls.Add(this.controllerSelectButton);
             
             this.helpButton = new LauncherButton(new Point(20, 740), new Size(this.genreSelectButton.Width, 40));
             this.helpButton.Text = "ヘルプ";
+            this.helpButton.ApplyThemesHeight = true;
             this.Controls.Add(this.helpButton);
 
             this.titleBar = new TitleBar(new Point(280, 20));
-            this.titleBar.RefreshFields("00", "ほげええええ");
+            this.titleBar.RefreshFields("P-000", "Not specified.");
             this.Controls.Add(this.titleBar);
             
             this.middlePanel = new MiddlePanel(new Point(280, 100));
             this.Controls.Add(this.middlePanel);
             
             this.slideshowPanel = this.middlePanel.SlideshowPanel;
+
+            this.descriptionPanel = new DescriptionPanel(new Point(280, 520));
+            this.descriptionPanel.Message = "This is a sample message.\nLine 2\nLine 3";
+            this.Controls.Add(this.descriptionPanel);
+
+            this.movieButton = new LauncherButton(new Point(360, 650), new Size(300, 40));
+            this.movieButton.Text = "デモ動画を見る";
+            this.movieButton.ApplyThemesHeight = true;
+            this.Controls.Add(this.movieButton);
+
+            this.playButton = new LauncherButton(new Point(690, 650), new Size(300, 40));
+            this.playButton.Text = "プレイする";
+            this.playButton.ApplyThemesHeight = true;
+            this.Controls.Add(this.playButton);
 
 
             // リストビューのデバッグ

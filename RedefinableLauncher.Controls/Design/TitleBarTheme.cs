@@ -10,6 +10,7 @@ using Redefinable;
 using Redefinable.IO;
 
 using ImageFormat = System.Drawing.Imaging.ImageFormat;
+using Ini = Redefinable.IniHandler.IniFile;
 
 
 namespace Redefinable.Applications.Launcher.Controls.Design
@@ -188,29 +189,69 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         {
             TitleBarTheme result = new TitleBarTheme();
 
+            string settingsFile = ThemeUtility.ThemeDebugDir + "\\TitleBar.Settings.ini";
+            string backgroundImageFile = ThemeUtility.ThemeDebugDir + "\\TitleBar.BackgroundImage.png";
             Size defSize = TitleBar.DefaultTitleBarSize;
-            Image img = new Bitmap(defSize.Width, defSize.Height);
-            Graphics g = Graphics.FromImage(img);
-            g.FillRectangle(new SolidBrush(Color.FromArgb(100, Color.White)), 0, 0, img.Width, img.Height);
-            g.Dispose();
 
-            result.background = img;
+            if (File.Exists(settingsFile) && File.Exists(backgroundImageFile))
+            {
+                result.background = (Image) Image.FromFile(backgroundImageFile).Clone();
+                
+                Ini ini = new Ini(settingsFile);
+                
+                result.displayNumberPoint = new Point(
+                    Int32.Parse(ini.Sections["DisplayNumber"].Values["Point-X"].RawValue),
+                    Int32.Parse(ini.Sections["DisplayNumber"].Values["Point-Y"].RawValue) );
+                result.displayNumberSize = Int32.Parse(ini.Sections["DisplayNumber"].Values["Size"].RawValue);
+                result.displayNumberColor = Color.FromArgb(
+                    Int32.Parse(ini.Sections["DisplayNumber"].Values["ColorTrans"].RawValue),
+                    Color.FromName(ini.Sections["DisplayNumber"].Values["Color"].RawValue) );
+                result.displayNumberFontName = ini.Sections["DisplayNumber"].Values["Font"].RawValue;
+                result.displayNumberShadow = Boolean.Parse(ini.Sections["DisplayNumber"].Values["Shadow"].RawValue);
+                result.displayNumberBorder = Boolean.Parse(ini.Sections["DisplayNumber"].Values["Border"].RawValue);
+                result.displayNumberBorderColor = Color.FromArgb(
+                    Int32.Parse(ini.Sections["DisplayNumber"].Values["BorderColorTrans"].RawValue),
+                    Color.FromName(ini.Sections["DisplayNumber"].Values["BorderColor"].RawValue) );
 
-            result.displayNumberPoint = new Point(10, 10);
-            result.displayNumberSize = 37;
-            result.displayNumberColor = Color.LightGray;
-            result.displayNumberFontName = "MS Gothic";
-            result.displayNumberShadow = true;
-            result.displayNumberBorder = true;
-            result.displayNumberBorderColor = Color.FromArgb(160, Color.Black);
+                result.titlePoint = new Point(
+                    Int32.Parse(ini.Sections["Title"].Values["Point-X"].RawValue),
+                    Int32.Parse(ini.Sections["Title"].Values["Point-Y"].RawValue) );
+                result.titleSize = Int32.Parse(ini.Sections["Title"].Values["Size"].RawValue);
+                result.titleColor = Color.FromArgb(
+                    Int32.Parse(ini.Sections["Title"].Values["ColorTrans"].RawValue),
+                    Color.FromName(ini.Sections["Title"].Values["Color"].RawValue) );
+                result.titleFontName = ini.Sections["Title"].Values["Font"].RawValue;
+                result.titleShadow = Boolean.Parse(ini.Sections["Title"].Values["Shadow"].RawValue);
+                result.titleBorder = Boolean.Parse(ini.Sections["Title"].Values["Border"].RawValue);
+                result.titleBorderColor = Color.FromArgb(
+                    Int32.Parse(ini.Sections["Title"].Values["BorderColorTrans"].RawValue),
+                    Color.FromName(ini.Sections["Title"].Values["BorderColor"].RawValue) );
+            }
+            else
+            {
+                Image img = new Bitmap(defSize.Width, defSize.Height);
+                Graphics g = Graphics.FromImage(img);
+                g.FillRectangle(new SolidBrush(Color.FromArgb(100, Color.White)), 0, 0, img.Width, img.Height);
+                g.Dispose();
 
-            result.titlePoint = new Point(70, 10);
-            result.titleSize = 40;
-            result.titleColor = Color.White;
-            result.titleFontName = "MS UI Gothic";
-            result.titleShadow = true;
-            result.titleBorder = true;
-            result.titleBorderColor = Color.FromArgb(160, Color.Black);
+                result.background = img;
+
+                result.displayNumberPoint = new Point(10, 10);
+                result.displayNumberSize = 37;
+                result.displayNumberColor = Color.LightGray;
+                result.displayNumberFontName = "MS Gothic";
+                result.displayNumberShadow = true;
+                result.displayNumberBorder = true;
+                result.displayNumberBorderColor = Color.FromArgb(160, Color.Black);
+
+                result.titlePoint = new Point(70, 10);
+                result.titleSize = 40;
+                result.titleColor = Color.White;
+                result.titleFontName = "MS UI Gothic";
+                result.titleShadow = true;
+                result.titleBorder = true;
+                result.titleBorderColor = Color.FromArgb(160, Color.Black);
+            }
 
             return result;
         }

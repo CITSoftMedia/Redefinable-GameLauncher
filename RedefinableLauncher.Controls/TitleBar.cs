@@ -114,31 +114,39 @@ namespace Redefinable.Applications.Launcher.Controls
             g.DrawString(this.titleField, font, new SolidBrush(opt.Color), new Point(opt.Point.X, opt.Point.Y));
             font.Dispose();
             */
-
+            
             opt = theme.DisplayNumberDrawingOption;
-            font = new Font(opt.FontName, (float)((double)opt.Size * this.currentScale));
+            font = new Font(opt.FontName, (float)((double)opt.Size * this.currentScale), FontStyle.Bold);
+            if (opt.Shadow)
+            {
+                gp = new GraphicsPath();
+                gp.AddString(this.displayNumberField, font.FontFamily, 0, font.Size, new Point(opt.Point.X + 2, opt.Point.Y + 2).GetScaledPoint(this.currentScale), StringFormat.GenericDefault);
+                g.FillPath(new SolidBrush(Color.FromArgb(100, Color.Black)), gp);
+                g.DrawPath(new Pen(Color.FromArgb(30, Color.Black), 2), gp);
+                gp.Dispose();
+            }
             gp = new GraphicsPath();
-            gp.AddString(this.displayNumberField, font.FontFamily, 0, font.Size, new Point(opt.Point.X + 2, opt.Point.Y + 2), StringFormat.GenericDefault);
-            g.FillPath(new SolidBrush(Color.FromArgb(100, Color.Black)), gp);
-            g.DrawPath(new Pen(Color.FromArgb(30, Color.Black), 2), gp);
-            gp.Dispose();
-            gp = new GraphicsPath();
-            gp.AddString(this.displayNumberField, font.FontFamily, 0, font.Size, new Point(opt.Point.X, opt.Point.Y), StringFormat.GenericDefault);
+            gp.AddString(this.displayNumberField, font.FontFamily, 0, font.Size, new Point(opt.Point.X, opt.Point.Y).GetScaledPoint(this.currentScale), StringFormat.GenericDefault);
             g.FillPath(new SolidBrush(opt.Color), gp);
-            g.DrawPath(new Pen(opt.BorderColor, 1), gp);
+            if (opt.Border)
+                g.DrawPath(new Pen(opt.BorderColor, 1), gp);
             gp.Dispose();
 
             opt = theme.TitleDrawingOption;
-            font = new Font(opt.FontName, (float)((double)opt.Size * this.currentScale));
+            font = new Font(opt.FontName, (float)((double)opt.Size * this.currentScale), FontStyle.Bold);
+            if (opt.Shadow)
+            {
+                gp = new GraphicsPath();
+                gp.AddString(this.titleField, font.FontFamily, 0, font.Size, new Point(opt.Point.X + 2, opt.Point.Y + 2).GetScaledPoint(this.currentScale), StringFormat.GenericDefault);
+                g.FillPath(new SolidBrush(Color.FromArgb(100, Color.Black)), gp);
+                g.DrawPath(new Pen(Color.FromArgb(30, Color.Black), 2), gp);
+                gp.Dispose();
+            }
             gp = new GraphicsPath();
-            gp.AddString(this.titleField, font.FontFamily, 0, font.Size, new Point(opt.Point.X + 2, opt.Point.Y + 2), StringFormat.GenericDefault);
-            g.FillPath(new SolidBrush(Color.FromArgb(100, Color.Black)), gp);
-            g.DrawPath(new Pen(Color.FromArgb(30, Color.Black), 2), gp);
-            gp.Dispose();
-            gp = new GraphicsPath();
-            gp.AddString(this.titleField, font.FontFamily, 0, font.Size, new Point(opt.Point.X, opt.Point.Y), StringFormat.GenericDefault);
+            gp.AddString(this.titleField, font.FontFamily, 0, font.Size, new Point(opt.Point.X, opt.Point.Y).GetScaledPoint(this.currentScale), StringFormat.GenericDefault);
             g.FillPath(new SolidBrush(opt.Color), gp);
-            g.DrawPath(new Pen(opt.BorderColor, 1), gp);
+            if (opt.Border)
+                g.DrawPath(new Pen(opt.BorderColor, 1), gp);
             gp.Dispose();
 
             g.Dispose();
@@ -170,6 +178,12 @@ namespace Redefinable.Applications.Launcher.Controls
                 this.currentTheme = t.TitleBarTheme;
             this._redraw();
             base.RefreshTheme();
+        }
+
+        public override void ChangeScale(float scale)
+        {
+            base.ChangeScale(scale);
+            this._redraw();
         }
     }
 }

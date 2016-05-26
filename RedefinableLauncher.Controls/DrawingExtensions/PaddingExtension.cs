@@ -31,5 +31,14 @@ namespace Redefinable.Applications.Launcher.Controls.DrawingExtensions
                 padding.Left + point.X,
                 padding.Left + point.Y );
         }
+
+        public static Padding GetScaledPadding(this Padding padding, double scale)
+        {
+            return new Padding(
+                (int)((double)padding.Left * scale),
+                (int)((double)padding.Top * scale),
+                (int)((double)padding.Right * scale),
+                (int)((double)padding.Bottom * scale) );
+        }
     }
 }

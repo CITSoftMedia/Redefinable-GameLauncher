@@ -42,6 +42,10 @@
       <Link>Common Codes\LauncherAssembly.cs</Link>
     </Compile>
     <Compile Include="Common Codes\LocalAssemblyInfo.cs" />
+    <Compile Include="DescriptionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\DescriptionPanelTheme.cs" />
     <Compile Include="Design\LauncherButtonTheme.cs" />
     <Compile Include="Design\LauncherPanelTheme.cs" />
     <Compile Include="Design\LauncherTheme.cs" />
@@ -86,6 +90,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Launcher System\Theme Debug\LauncherPanel.BackgroundImage.psd" />
+    <None Include="Launcher System\Theme Debug\TitleBar.BackgroundImage.psd" />
+    <None Include="Launcher System\Theme Debug\TitleBar.Settings.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Test Code\ScrollBarTest.cs" />
     <None Include="Test Code\BuildOnFX4.bat" />
     <None Include="Test Code\TestCode.cs" />
@@ -124,6 +132,9 @@
     </Content>
     <Content Include="Launcher System\Theme Debug\readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Launcher System\Theme Debug\TitleBar.BackgroundImage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Launcher System\Themes\readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

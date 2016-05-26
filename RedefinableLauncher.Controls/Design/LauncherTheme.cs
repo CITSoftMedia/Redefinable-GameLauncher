@@ -23,6 +23,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         private LauncherButtonTheme buttonTheme;
         private ScrollBarTheme scrollBarTheme;
         private TitleBarTheme titleBarTheme;
+        private DescriptionPanelTheme descriptionPanelTheme;
 
 
         // 公開フィールド・プロパティ
@@ -67,6 +68,14 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             get { return this.titleBarTheme; }
         }
 
+        /// <summary>
+        /// DescriptionPanel用のテーマデータを取得します。
+        /// </summary>
+        public DescriptionPanelTheme DescriptionPanelTheme
+        {
+            get { return this.descriptionPanelTheme; }
+        }
+
 
 
         // コンストラクタ
@@ -93,6 +102,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             dict.Add("button", "__redef_launcher_theme_button.dat");
             dict.Add("scrollbar", "__redef_launcher_theme_scrollbar.dat");
             dict.Add("titlebar", "__redef_launcher_theme_titlebar.dat");
+            dict.Add("descriptionpanel", "__redef_launcher_theme_descriptionpanel.dat");
 
             return dict;
         }
@@ -149,6 +159,15 @@ namespace Redefinable.Applications.Launcher.Controls.Design
                 ms = new MemoryStream();
                 this.titleBarTheme.Save(ms);
                 item = new StoringStreamItem(nameDict["titlebar"], ms);
+                maker.ItemList.Add(item);
+            }
+
+            // descriptionpanel
+            if (this.titleBarTheme != null)
+            {
+                ms = new MemoryStream();
+                this.descriptionPanelTheme.Save(ms);
+                item = new StoringStreamItem(nameDict["descriptionpanel"], ms);
                 maker.ItemList.Add(item);
             }
         }
@@ -211,6 +230,15 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             }
             else
                 this.titleBarTheme = null;
+
+            // descriptionpanel
+            if (archive.Items.Contains(nameDict["descriptionpanel"]))
+            {
+                item = archive.Items.GetItem(nameDict["descriptionpanel"]);
+                this.descriptionPanelTheme = DescriptionPanelTheme.Load(new SubStream(stream, (long)item.StartOffset, (long)item.Length));
+            }
+            else
+                this.descriptionPanelTheme = null;
         }
 
         /// <summary>
@@ -255,6 +283,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             theme.buttonTheme = LauncherButtonTheme.GetSampleTheme();
             theme.scrollBarTheme = ScrollBarTheme.GetSampleTheme();
             theme.titleBarTheme = TitleBarTheme.GetSampleTheme();
+            theme.descriptionPanelTheme = DescriptionPanelTheme.GetSampleTheme();
 
             return theme;
         }
