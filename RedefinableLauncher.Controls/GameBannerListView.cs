@@ -18,11 +18,14 @@ namespace Redefinable.Applications.Launcher.Controls
     {
         // 非公開フィールド
         private GameBannerCollection items;
+        private EventHandler elementClickEventHandler;
+
 
         // 非公開フィールド :: コントロール
         private ScaleablePanel bannersTray;
         private LauncherScrollBar scrollBar;
         private bool suspendRefreshItemNow;
+
 
         // 非公開静的フィールド
         private static int bannerWidth = 220;
@@ -52,6 +55,11 @@ namespace Redefinable.Applications.Launcher.Controls
         }
 
 
+        // イベント
+
+        public event GameBannerListViewClickEventHandler BannerClick;
+
+
         // コンストラクタ
 
         public GameBannerListView(Point location, int height)
@@ -66,6 +74,18 @@ namespace Redefinable.Applications.Launcher.Controls
 
 
             // イベントデリゲートの初期化
+            this.BannerClick = (sender, e) => { };
+            this.elementClickEventHandler = (sender, e) =>
+            {
+                int index = -1;
+                for (int i = 0; i < this.items.Count; i++)
+                {
+                    if (sender == this.items[i])
+                        index = i;
+                }
+
+                this.BannerClick(this, new GameBannerListViewClickEventArgs((GameBanner) sender, index));
+            };
 
 
             // イベントの追加
@@ -73,6 +93,9 @@ namespace Redefinable.Applications.Launcher.Controls
             this.items.ItemAdded += itemEvent;
             this.items.ItemRemoved += itemEvent;
             this.scrollBar.ValueChanged += (sender, e) => { this.bannersTray.Top = this.scrollBar.Value * (-1); };
+
+            this.items.ItemAdded += (sender, e) => { e.Item.Click += this.elementClickEventHandler; };
+            this.items.ItemRemoved += (sender, e) => { e.Item.Click -= this.elementClickEventHandler; };
         }
 
         
@@ -83,10 +106,12 @@ namespace Redefinable.Applications.Launcher.Controls
         /// </summary>
         private void _initializeControls()
         {
+            //this.BackColor = Color.FromArgb(100, Color.DimGray);
+
             this.bannersTray = new ScaleablePanel();
             this.bannersTray.Location = new Point(0, 0);
             this.bannersTray.Size = new Size(_TrayWidth, 10);
-            this.bannersTray.BackColor = Color.Navy;
+            this.bannersTray.BackColor = Color.FromArgb(60, 60, 60);
             this.Controls.Add(this.bannersTray);
 
             this.scrollBar = new LauncherScrollBar(new Point(_TrayWidth, 0), new Size(scrollBarWidth, this.DefaultControlSize.Height));
@@ -181,6 +206,47 @@ namespace Redefinable.Applications.Launcher.Controls
             base.RefreshTheme();
         }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class GameBannerListViewClickEventArgs : EventArgs
+    {
+        // 非公開フィールド
+        private GameBanner selectedBanner;
+        private int index;
+
+
+        // 公開フィールド
+
+        public GameBanner SelectedBanner
+        {
+            get { return this.selectedBanner; }
+            set { this.selectedBanner = value; }
+        }
+        
+        public int Index
+        {
+            get { return this.index; }
+            set { this.index = value; }
+        }
+
+
+        // コンストラクタ
+
+        public GameBannerListViewClickEventArgs(GameBanner selectedBanner, int index)
+        {
+            this.selectedBanner = selectedBanner;
+            this.index = index;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    public delegate void GameBannerListViewClickEventHandler(Object sender, GameBannerListViewClickEventArgs e);
 }
 
 namespace Redefinable.Applications.Launcher.Controls.GameBannerListViewElements

@@ -18,6 +18,7 @@ namespace Redefinable.Applications.Launcher.Controls
         // 非公開フィールド
         private MiddlePanelStyle middlePanelStyle;
         private Padding middlePanelPadding;
+        private DescriptionPanelTheme descriptionPanelTheme;
 
 
         // 非公開フィールド :: コントロール
@@ -60,12 +61,13 @@ namespace Redefinable.Applications.Launcher.Controls
             // データフィールドの初期化
             this.middlePanelStyle = MiddlePanelStyle.SlideshowOnly;
             this.middlePanelPadding = new Padding(15);
+            this.descriptionPanelTheme = DescriptionPanelTheme.GetSampleThemeForInit();
 
             // コントロールの初期化
             this._styleInitialize();
 
             // デバッグ
-            this.BackColor = Color.Yellow;
+            this.BackColor = Color.Transparent;
         }
 
 
@@ -107,6 +109,84 @@ namespace Redefinable.Applications.Launcher.Controls
             }
             else
                 throw new NotImplementedException("現在MiddlePanelではMiddlePanelStyle \"" + this.middlePanelStyle + "\" をサポートしていません。");
+        }
+
+        private void _redraw()
+        {
+            this.BackgroundImage = new Bitmap(this.Width, this.Height);
+            DescriptionPanelTheme theme = this.descriptionPanelTheme;
+            Graphics g = Graphics.FromImage(this.BackgroundImage);
+            Padding p = theme.Padding.GetScaledPadding(this.currentScale);
+
+            this.middlePanelPadding = p;
+
+            Size drawingSize;
+            Point drawingPoint;
+
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+
+            // upperLeft
+            drawingSize = new Size(p.Left, p.Top);
+            drawingPoint = new Point(0, 0);
+            g.DrawImage(theme.UpperLeft, new Rectangle(drawingPoint, drawingSize));
+
+            // lowerLeft
+            drawingSize = new Size(p.Left, p.Bottom);
+            drawingPoint = new Point(0, this.Height - p.Bottom);
+            g.DrawImage(theme.LowerLeft, new Rectangle(drawingPoint, drawingSize));
+
+            // upperRight
+            drawingSize = new Size(p.Right, p.Top);
+            drawingPoint = new Point(this.Width - p.Right, 0);
+            g.DrawImage(theme.UpperLeft, new Rectangle(drawingPoint, drawingSize));
+
+            // lowerRight
+            drawingSize = new Size(p.Left, p.Top);
+            drawingPoint = new Point(this.Width - p.Right, this.Height - p.Bottom);
+            g.DrawImage(theme.UpperLeft, new Rectangle(drawingPoint, drawingSize));
+
+            // top
+            drawingSize = new Size(this.Width - (p.Left + p.Right), p.Top);
+            drawingPoint = new Point(p.Left, 0);
+            g.DrawImage(theme.TopLine, new Rectangle(drawingPoint, drawingSize));
+
+            // bottom
+            drawingSize = new Size(this.Width - (p.Left + p.Right), p.Bottom);
+            drawingPoint = new Point(p.Left, this.Height - p.Bottom);
+            g.DrawImage(theme.BottomLine, new Rectangle(drawingPoint, drawingSize));
+            
+            // left
+            drawingSize = new Size(p.Left, this.Height - (p.Top + p.Bottom));
+            drawingPoint = new Point(0, p.Top);
+            g.DrawImage(theme.LeftLine, new Rectangle(drawingPoint, drawingSize));
+
+            // right
+            drawingSize = new Size(p.Right, this.Height - (p.Top + p.Bottom));
+            drawingPoint = new Point(this.Width - p.Right, p.Top);
+            g.DrawImage(theme.LeftLine, new Rectangle(drawingPoint, drawingSize));
+
+            
+            g.Dispose();
+        }
+
+
+        // 公開メソッド
+
+        public override void RefreshTheme()
+        {
+            LauncherTheme theme = this.GetLauncherTheme();
+            if (theme != null)
+                this.descriptionPanelTheme = theme.DescriptionPanelTheme;
+
+            this._redraw();
+            base.RefreshTheme();
+        }
+
+        public override void ChangeScale(float scale)
+        {
+            base.ChangeScale(scale);
+            this._redraw();
         }
     }
 

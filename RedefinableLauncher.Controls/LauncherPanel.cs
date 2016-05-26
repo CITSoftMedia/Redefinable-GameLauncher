@@ -41,7 +41,7 @@ namespace Redefinable.Applications.Launcher.Controls
         private LauncherButton playButton;
         private LauncherButton movieButton;
 
-
+        #region 公開フィールド
         // 公開フィールド
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Redefinable.Applications.Launcher.Controls
         /// </summary>
         public Size DefaultControlSize
         {
-            get { return new Size(1080, 810); }
+            get { return LauncherPanelSize; }
         }
 
         /// <summary>
@@ -136,6 +136,71 @@ namespace Redefinable.Applications.Launcher.Controls
         bool IScaleableControl.LauncherControlFocused
         {
             get { throw new NotImplementedException(); }
+        }
+        #endregion
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public GameBannerListView GameBannerListView
+        {
+            get { return this.gameBannerListView; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public LauncherButton GenreSelectButton
+        {
+            get { return this.genreSelectButton; }
+        }
+
+        public LauncherButton ControllerSelectButton
+        {
+            get { return this.controllerSelectButton; }
+        }
+
+        public LauncherButton HelpButton
+        {
+            get { return this.helpButton; }
+        }
+
+        public TitleBar TitleBar
+        {
+            get { return this.titleBar; }
+        }
+
+        public MiddlePanel MiddlePanel
+        {
+            get { return this.middlePanel; }
+        }
+
+        public SlideshowPanel SlideshowPanel
+        {
+            get { return this.slideshowPanel; }
+        }
+
+        public DescriptionPanel DescriptionPanel
+        {
+            get { return this.descriptionPanel; }
+        }
+
+        public LauncherButton PlayButton
+        {
+            get { return this.playButton; }
+        }
+
+        public LauncherButton MovieButton
+        {
+            get { return this.movieButton; }
+        }
+
+
+        // 公開静的フィールド
+
+        public static Size LauncherPanelSize
+        {
+            get { return new Size(1080, 810); }
         }
 
 
@@ -254,6 +319,10 @@ namespace Redefinable.Applications.Launcher.Controls
                 this.gameBannerListView.Items.Add(new GameBanner() { Text = String.Format("{0:00}個目のバナー", i + 1) });
             }
             this.gameBannerListView.ResumeRefreshItem();
+            this.gameBannerListView.BannerClick += (sender, e) =>
+            {
+                this.titleBar.RefreshFields(String.Format("P-{0:000}", e.Index + 1), e.SelectedBanner.Text);
+            };
 
             // スライドショーパネルのデバッグ
             SlideshowPanelImageCollection simages = new SlideshowPanelImageCollection();

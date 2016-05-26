@@ -184,7 +184,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
         private void _initializeControls()
         {
-            this.ForeColor = Color.Pink;
+            this.ForeColor = Color.Black;
             this.BackColor = Color.Gray;
             this.BackgroundImageLayout = ImageLayout.Stretch;
             this.Cursor = Cursors.Hand;
@@ -240,7 +240,7 @@ namespace Redefinable.Applications.Launcher.Controls
         /// </summary>
         public override void RefreshTheme()
         {
-            LauncherButtonTheme bt = Design.LauncherButtonTheme.GetSampleTheme();
+            LauncherButtonTheme bt = LauncherButtonTheme.GetSampleTheme();
             LauncherPanel p = this.GetLauncherPanel();
             if (p != null) bt = p.Theme.ButtonTheme;
 
@@ -252,7 +252,7 @@ namespace Redefinable.Applications.Launcher.Controls
                 g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
                 // テーマ描画
-                g.FillRectangle(Brushes.Blue, g.VisibleClipBounds);
+                g.FillRectangle(Brushes.Gray, g.VisibleClipBounds);
 
                 // テキスト描画
                 Font f = new Font(this.Font.FontFamily, this.Font.Size * this.currentScale, this.Font.Style);

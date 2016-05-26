@@ -41,6 +41,9 @@
     <Compile Include="..\Common Codes\LauncherAssembly.cs">
       <Link>Common Codes\LauncherAssembly.cs</Link>
     </Compile>
+    <Compile Include="ChildPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Common Codes\LocalAssemblyInfo.cs" />
     <Compile Include="DescriptionPanel.cs">
       <SubType>UserControl</SubType>
