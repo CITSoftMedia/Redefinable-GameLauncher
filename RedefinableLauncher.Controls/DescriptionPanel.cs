@@ -10,6 +10,8 @@ using Redefinable.Collections;
 using Redefinable.Applications.Launcher.Controls.Design;
 using Redefinable.Applications.Launcher.Controls.DrawingExtensions;
 
+using GraphicsPath = System.Drawing.Drawing2D.GraphicsPath;
+
 
 namespace Redefinable.Applications.Launcher.Controls
 {
@@ -96,6 +98,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
             // upperLeft
             drawingSize = new Size(p.Left, p.Top);
@@ -143,9 +146,22 @@ namespace Redefinable.Applications.Launcher.Controls
             g.DrawImage(theme.Middle, new Rectangle(drawingPoint, drawingSize));
 
             // text
+            /*
             Font font = new Font(theme.FontName, (int)((double)theme.FontSize * this.currentScale));
             g.DrawString(this.message, font, new SolidBrush(theme.FontColor), new Rectangle(drawingPoint, drawingSize));
             font.Dispose();
+            */
+
+            FontFamily ff = new FontFamily(theme.FontName);
+            GraphicsPath gp = new GraphicsPath();
+            gp.AddString(this.message, ff, (int)FontStyle.Bold, theme.FontSize, new Rectangle(drawingPoint, drawingSize), StringFormat.GenericDefault);
+            g.FillPath(new SolidBrush(theme.FontColor), gp);
+            if (theme.FontBorder)
+            {
+                g.DrawPath(new Pen(Color.FromArgb(200, theme.FontBorderColor), 0.1f), gp);
+
+            }
+            gp.Dispose();
 
             g.Dispose();
         }

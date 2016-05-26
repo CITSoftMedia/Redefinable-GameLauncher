@@ -38,6 +38,9 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         private int fontSize;
         private Color fontColor;
 
+        private bool fontBorder;
+        private Color fontBorderColor;
+
 
         // 公開フィールド
 
@@ -104,6 +107,16 @@ namespace Redefinable.Applications.Launcher.Controls.Design
         public Color FontColor
         {
             get { return this.fontColor; }
+        }
+
+        public bool FontBorder
+        {
+            get { return this.fontBorder; }
+        }
+
+        public Color FontBorderColor
+        {
+            get { return this.fontBorderColor; }
         }
         
 
@@ -181,6 +194,8 @@ namespace Redefinable.Applications.Launcher.Controls.Design
                 {"FontName", this.fontName},
                 {"FontSize", this.fontSize.ToString()},
                 {"FontColor", this.fontColor.ToArgb().ToString()},
+                {"FontBorder", this.fontBorder.ToString()},
+                {"FontBorderColor", this.fontBorderColor.ToArgb().ToString()},
             };
 
             // ヘッダの書き込み
@@ -313,8 +328,11 @@ namespace Redefinable.Applications.Launcher.Controls.Design
                 gb.Dispose();
 
             result.fontName = "MS UI Gothic";
-            result.fontSize = 12;
+            result.fontSize = 20;
             result.fontColor = Color.White;
+
+            result.fontBorder = true;
+            result.fontBorderColor = Color.Black;
 
             return result;
         }
@@ -360,6 +378,8 @@ namespace Redefinable.Applications.Launcher.Controls.Design
             result.fontName = headers["FontName"];
             result.fontSize = Int32.Parse(headers["FontSize"]);
             result.fontColor = Color.FromArgb(Int32.Parse(headers["FontColor"]));
+            result.fontBorder = Boolean.Parse(headers["FontBorder"]);
+            result.fontBorderColor = Color.FromArgb(Int32.Parse(headers["FontBorderColor"]));
 
             
             // 各種画像の読み込み
