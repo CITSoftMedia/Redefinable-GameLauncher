@@ -319,6 +319,7 @@ namespace Redefinable.Applications.Launcher.Controls
             // リストビューのデバッグ
 
             this.gameBannerListView.SuspendRefreshItem();
+            this.gameBannerListView.Text = "表示する作品のジャンルを選択してください。\nすべて選択すると、すべて表示されます。";
             for (int i = 0; i < 40; i++)
             {
                 this.gameBannerListView.Items.Add(new GameBanner() { Text = String.Format("{0:00}個目のバナー", i + 1) });
@@ -342,6 +343,13 @@ namespace Redefinable.Applications.Launcher.Controls
             simages.Add(simage);
             this.slideshowPanel.SetImages(simages);
             this.slideshowPanel.Start();
+
+            this.genreSelectPanel.SuspendRefreshControls();
+            for (int i = 0; i < 20; i++)
+            {
+                this.genreSelectPanel.Items.Add(new ChildSelectPanelItem(String.Format("項目 ({0:00})", i + 1)));
+            }
+            this.genreSelectPanel.ResumeRefreshControls();
 
             // テーマの適用 → コア内で正規テーマを描画
             //this.RefreshTheme();

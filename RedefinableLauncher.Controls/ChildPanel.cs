@@ -45,8 +45,15 @@ namespace Redefinable.Applications.Launcher.Controls
         
         // 公開イベント
 
+        /// <summary>
+        /// このChildPanelが非表示になった時に発生します。
+        /// </summary>
         public event EventHandler ChildPanelClosed;
 
+        /// <summary>
+        /// 背景を再描画した時に発生します。
+        /// </summary>
+        public event EventHandler DrawnBackground;
 
 
         // コンストラクタ
@@ -63,6 +70,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
             // イベントデリゲートの初期化
             this.ChildPanelClosed = (sender, e) => { };
+            this.DrawnBackground = (sender, e) => { };
 
             // イベントの追加
             this.ControlAdded += ChildPanel_ControlAdded;
@@ -122,6 +130,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
             this.hiddenControls.Clear();
             this.Visible = false;
+            this.ChildPanelClosed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -137,6 +146,7 @@ namespace Redefinable.Applications.Launcher.Controls
             g.Dispose();
 
             this.BackgroundImage = launcherBmp;
+            this.DrawnBackground(this, EventArgs.Empty);
         }
 
         private void _createdCheck()
