@@ -18,6 +18,9 @@ namespace Redefinable.Applications.Launcher.Core
 {
     public static class LauncherStarter
     {
+        private static GameGenreCollection genreFullInfo = null;
+        private static GameControllerCollection controllerFullInfo = null;
+
         private static LauncherSettings _initializeSettings()
         {
             // 基本設定
@@ -51,6 +54,7 @@ namespace Redefinable.Applications.Launcher.Core
                 throw new DirectoryNotFoundException("GenreFilesDirectoryが見つかりません。 " + settings.GenreFilesDirectory);
 
             GameGenreCollection genreFullInformations = new GameGenreCollection();
+            genreFullInfo = genreFullInformations; 
             genreFullInformations.AddFromDirectory(settings.GenreFilesDirectory);
 
             if (genreFullInformations.Count == 0)
@@ -68,6 +72,7 @@ namespace Redefinable.Applications.Launcher.Core
                 throw new DirectoryNotFoundException("ControllerFilesDirectoryが見つかりません。 " + settings.GenreFilesDirectory);
 
             GameControllerCollection controllerFullInformations = new GameControllerCollection();
+            controllerFullInfo = controllerFullInformations;
             controllerFullInformations.AddFromDirectory(settings.ControllersFilesDirectory);
 
             if (controllerFullInformations.Count == 0)
@@ -166,6 +171,98 @@ namespace Redefinable.Applications.Launcher.Core
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="form"></param>
+        private static void _formInitialize(MainForm form, ICollection<Game> games)
+        {
+            var enm = games.GetEnumerator();
+            enm.MoveNext();
+            var currentGame = enm.Current;
+
+
+            // ジャンル情報一覧の追加
+            Dictionary<Controls.ChildSelectPanelItem, GameGenre> genreDict = new Dictionary<Controls.ChildSelectPanelItem, GameGenre>();
+            foreach (GameGenre gg in genreFullInfo)
+            {
+                Controls.ChildSelectPanelItem item = new Controls.ChildSelectPanelItem(gg.Name, true);
+                form.GetLauncherPanel().GenreSelectPanel.Items.Add(item);
+                genreDict.Add(item, gg);
+            }
+
+            // コントローラ情報一覧の追加
+            Dictionary<Controls.ChildSelectPanelItem, GameController> controllerDict = new Dictionary<Controls.ChildSelectPanelItem, GameController>();
+            foreach (GameController gc in controllerFullInfo)
+            {
+                Controls.ChildSelectPanelItem item = new Controls.ChildSelectPanelItem(gc.Name, true);
+                form.GetLauncherPanel().ControllerSelectPanel.Items.Add(item);
+                controllerDict.Add(item, gc);
+            }
+
+            Func<ICollection<GameGenre>> getCheckedGenres = () =>
+            {
+                List<GameGenre> result = new List<GameGenre>();
+                foreach (var item in form.GetLauncherPanel().GenreSelectPanel.Items)
+                    if (item.Checked)
+                        result.Add(genreDict[item]);
+                return result;
+            };
+
+            Func<ICollection<GameController>> getCheckedControllers = () =>
+            {
+                List<GameController> result = new List<GameController>();
+                foreach (var item in form.GetLauncherPanel().ControllerSelectPanel.Items)
+                    if (item.Checked)
+                        result.Add(controllerDict[item]);
+                return result;
+            };
+
+            Action viewDetails = () =>
+            {
+                // currentGameについて表示
+                Controls.TitleBar tb = form.GetLauncherPanel().TitleBar;
+                tb.RefreshFields(currentGame.DisplayNumber.FullNumber, currentGame.Title);
+                Controls.DescriptionPanel dp = form.GetLauncherPanel().DescriptionPanel;
+                dp.Message = currentGame.Description;
+                
+            };
+
+            Action refreshGameList = () =>
+            {
+                Controls.GameBannerListView listview = form.GetLauncherPanel().GameBannerListView;
+                
+                listview.SuspendRefreshItem();
+                listview.Items.Clear();
+                var chkdGenres = getCheckedGenres();
+                var chkdControllers = getCheckedControllers();
+                foreach (Game g in games)
+                {
+                    // g = GameFilesから読み込んだうちの１つ
+
+                    foreach(GameGenre gg in chkdGenres)
+                        // 現在のチェック済みジャンル一覧の中に、含まれるものがあれば表示
+                        if (g.Genres.ContainsGuid(gg))
+                        {
+                            Controls.GameBanner b = new Controls.GameBanner();
+                            b.Text = g.Title;
+                            b.Click += (sender, e) => { currentGame = g; viewDetails(); };
+                            listview.Items.Add(b);
+                        }
+                }
+                
+                listview.ResumeRefreshItem();
+            };
+
+            form.GetLauncherPanel().GenreSelectPanel.ChildPanelClosed += (sender, e) =>
+            {
+                refreshGameList();
+            };
+
+            refreshGameList();
+            
+        }
+
+        /// <summary>
         /// ランチャーを開始します。
         /// </summary>
         public static void Start()
@@ -188,7 +285,8 @@ namespace Redefinable.Applications.Launcher.Core
             // メインウィンドウの表示
             DebugConsole.Push("COR", "メインウィンドウを初期化します。");
             MainForm mainForm = new MainForm();
-            
+            _formInitialize(mainForm, games);
+
             mainForm.LauncherTheme = theme;
             mainForm.Show();
             while (mainForm.Created)

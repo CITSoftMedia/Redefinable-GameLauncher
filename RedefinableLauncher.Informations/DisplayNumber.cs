@@ -57,6 +57,14 @@ namespace Redefinable.Applications.Launcher.Informations
         }
 
         /// <summary>
+        /// Post/Preともに付加された完全なディスプレイ番号を取得します。
+        /// </summary>
+        public string FullNumber
+        {
+            get { return this._getFullNumber(); }
+        }
+
+        /// <summary>
         /// このDisplayNumberに割り当てられたGUIDを取得します。
         /// </summary>
         public Guid NumberGuid
@@ -93,6 +101,11 @@ namespace Redefinable.Applications.Launcher.Informations
 
 
         // 非公開メソッド
+
+        public string _getFullNumber()
+        {
+            return this.precode + this.mainNumber.ToString("D3") + this.postcode;
+        }
 
         public void _saveTo(Stream stream)
         {

@@ -198,7 +198,7 @@ namespace Redefinable.Applications.Launcher.Informations
                 new GameServerConnectInfo("", "", ""),
                 new GameImage[0],
                 new ExecInfo(relativePath, "", true),
-                new DisplayNumber(),
+                new DisplayNumber("P-", 0, ""),
                 new Guid[] { GameGenre.CreateEmpty().GenreGuid },
                 this.genreFullInformations,
                 new Guid[] { GameController.CreateEmpty().ControllerGuid },
