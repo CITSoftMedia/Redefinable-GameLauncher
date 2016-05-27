@@ -88,6 +88,9 @@
     <Compile Include="SlideshowPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ChildOpeationPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="TitleBar.cs">
       <SubType>UserControl</SubType>
     </Compile>

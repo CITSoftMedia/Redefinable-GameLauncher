@@ -303,18 +303,18 @@ namespace Redefinable.Applications.Launcher.Controls.Design
                 return bmp;
             };
             
-            result.upperLeft = createColormad(p.Left, p.Top, Color.YellowGreen);
-            result.lowerLeft = createColormad(p.Left, p.Bottom, Color.YellowGreen);
-            result.upperRight = createColormad(p.Right, p.Top, Color.YellowGreen);
-            result.lowerRight = createColormad(p.Right, p.Bottom, Color.YellowGreen);
+            result.upperLeft = createColormad(p.Left, p.Top, Color.DarkGray);
+            result.lowerLeft = createColormad(p.Left, p.Bottom, Color.DarkGray);
+            result.upperRight = createColormad(p.Right, p.Top, Color.DarkGray);
+            result.lowerRight = createColormad(p.Right, p.Bottom, Color.DarkGray);
             
-            const int width = 700;
-            const int height = 200;
+            const int width = 800;
+            const int height = 300;
             Size clientSize = p.GetClientSize(new Size(width, height));
-            result.topLine = createColormad(p.Left, clientSize.Width, Color.Azure);
-            result.bottomLine = createColormad(p.Left, clientSize.Width, Color.Azure);
-            result.leftLine = createColormad(p.Left, clientSize.Height, Color.Azure);
-            result.rightLine = createColormad(p.Left, clientSize.Height, Color.Azure);
+            result.topLine = createColormad(p.Left, clientSize.Width, Color.FromArgb(150, Color.Silver));
+            result.bottomLine = createColormad(p.Left, clientSize.Width, Color.FromArgb(150, Color.Silver));
+            result.leftLine = createColormad(p.Left, clientSize.Height, Color.FromArgb(150, Color.Silver));
+            result.rightLine = createColormad(p.Left, clientSize.Height, Color.FromArgb(150, Color.Silver));
 
             result.middle = new Bitmap(clientSize.Width, clientSize.Height);
             Graphics gr = Graphics.FromImage(result.middle);

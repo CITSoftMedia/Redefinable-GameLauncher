@@ -39,8 +39,11 @@ namespace Redefinable.Applications.Launcher.Controls
         private SlideshowPanel slideshowPanel;
         private DescriptionPanel descriptionPanel;
         private LauncherButton playButton;
+        private LauncherButton operationButton;
         private LauncherButton movieButton;
         private ChildSelectPanel genreSelectPanel;
+        private ChildSelectPanel controllerSelectPanel;
+        private ChildOpeationPanel launcherHelpPanel;
 
         #region 公開フィールド
         // 公開フィールド
@@ -138,8 +141,7 @@ namespace Redefinable.Applications.Launcher.Controls
         {
             get { throw new NotImplementedException(); }
         }
-        #endregion
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -190,12 +192,23 @@ namespace Redefinable.Applications.Launcher.Controls
         {
             get { return this.playButton; }
         }
+        #endregion
 
         public LauncherButton MovieButton
         {
             get { return this.movieButton; }
         }
 
+        public ChildSelectPanel GenreSelectPanel
+        {
+            get { return this.genreSelectPanel; }
+        }
+
+        public ChildSelectPanel ControllerSelectPanel
+        {
+            get { return this.controllerSelectPanel; }
+        }
+        
 
         // 公開静的フィールド
 
@@ -236,6 +249,9 @@ namespace Redefinable.Applications.Launcher.Controls
             this.PreviewKeyDown += LauncherPanel_PreviewKeyDown;
             //this.KeyDown += (sender, e) => { Console.WriteLine("a"); };
             this.genreSelectButton.Click += (sender, e) => { this.genreSelectPanel.ChildPanelShow(); };
+            this.controllerSelectButton.Click += (sender, e) => { this.controllerSelectPanel.ChildPanelShow(); };
+            this.helpButton.Click += (sender, e) => { this.launcherHelpPanel.ChildPanelShow(); };
+            this.operationButton.Click += (sender, e) => { this.launcherHelpPanel.ChildPanelShow(); };
         }
 
 
@@ -302,12 +318,17 @@ namespace Redefinable.Applications.Launcher.Controls
             this.descriptionPanel.Message = "This is a sample message.\nLine 2\nLine 3";
             this.Controls.Add(this.descriptionPanel);
 
-            this.movieButton = new LauncherButton(new Point(360, 650), new Size(300, 40));
+            this.movieButton = new LauncherButton(new Point(370, 650), new Size(180, 40));
             this.movieButton.Text = "デモ動画を見る";
             this.movieButton.ApplyThemesHeight = true;
             this.Controls.Add(this.movieButton);
 
-            this.playButton = new LauncherButton(new Point(690, 650), new Size(300, 40));
+            this.operationButton = new LauncherButton(new Point(570, 650), new Size(180, 40));
+            this.operationButton.Text = "操作説明";
+            this.operationButton.ApplyThemesHeight = true;
+            this.Controls.Add(this.operationButton);
+
+            this.playButton = new LauncherButton(new Point(770, 650), new Size(180, 40));
             this.playButton.Text = "プレイする";
             this.playButton.ApplyThemesHeight = true;
             this.Controls.Add(this.playButton);
@@ -315,9 +336,16 @@ namespace Redefinable.Applications.Launcher.Controls
             this.genreSelectPanel = new ChildSelectPanel();
             this.Controls.Add(this.genreSelectPanel);
 
+            this.controllerSelectPanel = new ChildSelectPanel();
+            this.Controls.Add(this.controllerSelectPanel);
+
+            this.launcherHelpPanel = new ChildOpeationPanel();
+            //this.launcherHelpPanel.SetFields("京成津田沼", "　京成津田沼駅（けいせいつだぬまえき）は、千葉県習志野市津田沼三丁目1番1号にある京成電鉄・新京成電鉄の駅である。京成の駅番号はKS26、新京成の駅番号はSL24。\n　京成電鉄が業務を行う同社と新京成電鉄の共同使用駅である。京成電鉄の本線と千葉線、新京成電鉄の新京成線が乗り入れている。東日本旅客鉄道（JR東日本）津田沼駅は、新京成線の新津田沼駅が接続駅である。日中、京成上野方面からの普通列車の半数は当駅で折り返す。京成千葉線の起点かつ新京成線の終点であるが、日中は新京成線の半数程度の列車が、当駅を介して京成千葉線へ片乗り入れ直通運転を行っている[1]。また、朝晩には千葉線から本線上野方面へ直通する列車も設定されている。");
+            this.Controls.Add(this.launcherHelpPanel);
+
 
             // リストビューのデバッグ
-
+            /*
             this.gameBannerListView.SuspendRefreshItem();
             this.gameBannerListView.Text = "表示する作品のジャンルを選択してください。\nすべて選択すると、すべて表示されます。";
             for (int i = 0; i < 40; i++)
@@ -350,6 +378,7 @@ namespace Redefinable.Applications.Launcher.Controls
                 this.genreSelectPanel.Items.Add(new ChildSelectPanelItem(String.Format("項目 ({0:00})", i + 1)));
             }
             this.genreSelectPanel.ResumeRefreshControls();
+            */
 
             // テーマの適用 → コア内で正規テーマを描画
             //this.RefreshTheme();

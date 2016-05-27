@@ -73,7 +73,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.DrawnBackground = (sender, e) => { };
 
             // イベントの追加
-            this.ControlAdded += ChildPanel_ControlAdded;
+            this.VisibleChanged += ChildPanel_ControlAdded;
             this.closeButton.Click += (sender, e) => { this.ChildPanelHide(); };
         }
         
@@ -158,7 +158,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
         // 非公開メソッド :: イベント
         
-        private void ChildPanel_ControlAdded(object sender, ControlEventArgs e)
+        private void ChildPanel_ControlAdded(object sender, EventArgs e)
         {
             // このコントロールはLauncherPanel直下にしか追加できない
             if (!(this.Parent is LauncherPanel))
