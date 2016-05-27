@@ -40,7 +40,7 @@ namespace Redefinable.Applications.Launcher.Controls
         private DescriptionPanel descriptionPanel;
         private LauncherButton playButton;
         private LauncherButton movieButton;
-        private ChildPanel childPanel;
+        private ChildSelectPanel genreSelectPanel;
 
         #region 公開フィールド
         // 公開フィールド
@@ -235,7 +235,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.Click += (sender, e) => { this.ChangeScale(this.currentScale -= 0.1f); };
             this.PreviewKeyDown += LauncherPanel_PreviewKeyDown;
             //this.KeyDown += (sender, e) => { Console.WriteLine("a"); };
-            this.genreSelectButton.Click += (sender, e) => { this.childPanel.ChildPanelShow(); };
+            this.genreSelectButton.Click += (sender, e) => { this.genreSelectPanel.ChildPanelShow(); };
         }
 
 
@@ -312,8 +312,8 @@ namespace Redefinable.Applications.Launcher.Controls
             this.playButton.ApplyThemesHeight = true;
             this.Controls.Add(this.playButton);
 
-            this.childPanel = new ChildPanel();
-            this.Controls.Add(this.childPanel);
+            this.genreSelectPanel = new ChildSelectPanel();
+            this.Controls.Add(this.genreSelectPanel);
 
 
             // リストビューのデバッグ

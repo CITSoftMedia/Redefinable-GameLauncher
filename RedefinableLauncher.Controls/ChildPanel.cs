@@ -21,7 +21,7 @@ namespace Redefinable.Applications.Launcher.Controls
     {
         // 非公開フィールド
         ICollection<Control> hiddenControls;
-        ICollection<SlideshowPanel> stoppedSlideshowPanels;
+        //ICollection<SlideshowPanel> stoppedSlideshowPanels;
         Color childPanelBackColor;
         
         LauncherPanel ParentPanel
@@ -78,7 +78,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.BackgroundImageLayout = ImageLayout.Stretch;
             this.Visible = false;
             
-            this.closeButton = new LauncherButton(new Point(10, 10), new Size(100, 40));
+            this.closeButton = new LauncherButton(new Point(930, 740), new Size(120, 40));
             this.closeButton.Text = "閉じる";
             this.Controls.Add(this.closeButton);
         }
@@ -108,9 +108,6 @@ namespace Redefinable.Applications.Launcher.Controls
                     c.Visible = false;
                     this.hiddenControls.Add(c);
                 }
-
-                // 一時的にスライドショーパネルを停止する機能も実装せよ！！
-                // → stoppedSlideshowPanelsで停止したコントロールを記録する
             }
 
             this.Parent.ResumeLayout();

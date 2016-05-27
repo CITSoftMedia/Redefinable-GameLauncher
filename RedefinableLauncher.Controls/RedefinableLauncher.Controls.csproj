@@ -44,6 +44,9 @@
     <Compile Include="ChildPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ChildSelectPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Common Codes\LocalAssemblyInfo.cs" />
     <Compile Include="DescriptionPanel.cs">
       <SubType>UserControl</SubType>
