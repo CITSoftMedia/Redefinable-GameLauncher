@@ -20,7 +20,9 @@ namespace Redefinable.Applications.Launcher.Controls
     public class ChildPanel : VariableScaleableControl
     {
         // 非公開フィールド
-        ICollection<Control> hideControls;
+        ICollection<Control> hiddenControls;
+        ICollection<SlideshowPanel> stoppedSlideshowPanels;
+        Color childPanelBackColor;
         
         LauncherPanel ParentPanel
         {
@@ -33,6 +35,12 @@ namespace Redefinable.Applications.Launcher.Controls
 
 
         // 公開フィールド
+
+        public Color ChildPanelBackColor
+        {
+            get { return this._getChildPanelBackColor(); }
+            set { this._setChildPanelBackColor(value); }
+        }
 
         
         // 公開イベント
@@ -47,7 +55,8 @@ namespace Redefinable.Applications.Launcher.Controls
             : base(new Point(0, 0), LauncherPanel.LauncherPanelSize)
         {
             // データフィールドの初期化
-            this.hideControls = new List<Control>();
+            this.hiddenControls = new List<Control>();
+            this.childPanelBackColor = Color.FromArgb(180, Color.Black);
 
             // コントロールの開始
             this._initializeControls();
@@ -66,6 +75,7 @@ namespace Redefinable.Applications.Launcher.Controls
         private void _initializeControls()
         {
             this.BackColor = Color.Black;
+            this.BackgroundImageLayout = ImageLayout.Stretch;
             this.Visible = false;
             
             this.closeButton = new LauncherButton(new Point(10, 10), new Size(100, 40));
@@ -73,18 +83,34 @@ namespace Redefinable.Applications.Launcher.Controls
             this.Controls.Add(this.closeButton);
         }
 
+        private Color _getChildPanelBackColor()
+        {
+            return this.childPanelBackColor;
+        }
+
+        public void _setChildPanelBackColor(Color value)
+        {
+            if (this.Visible)
+                throw new InvalidOperationException("ChildPanel表示中にChildPanelBackColorを変更することはできません。一度非表示にしてください。");
+            this.childPanelBackColor = value;
+        }
+
         private void _showPanel()
         {
             this.Parent.SuspendLayout();
+            this._drawBack();
             this.Visible = true;
 
             foreach (Control c in this.Parent.Controls)
             {
-                if (c.Visible)
+                if (c.Visible && c != this)
                 {
                     c.Visible = false;
-                    this.hideControls.Add(c);
+                    this.hiddenControls.Add(c);
                 }
+
+                // 一時的にスライドショーパネルを停止する機能も実装せよ！！
+                // → stoppedSlideshowPanelsで停止したコントロールを記録する
             }
 
             this.Parent.ResumeLayout();
@@ -92,13 +118,28 @@ namespace Redefinable.Applications.Launcher.Controls
 
         private void _hidePanel()
         {
-            foreach (Control c in this.hideControls)
+            foreach (Control c in this.hiddenControls)
             {
                 c.Visible = true;
             }
 
-            this.hideControls.Clear();
+            this.hiddenControls.Clear();
             this.Visible = false;
+        }
+
+        /// <summary>
+        /// 背景を描画します。このコントロールが表示前で他のコントロールが表示されている間に実行してください。（キャプチャのため）
+        /// </summary>
+        private void _drawBack()
+        {
+            Bitmap launcherBmp = new Bitmap(this.ParentPanel.Width, this.ParentPanel.Height);
+            this.ParentPanel.DrawToBitmap(launcherBmp, new Rectangle(0, 0, launcherBmp.Width, launcherBmp.Height));
+
+            Graphics g = Graphics.FromImage(launcherBmp);
+            g.FillRectangle(new SolidBrush(this.childPanelBackColor),0, 0, launcherBmp.Width, launcherBmp.Height);
+            g.Dispose();
+
+            this.BackgroundImage = launcherBmp;
         }
 
         private void _createdCheck()
@@ -127,6 +168,7 @@ namespace Redefinable.Applications.Launcher.Controls
         {
             this._createdCheck();
             this._showPanel();
+            Console.WriteLine("表示しました: {0}x{1}", this.Width, this.Height);
         }
 
         /// <summary>

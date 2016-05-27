@@ -40,8 +40,8 @@ namespace Redefinable.Applications.Launcher
 
                 LauncherStarter.Start();
 
-                Console.WriteLine("停止");
-                Console.ReadKey();
+                //Console.WriteLine("停止");
+                //Console.ReadKey();
             }
             catch (Exception ex)
             {
