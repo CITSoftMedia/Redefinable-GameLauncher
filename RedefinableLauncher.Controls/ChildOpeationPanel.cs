@@ -15,7 +15,7 @@ using GraphicsPath = System.Drawing.Drawing2D.GraphicsPath;
 
 namespace Redefinable.Applications.Launcher.Controls
 {
-    public class ChildOpeationPanel : ChildPanel
+    public class ChildOperationPanel : ChildPanel
     {
         // 非公開フィールド
         private Image image;
@@ -47,7 +47,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
         // コンストラクタ
 
-        public ChildOpeationPanel()
+        public ChildOperationPanel()
         {
             // データフィールドの初期化
             this.image = null;

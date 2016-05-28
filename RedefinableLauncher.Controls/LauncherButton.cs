@@ -78,8 +78,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.ScaleChanged += (sender, e) => { this.RefreshTheme(); };
             this.MouseMove += (sender, e) => { this.hilightPanel.Visible = true; };
             this.hilightPanel.MouseLeave += (sender, e) => { this.hilightPanel.Visible = false; };
-            this.hilightPanel.MouseClick += (sender, e) => { var p = this.GetLauncherPanel(); if (p != null) p.SetFocus(this); };
-            this.hilightPanel.MouseClick += (sender, e) => { this.OnMouseClick(e); };
+            this.hilightPanel.MouseClick += (sender, e) => { var p = this.GetLauncherPanel(); if (p != null) p.SetFocus(this); this.OnMouseClick(e); };
             this.hilightPanel.MouseDown += (sender, e) => { this.OnMouseDown(e); };
             this.hilightPanel.Click += (sender, e) => { this.OnClick(e); };
 

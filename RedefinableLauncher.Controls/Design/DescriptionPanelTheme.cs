@@ -328,7 +328,7 @@ namespace Redefinable.Applications.Launcher.Controls.Design
                 gb.Dispose();
 
             result.fontName = "MS UI Gothic";
-            result.fontSize = 20;
+            result.fontSize = 17;
             result.fontColor = Color.White;
 
             result.fontBorder = true;

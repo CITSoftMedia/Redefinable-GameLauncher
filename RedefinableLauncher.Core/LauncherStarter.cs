@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -101,6 +103,9 @@ namespace Redefinable.Applications.Launcher.Core
                 DebugConsole.Push("COR", "Load> 有効なディレクトリは、" + gDirs.Count + "個です。");
             }
 
+            if (gDirs.Count == 0)
+                throw new Exception("登録ディレクトリが0件の状態でランチャーを起動することはできません。");
+
             if (settings.ShowPathErrorGame)
                 DebugConsole.Push("COR", "Load> 参照エラーが発生している作品も表示する設定になっています。");
             else
@@ -151,6 +156,7 @@ namespace Redefinable.Applications.Launcher.Core
                 MessageBox.Show("次の作品は、ゲーム本体の実行ファイルの参照が正しく設定されていません。\n\n" + message, settings.WindowText, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 
+            games.SortWithDisplayNumber();
             return games;
         }
         
@@ -183,19 +189,24 @@ namespace Redefinable.Applications.Launcher.Core
         /// 
         /// </summary>
         /// <param name="form"></param>
-        private static void _formInitialize(MainForm form, ICollection<Game> games)
+        private static void _formInitialize(MainForm form, ICollection<Game> games, LauncherSettings settings)
         {
             var enm = games.GetEnumerator();
             enm.MoveNext();
             var currentGame = enm.Current;
+            
+            var launcherPanel = form.GetLauncherPanel();
 
 
             // ジャンル情報一覧の追加
             Dictionary<Controls.ChildSelectPanelItem, GameGenre> genreDict = new Dictionary<Controls.ChildSelectPanelItem, GameGenre>();
             foreach (GameGenre gg in genreFullInfo)
             {
+                if (gg.GenreGuid == Guid.Empty)
+                    continue;
+
                 Controls.ChildSelectPanelItem item = new Controls.ChildSelectPanelItem(gg.Name, true);
-                form.GetLauncherPanel().GenreSelectPanel.Items.Add(item);
+                launcherPanel.GenreSelectPanel.Items.Add(item);
                 genreDict.Add(item, gg);
             }
 
@@ -203,15 +214,29 @@ namespace Redefinable.Applications.Launcher.Core
             Dictionary<Controls.ChildSelectPanelItem, GameController> controllerDict = new Dictionary<Controls.ChildSelectPanelItem, GameController>();
             foreach (GameController gc in controllerFullInfo)
             {
+                if (gc.ControllerGuid == Guid.Empty)
+                    continue;
+
                 Controls.ChildSelectPanelItem item = new Controls.ChildSelectPanelItem(gc.Name, true);
-                form.GetLauncherPanel().ControllerSelectPanel.Items.Add(item);
+                launcherPanel.ControllerSelectPanel.Items.Add(item);
                 controllerDict.Add(item, gc);
             }
+
+            // NoImage画像の作成
+            Image noImage = new Bitmap(1024, 576);
+            Graphics noImage_g = Graphics.FromImage(noImage);
+            noImage_g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            noImage_g.FillRectangle(Brushes.DarkGray, 0, 0, noImage.Width, noImage.Height);
+
+            Font f = new Font("MS UI Gohic", 20, FontStyle.Bold);
+            SizeF strSize = noImage_g.MeasureString("NO IMAGE", f);
+            noImage_g.DrawString("NO IMAGE", f, Brushes.White, new PointF((noImage.Width - strSize.Width) / 2, (noImage.Height - strSize.Height) / 2));
+            noImage_g.Dispose();
 
             Func<ICollection<GameGenre>> getCheckedGenres = () =>
             {
                 List<GameGenre> result = new List<GameGenre>();
-                foreach (var item in form.GetLauncherPanel().GenreSelectPanel.Items)
+                foreach (var item in launcherPanel.GenreSelectPanel.Items)
                     if (item.Checked)
                         result.Add(genreDict[item]);
                 return result;
@@ -220,25 +245,64 @@ namespace Redefinable.Applications.Launcher.Core
             Func<ICollection<GameController>> getCheckedControllers = () =>
             {
                 List<GameController> result = new List<GameController>();
-                foreach (var item in form.GetLauncherPanel().ControllerSelectPanel.Items)
+                foreach (var item in launcherPanel.ControllerSelectPanel.Items)
                     if (item.Checked)
                         result.Add(controllerDict[item]);
                 return result;
             };
 
+            Func<GameImageCollection, Controls.SlideshowPanelImageCollection> createSlideshowImages = imgs =>
+            {
+                var result = new Controls.SlideshowPanelImageCollection();
+                foreach (var item in imgs)
+                    result.Add(item.Image);
+                return result;
+            };
+
+            Func<GameImageCollection, Controls.SlideshowPanelImageCollection> createSlideshowImages_x2 = imgs =>
+            {
+                var result = new Controls.SlideshowPanelImageCollection();
+                foreach (var item in imgs)
+                    result.Add(item.Image);
+                foreach (var item in imgs)
+                    result.Add(item.Image);
+                return result;
+            };
+
+            Func<Controls.SlideshowPanelImageCollection> createSlideshowImages_noimage = () =>
+            {
+                var result = new Controls.SlideshowPanelImageCollection();
+                
+                result.Add(noImage);
+                result.Add(noImage);
+
+                return result;
+            };
+            
             Action viewDetails = () =>
             {
                 // currentGameについて表示
-                Controls.TitleBar tb = form.GetLauncherPanel().TitleBar;
+                Controls.TitleBar tb = launcherPanel.TitleBar;
                 tb.RefreshFields(currentGame.DisplayNumber.FullNumber, currentGame.Title);
-                Controls.DescriptionPanel dp = form.GetLauncherPanel().DescriptionPanel;
+                Controls.DescriptionPanel dp = launcherPanel.DescriptionPanel;
                 dp.Message = currentGame.Description;
-                
+                Controls.SlideshowPanel sp = launcherPanel.SlideshowPanel;
+                sp.Stop();
+                sp.ClearContext();
+                if (currentGame.Images.Count >= 2)
+                    sp.SetImages(createSlideshowImages(currentGame.Images));
+                else if (currentGame.Images.Count == 1)
+                {
+                    sp.SetImages(createSlideshowImages_x2(currentGame.Images));
+                }
+                else
+                    sp.SetImages(createSlideshowImages_noimage());
+                sp.Start();
             };
 
             Action refreshGameList = () =>
             {
-                Controls.GameBannerListView listview = form.GetLauncherPanel().GameBannerListView;
+                Controls.GameBannerListView listview = launcherPanel.GameBannerListView;
                 
                 listview.SuspendRefreshItem();
                 listview.Items.Clear();
@@ -247,28 +311,113 @@ namespace Redefinable.Applications.Launcher.Core
                 foreach (Game g in games)
                 {
                     // g = GameFilesから読み込んだうちの１つ
+                    bool flag1 = false;
+                    bool flag2 = false;
 
-                    foreach(GameGenre gg in chkdGenres)
-                        // 現在のチェック済みジャンル一覧の中に、含まれるものがあれば表示
+                    foreach (GameGenre gg in chkdGenres)
+                        // 現在のチェック済みジャンル一覧の中に、含まれるものがあれば表示フラグをオン
                         if (g.Genres.ContainsGuid(gg))
                         {
-                            Controls.GameBanner b = new Controls.GameBanner();
-                            b.Text = g.Title;
-                            b.Click += (sender, e) => { currentGame = g; viewDetails(); };
-                            listview.Items.Add(b);
+                            flag1 = true;
+                            break;
                         }
+
+                    foreach (GameController gc in chkdControllers)
+                        // 現在のチェック済みコントローラ一覧の中に、含まれるものがあれば表示フラグをオン
+                        if (g.Controllers.ContainsGuid(gc))
+                        {
+                            flag2 = true;
+                            break;
+                        }
+
+                    if (flag1 && flag2)
+                    {
+                        Controls.GameBanner b = new Controls.GameBanner();
+                        b.Text = g.Title;
+                        b.Click += (sender, e) => { currentGame = g; viewDetails(); };
+                        
+                        if (g.Banner.UseBanner)
+                            b.BackgroundImage = g.Banner.BannerImage;
+
+                        listview.Items.Add(b);
+                    }
                 }
                 
                 listview.ResumeRefreshItem();
             };
 
-            form.GetLauncherPanel().GenreSelectPanel.ChildPanelClosed += (sender, e) =>
+            launcherPanel.GenreSelectPanel.ChildPanelClosed += (sender, e) =>
             {
                 refreshGameList();
+                launcherPanel.SetFocus(launcherPanel.GenreSelectButton);
             };
 
+            launcherPanel.ControllerSelectPanel.ChildPanelClosed += (sender, e) =>
+            {
+                refreshGameList();
+
+            };
+
+            launcherPanel.HelpButton.Click += (sender, e) =>
+            {
+                var panel = launcherPanel.LauncherHelpPanel;
+                panel.SetFields("Redefinable GameLauncher", File.ReadAllText(settings.DescriptionFile));
+                panel.ChildPanelShow();
+            };
+
+            launcherPanel.OperationButton.Click += (sender, e) =>
+            {
+                var panel = launcherPanel.LauncherHelpPanel;
+                panel.SetFields(currentGame.Title, currentGame.Description + "\n\n\n" + currentGame.OperationDescription);
+                panel.ChildPanelShow();
+            };
+
+            launcherPanel.MovieButton.Click += (sender, e) =>
+            {
+                var panel = launcherPanel.LauncherHelpPanel;
+                panel.SetFields(currentGame.Title, "本作品には動画が関連付けられていません。");
+                panel.ChildPanelShow();
+            };
+
+            launcherPanel.PlayButton.Click += (sender, e) =>
+            {
+                string path = currentGame.GetGameExeFullPath();
+                if (!File.Exists(path))
+                {
+                    var panel = launcherPanel.LauncherHelpPanel;
+                    panel.SetFields(currentGame.Title, "登録エラーを検出しました。\n本体のファイルのパスが無効です。\n\n" + path);
+                    panel.ChildPanelShow();
+                    return;
+                }
+
+                InfoForm iform = new InfoForm();
+                iform.SetField(currentGame.DisplayNumber.Precode + currentGame.DisplayNumber.MainNumber.ToString("D3"));
+                iform.Show();
+
+                form.WindowState = FormWindowState.Minimized;
+                launcherPanel.Visible = false;
+                
+                ProcessStartInfo psi = new ProcessStartInfo(path, currentGame.ExecInfo.Arguments);
+                if (currentGame.ExecInfo.AutoCurrentDirectory)
+                    psi.WorkingDirectory = Path.GetDirectoryName(path);
+                Process p = Process.Start(psi);
+
+                while (!p.HasExited)
+                {
+                    Application.DoEvents();
+                    System.Threading.Thread.Sleep(1);
+                }
+
+                iform.Close();
+                iform.Dispose();
+
+                launcherPanel.Visible = true;
+                form.WindowState = FormWindowState.Normal;
+            };
+
+
             refreshGameList();
-            
+            viewDetails();
         }
 
         /// <summary>
@@ -294,7 +443,7 @@ namespace Redefinable.Applications.Launcher.Core
             // メインウィンドウの表示
             DebugConsole.Push("COR", "メインウィンドウを初期化します。");
             MainForm mainForm = new MainForm();
-            _formInitialize(mainForm, games);
+            _formInitialize(mainForm, games, settings);
 
             mainForm.LauncherTheme = theme;
             mainForm.Show();

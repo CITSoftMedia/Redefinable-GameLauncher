@@ -236,7 +236,7 @@ namespace Redefinable.Applications.Launcher.Controls
         /// </summary>
         public void Stop()
         {
-            this.Stop();
+            this.timer.Stop();
         }
 
         /// <summary>

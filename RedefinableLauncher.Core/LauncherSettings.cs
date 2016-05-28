@@ -28,6 +28,8 @@ namespace Redefinable.Applications.Launcher.Core
         private string themeDirectory;
         private string themeFile;
 
+        private string descriptionFile;
+
         
         // 公開フィールド
 
@@ -121,6 +123,15 @@ namespace Redefinable.Applications.Launcher.Core
             set { this.themeFile = value; }
         }
 
+        /// <summary>
+        /// ランチャーの説明用テキストが格納されているファイルのパスを取得・設定します。
+        /// </summary>
+        public string DescriptionFile
+        {
+            get { return this.descriptionFile; }
+            set { this.descriptionFile = value; }
+        }
+
 
         // 公開静的フィールド
 
@@ -154,6 +165,8 @@ namespace Redefinable.Applications.Launcher.Core
 
             this.themeDirectory = "{var: Ini_AssemblyDirectory}\\Launcher System\\Themes";
             this.themeFile = "default.rlt";
+            
+            this.descriptionFile = "{var: Ini_AssemblyDirectory}\\Launcher System\\description.txt";
         }
 
 
@@ -206,6 +219,12 @@ namespace Redefinable.Applications.Launcher.Core
                 " LauncherPanel Theme Settings"
             }, 1));
 
+            ini.Sections.Add(new IniSection("Reference", new IniValue[] {
+                new IniValue("DescriptionText", this.descriptionFile),
+            }, new string[] {
+                " Reference Settings"
+            }, 1));
+
 
             FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Write);
             ini.Save(fs, new IniFileSaveOption() { PresectionLine = 2 });
@@ -252,6 +271,9 @@ namespace Redefinable.Applications.Launcher.Core
                 sec = ini.Sections["ThemeLoader"];
                 ls.themeDirectory = sec.Values["Directory"].Value;
                 ls.themeFile = sec.Values["CurrentTheme"].Value;
+
+                sec = ini.Sections["Reference"];
+                ls.descriptionFile = sec.Values["DescriptionText"].Value;
             }
             catch (Exception ex)
             {

@@ -37,6 +37,9 @@
   <PropertyGroup>
     <ApplicationIcon>..\SofumeIcon_2015_03.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Common Codes\CommonAssemblyInfo.cs">
       <Link>Common Codes\CommonAssemblyInfo.cs</Link>
@@ -92,9 +95,6 @@
   <ItemGroup>
     <Content Include="..\SofumeIcon_2015_03.ico">
       <Link>Application Resources\SofumeIcon_2015_03.ico</Link>
-    </Content>
-    <Content Include="testImage.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

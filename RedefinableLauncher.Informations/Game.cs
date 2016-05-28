@@ -18,7 +18,21 @@ namespace Redefinable.Applications.Launcher.Informations
     /// </summary>
     public class GameCollection : NativeEventDefinedList<Game>
     {
-
+        public void SortWithDisplayNumber()
+        {
+            for (int i = 0; i < this.Count; i++)
+            {
+                for (int j = this.Count - 1; j > i; j--)
+                {
+                    if (this[j].DisplayNumber.MainNumber < this[j - 1].DisplayNumber.MainNumber)
+                    {
+                        Game t = this[j];
+                        this[j] = this[j - 1];
+                        this[j - 1] = t;
+                    }
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -142,6 +156,14 @@ namespace Redefinable.Applications.Launcher.Informations
         public GameControllerCollection Controllers
         {
             get { return this.controllers; }
+        }
+
+        /// <summary>
+        /// このゲーム作品のバナーに関する情報を取得します。
+        /// </summary>
+        public Banner Banner
+        {
+            get { return this.banner; }
         }
 
         /// <summary>

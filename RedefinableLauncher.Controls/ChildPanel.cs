@@ -123,6 +123,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
         private void _hidePanel()
         {
+            this.Parent.SuspendLayout();
             foreach (Control c in this.hiddenControls)
             {
                 c.Visible = true;
@@ -131,6 +132,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.hiddenControls.Clear();
             this.Visible = false;
             this.ChildPanelClosed(this, EventArgs.Empty);
+            this.Parent.ResumeLayout();
         }
 
         /// <summary>
@@ -175,7 +177,7 @@ namespace Redefinable.Applications.Launcher.Controls
         {
             this._createdCheck();
             this._showPanel();
-            Console.WriteLine("表示しました: {0}x{1}", this.Width, this.Height);
+            //Console.WriteLine("表示しました: {0}x{1}", this.Width, this.Height);
         }
 
         /// <summary>

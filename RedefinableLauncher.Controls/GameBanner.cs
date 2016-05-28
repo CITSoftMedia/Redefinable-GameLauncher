@@ -158,6 +158,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.defaultSize = new Size(220, 50);
             this.text = "";
             this.suspendChangeTopOnChangeScale = true;
+            this.Font = new Font("MS UI Gothic", 14f, FontStyle.Bold);
 
             // 近隣コントロールの設定
             this.upControl = this;
@@ -184,7 +185,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
         private void _initializeControls()
         {
-            this.ForeColor = Color.Black;
+            this.ForeColor = Color.White;
             this.BackColor = Color.Gray;
             this.BackgroundImageLayout = ImageLayout.Stretch;
             this.Cursor = Cursors.Hand;

@@ -43,7 +43,7 @@ namespace Redefinable.Applications.Launcher.Controls
         private LauncherButton movieButton;
         private ChildSelectPanel genreSelectPanel;
         private ChildSelectPanel controllerSelectPanel;
-        private ChildOpeationPanel launcherHelpPanel;
+        private ChildOperationPanel launcherHelpPanel;
 
         #region 公開フィールド
         // 公開フィールド
@@ -194,6 +194,11 @@ namespace Redefinable.Applications.Launcher.Controls
         }
         #endregion
 
+        public LauncherButton OperationButton
+        {
+            get { return this.operationButton; }
+        }
+
         public LauncherButton MovieButton
         {
             get { return this.movieButton; }
@@ -207,6 +212,11 @@ namespace Redefinable.Applications.Launcher.Controls
         public ChildSelectPanel ControllerSelectPanel
         {
             get { return this.controllerSelectPanel; }
+        }
+        
+        public ChildOperationPanel LauncherHelpPanel
+        {
+            get { return this.launcherHelpPanel; }
         }
         
 
@@ -250,8 +260,8 @@ namespace Redefinable.Applications.Launcher.Controls
             //this.KeyDown += (sender, e) => { Console.WriteLine("a"); };
             this.genreSelectButton.Click += (sender, e) => { this.genreSelectPanel.ChildPanelShow(); };
             this.controllerSelectButton.Click += (sender, e) => { this.controllerSelectPanel.ChildPanelShow(); };
-            this.helpButton.Click += (sender, e) => { this.launcherHelpPanel.ChildPanelShow(); };
-            this.operationButton.Click += (sender, e) => { this.launcherHelpPanel.ChildPanelShow(); };
+            //this.helpButton.Click += (sender, e) => { this.launcherHelpPanel.ChildPanelShow(); };
+            //this.operationButton.Click += (sender, e) => { this.launcherHelpPanel.ChildPanelShow(); };
         }
 
 
@@ -339,7 +349,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.controllerSelectPanel = new ChildSelectPanel();
             this.Controls.Add(this.controllerSelectPanel);
 
-            this.launcherHelpPanel = new ChildOpeationPanel();
+            this.launcherHelpPanel = new ChildOperationPanel();
             //this.launcherHelpPanel.SetFields("京成津田沼", "　京成津田沼駅（けいせいつだぬまえき）は、千葉県習志野市津田沼三丁目1番1号にある京成電鉄・新京成電鉄の駅である。京成の駅番号はKS26、新京成の駅番号はSL24。\n　京成電鉄が業務を行う同社と新京成電鉄の共同使用駅である。京成電鉄の本線と千葉線、新京成電鉄の新京成線が乗り入れている。東日本旅客鉄道（JR東日本）津田沼駅は、新京成線の新津田沼駅が接続駅である。日中、京成上野方面からの普通列車の半数は当駅で折り返す。京成千葉線の起点かつ新京成線の終点であるが、日中は新京成線の半数程度の列車が、当駅を介して京成千葉線へ片乗り入れ直通運転を行っている[1]。また、朝晩には千葉線から本線上野方面へ直通する列車も設定されている。");
             this.Controls.Add(this.launcherHelpPanel);
 
