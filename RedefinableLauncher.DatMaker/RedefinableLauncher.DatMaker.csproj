@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{565CF2A7-BA2A-4E31-ADB2-F0FB06249AAB}</ProjectGuid>
+    <ProjectGuid>{07637238-996C-4B92-95F0-0E5C1E641497}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Redefinable.Applications.Launcher</RootNamespace>
-    <AssemblyName>RedefinableLauncher</AssemblyName>
+    <RootNamespace>Redefinable.Applications.Launcher.DatMaker</RootNamespace>
+    <AssemblyName>DatMaker</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -24,58 +24,29 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Common Codes\CommonAssemblyInfo.cs">
-      <Link>Common Codes\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\Common Codes\LauncherAssembly.cs">
-      <Link>Common Codes\LauncherAssembly.cs</Link>
-    </Compile>
-    <Compile Include="Common Codes\LocalAssemblyInfo.cs" />
-    <None Include="app.manifest" />
-    <None Include="DebugCode.cs" />
-    <Compile Include="Entry.cs" />
-    <Compile Include="LauncherAssemblyUtility.cs" />
-    <None Include="RedefinableLibraries.zip" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.ExElements\Redefinable.ExElements.csproj">
-      <Project>{ebc5f787-1d1a-4f36-b56a-d234b436d5db}</Project>
-      <Name>Redefinable.ExElements</Name>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.IniHandler\Redefinable.IniHandler.csproj">
+      <Project>{1d944a8e-79e6-4151-a58c-9594a95b91ac}</Project>
+      <Name>Redefinable.IniHandler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.ExHandler\Redefinable.ExHandler.csproj">
-      <Project>{3f994eae-d8d8-4b02-af2a-1408f3978a2e}</Project>
-      <Name>Redefinable.ExHandler</Name>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.StreamArchive\Redefinable.StreamArchive.csproj">
+      <Project>{7309dee9-2bb4-42df-88e9-c9ca7e15f06b}</Project>
+      <Name>Redefinable.StreamArchive</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable\Redefinable.csproj">
       <Project>{283b9c50-3ba4-4559-96dd-b83a567c84ed}</Project>
       <Name>Redefinable</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RedefinableLauncher.Controls\RedefinableLauncher.Controls.csproj">
-      <Project>{9927e317-9f6c-487b-8857-8b1143edb1b3}</Project>
-      <Name>RedefinableLauncher.Controls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RedefinableLauncher.Core\RedefinableLauncher.Core.csproj">
       <Project>{b6dfbb4e-e432-4bea-b095-accb14a907b5}</Project>
       <Name>RedefinableLauncher.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RedefinableLauncher.DatMaker\RedefinableLauncher.DatMaker.csproj">
-      <Project>{07637238-996c-4b92-95f0-0e5c1e641497}</Project>
-      <Name>RedefinableLauncher.DatMaker</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RedefinableLauncher.Forms\RedefinableLauncher.Forms.csproj">
-      <Project>{b1037a3c-3945-4004-be5f-329019083629}</Project>
-      <Name>RedefinableLauncher.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\RedefinableLauncher.Informations\RedefinableLauncher.Informations.csproj">
       <Project>{c247380f-8561-4bdd-9231-215117d9d95c}</Project>
@@ -83,13 +54,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
+    <Compile Include="Entry.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="testImage.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

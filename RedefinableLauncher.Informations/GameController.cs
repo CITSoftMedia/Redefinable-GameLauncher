@@ -339,6 +339,12 @@ namespace Redefinable.Applications.Launcher.Informations
             guidField.SetValue(gc, Guid.Parse("A555A683-B336-4691-BB23-6B939E26F461"));
             controllers.Add(gc);
 
+            // オリジナルコントローラ
+            gc = new GameController("オリジナルコントローラ", "他サークルと共同で開発した独自のコントローラーです。");
+            guidField = gc.GetType().GetField("controllerGuid", bFlags);
+            guidField.SetValue(gc, Guid.Parse("9E94B087-188A-49C2-88A5-713575B3DC07"));
+            controllers.Add(gc);
+
             return controllers;
         }
     }

@@ -322,15 +322,87 @@ namespace Redefinable.Applications.Launcher.Informations
             genres.Add(gg);
 
             // RPG
-            gg = new GameGenre("ＲＰＧ", "ローププレイング方式のゲーム作品です。");
-            guidField = gg.GetType().GetField("genreGuid", bFlags);
-            guidField.SetValue(gg, Guid.Parse("37D04978-1D6D-4D02-99DF-E417B41BABCC"));
-            genres.Add(gg);
+            //gg = new GameGenre("ＲＰＧ", "ローププレイング方式のゲーム作品です。");
+            //guidField = gg.GetType().GetField("genreGuid", bFlags);
+            //guidField.SetValue(gg, Guid.Parse("{37D04978-1D6D-4D02-99DF-E417B41BABCC}"));
+            //genres.Add(gg);
 
             // シューティング
-            gg = new GameGenre("シューティング", "シューティング方式のゲーム作品です。");
+            //gg = new GameGenre("シューティング", "シューティング方式のゲーム作品です。");
+            //guidField = gg.GetType().GetField("genreGuid", bFlags);
+            //guidField.SetValue(gg, Guid.Parse("{A91F7292-6A43-46D5-AF6E-D9A8582DFC40}"));
+            //genres.Add(gg);
+
+            // 2Dシューティングゲーム
+            gg = new GameGenre("2Dシューティングゲーム", "ローププレイング方式のゲーム作品です。");
             guidField = gg.GetType().GetField("genreGuid", bFlags);
-            guidField.SetValue(gg, Guid.Parse("A91F7292-6A43-46D5-AF6E-D9A8582DFC40"));
+            guidField.SetValue(gg, Guid.Parse("{0BB90942-D04A-4ACD-B4A8-CCF21A42C640}"));
+            genres.Add(gg);
+
+            // 3Dシューティングゲーム
+            gg = new GameGenre("3Dシューティングゲーム", "ローププレイング方式のゲーム作品です。");
+            guidField = gg.GetType().GetField("genreGuid", bFlags);
+            guidField.SetValue(gg, Guid.Parse("{9EF887A7-8F70-4B84-9AE1-746A8FDFC1C2}"));
+            genres.Add(gg);
+
+            // 2Dアクションゲーム
+            gg = new GameGenre("2Dアクションゲーム", "ローププレイング方式のゲーム作品です。");
+            guidField = gg.GetType().GetField("genreGuid", bFlags);
+            guidField.SetValue(gg, Guid.Parse("{35F9421E-60E1-43B9-ADD0-73EC866F5FA7}"));
+            genres.Add(gg);
+
+            // 3Dアクションゲーム
+            gg = new GameGenre("3Dアクションゲーム", "ローププレイング方式のゲーム作品です。");
+            guidField = gg.GetType().GetField("genreGuid", bFlags);
+            guidField.SetValue(gg, Guid.Parse("{45F9421E-30A3-53B9-B6D0-73EC866F5CB3}"));
+            genres.Add(gg);
+
+            // アドベンチャーゲーム
+            gg = new GameGenre("アドベンチャーゲーム", "ローププレイング方式のゲーム作品です。");
+            guidField = gg.GetType().GetField("genreGuid", bFlags);
+            guidField.SetValue(gg, Guid.Parse("{E6CF9704-B12C-4099-A201-25BE981E9EED}"));
+            genres.Add(gg);
+
+            // 脱出ゲーム・謎解き・迷路
+            gg = new GameGenre("謎解き・迷路", "ローププレイング方式のゲーム作品です。");
+            guidField = gg.GetType().GetField("genreGuid", bFlags);
+            guidField.SetValue(gg, Guid.Parse("{A6D532AB-F293-41BF-9001-E6FCBD605666}"));
+            genres.Add(gg);
+
+            // ノベルゲーム
+            gg = new GameGenre("ノベルゲーム", "ローププレイング方式のゲーム作品です。");
+            guidField = gg.GetType().GetField("genreGuid", bFlags);
+            guidField.SetValue(gg, Guid.Parse("{CBDBBA70-936A-4D26-BCF6-97DF78E5A541}"));
+            genres.Add(gg);
+
+            // パズルゲーム
+            gg = new GameGenre("パズルゲーム", "ローププレイング方式のゲーム作品です。");
+            guidField = gg.GetType().GetField("genreGuid", bFlags);
+            guidField.SetValue(gg, Guid.Parse("{A9562BB8-1F84-49C0-9441-B4A4646693D0}"));
+            genres.Add(gg);
+
+            // シミュレーションゲーム
+            gg = new GameGenre("シミュレーションゲーム", "ローププレイング方式のゲーム作品です。");
+            guidField = gg.GetType().GetField("genreGuid", bFlags);
+            guidField.SetValue(gg, Guid.Parse("{F0B230E3-DBFD-4527-9537-BB19327A0BF7}"));
+            genres.Add(gg);
+
+            // 育成シミュレーション
+            gg = new GameGenre("育成シミュレーション", "ローププレイング方式のゲーム作品です。");
+            guidField = gg.GetType().GetField("genreGuid", bFlags);
+            guidField.SetValue(gg, Guid.Parse("{083630F5-3A36-4291-87CB-14A0019DCC95}"));
+            genres.Add(gg);
+
+            // 音楽ゲーム
+            gg = new GameGenre("音楽ゲーム", "ローププレイング方式のゲーム作品です。");
+            guidField = gg.GetType().GetField("genreGuid", bFlags);
+            guidField.SetValue(gg, Guid.Parse("{2955F9A2-6F1F-47EF-88B8-1B96C736AC33}"));
+            genres.Add(gg);
+
+            // クイズゲーム
+            gg = new GameGenre("クイズゲーム", "ローププレイング方式のゲーム作品です。");
+            guidField = gg.GetType().GetField("genreGuid", bFlags);
+            guidField.SetValue(gg, Guid.Parse("{5DC7932F-2AD3-4159-9D0B-8E43E74F72F9}"));
             genres.Add(gg);
 
             return genres;
