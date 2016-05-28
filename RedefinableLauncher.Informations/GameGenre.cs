@@ -333,6 +333,10 @@ namespace Redefinable.Applications.Launcher.Informations
             //guidField.SetValue(gg, Guid.Parse("{A91F7292-6A43-46D5-AF6E-D9A8582DFC40}"));
             //genres.Add(gg);
 
+            // Guid値絶対にいじるなよ！？？
+            // 絶対にいじるなよ！？？
+            // 絶対にだからな！！！！！！
+
             // 2Dシューティングゲーム
             gg = new GameGenre("2Dシューティングゲーム", "ローププレイング方式のゲーム作品です。");
             guidField = gg.GetType().GetField("genreGuid", bFlags);
