@@ -123,9 +123,9 @@ namespace Redefinable.Applications.Launcher.DatMaker
 
                 string title = ini.Sections["Exe"].Values["title"].Value;
                 int num = 0;
-                string description = File.ReadAllText(dir.Path + "\\" + infodirName + "\\" + descriptionTxt);
-                string operation = File.ReadAllText(dir.Path + "\\" + infodirName + "\\" + operationTxt);
-                string filename = IOUtility.GetFullPath(dir.Path + "\\" + infodirName, "..\\" + ini.Sections["Exe"].Values["filename"].Value);
+                string description = File.ReadAllText(dir.Path + "\\" + infodirName + "\\" + descriptionTxt, Encoding.GetEncoding("shift_jis"));
+                string operation = File.ReadAllText(dir.Path + "\\" + infodirName + "\\" + operationTxt, Encoding.GetEncoding("shift_jis"));
+                string filename = IOUtility.GetFullPath(dir.Path, ini.Sections["Exe"].Values["filename"].Value);
                 string banner = IOUtility.GetFullPath(dir.Path + "\\" + infodirName, bannerPng);
                 if (!File.Exists(banner)) banner = null;
                 string argument = ini.Sections["Exe"].Values["argument"].Value;
@@ -212,6 +212,7 @@ namespace Redefinable.Applications.Launcher.DatMaker
                         continue;
                     
                     GameImage image = new GameImage(f, Image.FromFile(f));
+                    images.Add(image);
                     
                     Console.Write(Path.GetFileName(f) + ", ");
                 }

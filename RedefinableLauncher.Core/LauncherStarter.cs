@@ -113,7 +113,8 @@ namespace Redefinable.Applications.Launcher.Core
                 Game game = dir.Load();
                 DebugConsole.Push("COR", "Load> ロード: " + game.Title);
 
-                if (File.Exists(game.GetGameExeFullPath()))
+                string fpath = game.GetGameExeFullPath();
+                if (File.Exists(fpath))
                 {
                     // 本体ファイルが存在する
                     games.Add(game);
@@ -121,11 +122,19 @@ namespace Redefinable.Applications.Launcher.Core
                 else
                 {
                     DebugConsole.Push("COR", "Load> 参照エラー: " + game.Title);
+                    DebugConsole.Push("COR", "Load> " + fpath);
 
                     if (settings.ShowPathErrorGame)
+                    {
                         // 本体ファイルが存在しないが、存在しない作品も表示する設定になっている
                         games.Add(game);
-
+                        DebugConsole.Push("COR", "Load> 参照エラーも表示する設定になっています。");
+                    }
+                    else
+                    {
+                        DebugConsole.Push("COR", "Load> この作品は非表示になります。");
+                    }
+                    
                     if (settings.WarningPathError)
                         // 本体ファイルが存在しない場合に、警告する設定になっている
                         warnings.Add(game);

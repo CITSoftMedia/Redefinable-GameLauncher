@@ -54,6 +54,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\common codes\CommonAssemblyInfo.cs">
+      <Link>Common Codes\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\common codes\LauncherAssembly.cs">
+      <Link>Common Codes\LauncherAssembly.cs</Link>
+    </Compile>
+    <Compile Include="Common Codes\LocalAssemblyInfo.cs" />
     <Compile Include="Entry.cs" />
   </ItemGroup>
   <ItemGroup>
