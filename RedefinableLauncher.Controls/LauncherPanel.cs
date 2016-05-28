@@ -255,7 +255,7 @@ namespace Redefinable.Applications.Launcher.Controls
             this.ScaleChanged = (sender, e) => { };
 
             // イベントの追加
-            this.Click += (sender, e) => { this.ChangeScale(this.currentScale -= 0.1f); };
+            //this.Click += (sender, e) => { this.ChangeScale(this.currentScale -= 0.1f); };
             this.PreviewKeyDown += LauncherPanel_PreviewKeyDown;
             //this.KeyDown += (sender, e) => { Console.WriteLine("a"); };
             this.genreSelectButton.Click += (sender, e) => { this.genreSelectPanel.ChildPanelShow(); };

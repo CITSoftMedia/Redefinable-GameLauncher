@@ -198,6 +198,16 @@ namespace Redefinable.Applications.Launcher.Core
             var launcherPanel = form.GetLauncherPanel();
 
 
+            // スケーリング
+            float s = 1.0f;
+            if (settings.WindowScale > 0)
+            {
+                s = settings.WindowScale;
+            }
+
+            launcherPanel.ChangeScale(s);
+
+
             // ジャンル情報一覧の追加
             Dictionary<Controls.ChildSelectPanelItem, GameGenre> genreDict = new Dictionary<Controls.ChildSelectPanelItem, GameGenre>();
             foreach (GameGenre gg in genreFullInfo)
@@ -391,7 +401,7 @@ namespace Redefinable.Applications.Launcher.Core
                 }
 
                 InfoForm iform = new InfoForm();
-                iform.SetField(currentGame.DisplayNumber.Precode + currentGame.DisplayNumber.MainNumber.ToString("D3"));
+                iform.SetField(currentGame.DisplayNumber.Precode + currentGame.DisplayNumber.MainNumber.ToString("D3") + "  " + currentGame.Title);
                 iform.Show();
 
                 form.WindowState = FormWindowState.Minimized;
@@ -428,22 +438,36 @@ namespace Redefinable.Applications.Launcher.Core
             DebugConsole.Push("Core::Start()");
             DebugConsole.Push("COR", "ソフトウェアを開始します。");
 
+            LoadingForm lf = new LoadingForm();
+            lf.Show();
+
             // 基本設定
             DebugConsole.Push("COR", "基本設定をロードします。");
             LauncherSettings settings = _initializeSettings();
+
+            Application.DoEvents();
 
             // 対象作品一覧のロード
             DebugConsole.Push("COR", "ゲーム情報を読み込みます。");
             GameCollection games = _getTargetGames(settings);
 
+            Application.DoEvents();
+
             // テーマのロード
             DebugConsole.Push("COR", "テーマ情報を読み込みます。");
             LauncherTheme theme = _getLauncherTheme(settings);
+
+            Application.DoEvents();
 
             // メインウィンドウの表示
             DebugConsole.Push("COR", "メインウィンドウを初期化します。");
             MainForm mainForm = new MainForm();
             _formInitialize(mainForm, games, settings);
+
+            Application.DoEvents();
+
+            lf.Close();
+            lf.Dispose();
 
             mainForm.LauncherTheme = theme;
             mainForm.Show();

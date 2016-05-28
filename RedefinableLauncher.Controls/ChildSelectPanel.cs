@@ -103,14 +103,14 @@ namespace Redefinable.Applications.Launcher.Controls
                     }
                 }
 
-                buttons.Add(new ChildSelectPanelButton(p.GetScaledPoint(this.currentScale), this.items[i]));
+                buttons.Add(new ChildSelectPanelButton(p, this.items[i]));
 
                 if (line_c == 1)
                     // line_cが初期値 → １段のボタンの数を記録
                     line_b++;
             }
 
-            Console.WriteLine("1段: {0} / {1}段", line_b, line_c);
+            //Console.WriteLine("1段: {0} / {1}段", line_b, line_c);
 
             // 隣接コントロールの設定
             /*
@@ -121,9 +121,11 @@ namespace Redefinable.Applications.Launcher.Controls
             }
             */
 
-
             foreach (ChildSelectPanelButton b in buttons)
+            {
+                b.ChangeScale(this.currentScale);
                 this.Controls.Add(b);
+            }
         }
 
         private void _redrawText()
@@ -307,6 +309,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
 
                 // コントロールの初期化
+                this.BackgroundImageLayout = ImageLayout.Stretch;
                 this.Cursor = Cursors.Hand;
                 this._redraw();
 

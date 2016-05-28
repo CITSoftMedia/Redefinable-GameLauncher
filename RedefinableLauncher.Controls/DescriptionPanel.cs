@@ -154,7 +154,7 @@ namespace Redefinable.Applications.Launcher.Controls
 
             FontFamily ff = new FontFamily(theme.FontName);
             GraphicsPath gp = new GraphicsPath();
-            gp.AddString(this.message, ff, (int)FontStyle.Bold, theme.FontSize, new Rectangle(drawingPoint, drawingSize), StringFormat.GenericDefault);
+            gp.AddString(this.message, ff, (int)FontStyle.Bold, ((float)theme.FontSize * this.currentScale), new Rectangle(drawingPoint, drawingSize), StringFormat.GenericDefault);
             g.FillPath(new SolidBrush(theme.FontColor), gp);
             if (theme.FontBorder)
             {

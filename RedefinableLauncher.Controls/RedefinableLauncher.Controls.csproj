@@ -94,12 +94,14 @@
     <Compile Include="TitleBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <None Include="Launcher System\Theme Debug\LauncherButton.All.psd" />
+    <None Include="Launcher System\Theme Debug\a32kita\LauncherButton.All.psd" />
+    <None Include="Launcher System\Theme Debug\a32kita\LauncherButton.Settings.ini" />
+    <None Include="Launcher System\Theme Debug\a32kita\LauncherPanel.BackgroundImage.psd" />
+    <None Include="Launcher System\Theme Debug\a32kita\TitleBar.BackgroundImage.psd" />
+    <None Include="Launcher System\Theme Debug\a32kita\TitleBar.Settings.ini" />
     <None Include="Launcher System\Theme Debug\LauncherButton.Settings.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Launcher System\Theme Debug\LauncherPanel.BackgroundImage.psd" />
-    <None Include="Launcher System\Theme Debug\TitleBar.BackgroundImage.psd" />
     <None Include="Launcher System\Theme Debug\TitleBar.Settings.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -127,6 +129,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Launcher System\Theme Debug\a32kita\LauncherButton.CenterDecoration.png" />
+    <Content Include="Launcher System\Theme Debug\a32kita\LauncherButton.LeftDecoration.png" />
+    <Content Include="Launcher System\Theme Debug\a32kita\LauncherButton.RightDecoration.png" />
+    <Content Include="Launcher System\Theme Debug\a32kita\LauncherPanel.BackgroundImage.png" />
+    <Content Include="Launcher System\Theme Debug\a32kita\readme.txt" />
+    <Content Include="Launcher System\Theme Debug\a32kita\TitleBar.BackgroundImage.png" />
     <Content Include="Launcher System\Theme Debug\LauncherButton.CenterDecoration.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

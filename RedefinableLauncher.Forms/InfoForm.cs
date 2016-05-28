@@ -40,12 +40,21 @@ namespace Redefinable.Applications.Launcher.Forms
             this.Text = RedefinableUtility.SoftwareTitle;
             this.Location = new Point(0, 0);
             this.ShowInTaskbar = false;
-            this.Size = new Size(dispBounds.Width, 100);
+            this.ClientSize = new Size(550, 60);
             //this.Visible = false;
             this.FormBorderStyle = FormBorderStyle.None;
-            this.Opacity = 0.5f;
+            this.Opacity = 0.6f;
             this.BackColor = Color.Black;
             this.TopMost = true;
+
+            // イベントの追加
+            this.MouseMove += (sender, e) =>
+            {
+                if (this.Location.X < 10)
+                    this.Location = new Point(dispBounds.Width - this.ClientSize.Width, 0);
+                else
+                    this.Location = new Point(0, 0);
+            };
         }
 
 
@@ -55,6 +64,9 @@ namespace Redefinable.Applications.Launcher.Forms
         {
             this.BackgroundImage = new Bitmap(this.Width, this.Height);
             Graphics g = Graphics.FromImage(this.BackgroundImage);
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
             GraphicsPath gp;
             FontFamily ff = new FontFamily("MS UI Gothic");
             Point dp = new Point(10, 10);
