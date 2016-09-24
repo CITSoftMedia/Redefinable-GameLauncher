@@ -96,6 +96,7 @@
     <Content Include="..\SofumeIcon_2015_03.ico">
       <Link>Application Resources\SofumeIcon_2015_03.ico</Link>
     </Content>
+    <Content Include="0924メモ.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
