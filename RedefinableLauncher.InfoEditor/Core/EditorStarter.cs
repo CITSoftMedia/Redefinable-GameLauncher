@@ -112,7 +112,15 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Core
             GameControllerCollection controllerFullInformations = new GameControllerCollection();
             controllerFullInformations.AddFromDirectory(ConfigHandler.Settings.ControllersFilesDirectory);
 
-            GameListForm.ShowSelecter(genreFullInformations, controllerFullInformations);
+            // 対象を選択させる
+            var res = GameListForm.ShowSelecter(genreFullInformations, controllerFullInformations);
+
+            // もし意図的に閉じた場合は、戻る
+            if (res.Close)
+                return;
+
+            // 編集させる
+            MessageBox.Show("res={Close: " + res.Close + ", Remove: " + res.Remove + ", Directory: " + res.Directory?.DirectoryName + "}");
         }
     }
 }

@@ -77,7 +77,7 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
 
         // 公開静的メソッド
 
-        public static GameDirectory ShowSelecter(GameGenreCollection allGenres, GameControllerCollection allControllers)
+        public static ShowSelecterResult ShowSelecter(GameGenreCollection allGenres, GameControllerCollection allControllers)
         {
             // ローディング画面の表示
             LoadingForm ldForm = new LoadingForm();
@@ -115,6 +115,10 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
             }
 
             // イベント
+            bool canClose = false;
+            bool userClose = false;
+            bool remove = false;
+            GameDirectory selectedDirectory = null;
 
             glForm.listView.Click += (sender, e) =>
             {
@@ -141,11 +145,96 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
                 }
             };
 
+            glForm.FormClosing += (sender, e) =>
+            {
+                if (!canClose)
+                {
+                    // ユーザーが意図的に閉じる
+                    userClose = true;
+                }
+            };
+
+            glForm.editButton.Click += (sender, e) =>
+            {
+                canClose = true;
+                remove = false;
+                foreach (var dir in gfDir.Directories)
+                {
+                    if (dir.DirectoryName == glForm.listView.SelectedItems[0].Text)
+                    {
+                        selectedDirectory = dir;
+                        break;
+                    }
+                }
+
+                glForm.Close();
+            };
+
+            glForm.removeButton.Click += (sender, e) =>
+            {
+                if (MessageBox.Show("一度削除した登録情報は、再登録しないと復元できません。\n本当に削除してもよろしいですか？", "", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    return;
+
+                canClose = true;
+                remove = true;
+                foreach (var dir in gfDir.Directories)
+                {
+                    if (dir.DirectoryName == glForm.listView.SelectedItems[0].Text)
+                    {
+                        selectedDirectory = dir;
+                        break;
+                    }
+                }
+
+                glForm.Close();
+            };
+
             // 表示
             ldForm.Close();
             glForm.ShowDialog();
 
-            return null;
+            return new ShowSelecterResult(userClose, remove, selectedDirectory);
+        }
+
+
+        // 公開内部クラス
+
+        public class ShowSelecterResult
+        {
+            /// <summary>
+            /// ユーザーが意図的にフォームを閉じたかどうかを示す値を格納します。
+            /// </summary>
+            public bool Close
+            {
+                get;
+                set;
+            }
+
+            /// <summary>
+            /// 編集ではなく削除を希望しているかどうかを示す値を格納します。
+            /// </summary>
+            public bool Remove
+            {
+                get;
+                set;
+            }
+
+            /// <summary>
+            /// 選択されたディレクトリインスタンスを格納します。
+            /// </summary>
+            public GameDirectory Directory
+            {
+                get;
+                set;
+            }
+
+
+            public ShowSelecterResult(bool close, bool remove, GameDirectory gameDir)
+            {
+                this.Close = close;
+                this.Remove = remove;
+                this.Directory = gameDir;
+            }
         }
     }
 }
