@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using Redefinable.Applications.Launcher.Informations;
+
 using Redefinable.Applications.Launcher.InfoEditor.Forms;
 
 
@@ -104,7 +106,13 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Core
 
         public static void ExecuteGameRegister()
         {
+            // ジャンル情報・コントローラ情報の取得
+            GameGenreCollection genreFullInformations = new GameGenreCollection();
+            genreFullInformations.AddFromDirectory(ConfigHandler.Settings.GenreFilesDirectory);
+            GameControllerCollection controllerFullInformations = new GameControllerCollection();
+            controllerFullInformations.AddFromDirectory(ConfigHandler.Settings.ControllersFilesDirectory);
 
+            GameListForm.ShowSelecter(genreFullInformations, controllerFullInformations);
         }
     }
 }

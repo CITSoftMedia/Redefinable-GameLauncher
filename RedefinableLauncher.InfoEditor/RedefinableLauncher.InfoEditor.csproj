@@ -72,6 +72,12 @@
     <Compile Include="Core\ConfigHandler.cs" />
     <Compile Include="Core\EditorStarter.cs" />
     <Compile Include="Entry.cs" />
+    <Compile Include="Forms\GameListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoadingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\SelectModeForm.cs">
       <SubType>Form</SubType>
     </Compile>
