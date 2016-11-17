@@ -380,25 +380,29 @@ namespace Redefinable.Applications.Launcher.Informations
             genres.Add(gg);
 
             // パズルゲーム
+            /*
             gg = new GameGenre("パズルゲーム", "ローププレイング方式のゲーム作品です。");
             guidField = gg.GetType().GetField("genreGuid", bFlags);
             guidField.SetValue(gg, Guid.Parse("{A9562BB8-1F84-49C0-9441-B4A4646693D0}"));
             genres.Add(gg);
+            */
 
             // シミュレーションゲーム
+            /*
             gg = new GameGenre("シミュレーションゲーム", "ローププレイング方式のゲーム作品です。");
             guidField = gg.GetType().GetField("genreGuid", bFlags);
             guidField.SetValue(gg, Guid.Parse("{F0B230E3-DBFD-4527-9537-BB19327A0BF7}"));
             genres.Add(gg);
+            */
 
             // 育成シミュレーション
-            gg = new GameGenre("育成シミュレーション", "ローププレイング方式のゲーム作品です。");
+            gg = new GameGenre("育成シミュレーション", "育成します。");
             guidField = gg.GetType().GetField("genreGuid", bFlags);
             guidField.SetValue(gg, Guid.Parse("{083630F5-3A36-4291-87CB-14A0019DCC95}"));
             genres.Add(gg);
 
             // 音楽ゲーム
-            gg = new GameGenre("音楽ゲーム", "ローププレイング方式のゲーム作品です。");
+            gg = new GameGenre("音楽ゲーム", "リズムに合わせてノーツを弾きます。");
             guidField = gg.GetType().GetField("genreGuid", bFlags);
             guidField.SetValue(gg, Guid.Parse("{2955F9A2-6F1F-47EF-88B8-1B96C736AC33}"));
             genres.Add(gg);
@@ -408,6 +412,12 @@ namespace Redefinable.Applications.Launcher.Informations
             guidField = gg.GetType().GetField("genreGuid", bFlags);
             guidField.SetValue(gg, Guid.Parse("{5DC7932F-2AD3-4159-9D0B-8E43E74F72F9}"));
             genres.Add(gg);
+
+            // 横ＳＴＧ
+
+            // 縦ＳＴＧ
+
+            // 恋愛シミュレーションゲーム / アドベンチャー
 
             return genres;
         }

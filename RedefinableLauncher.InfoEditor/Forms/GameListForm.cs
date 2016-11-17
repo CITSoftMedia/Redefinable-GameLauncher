@@ -18,6 +18,7 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
         private ListView listView;
         private Button editButton;
         private Button removeButton;
+        private Button closeButton;
 
         // コンストラクタ
 
@@ -72,6 +73,13 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
             this.removeButton.Size = new Size(100, 30);
             this.removeButton.Enabled = false;
             this.Controls.Add(this.removeButton);
+            
+            // 閉じるボタン
+            this.closeButton = new Button();
+            this.closeButton.Text = "閉じる";
+            this.closeButton.Location = new Point(440, 550);
+            this.closeButton.Size = new Size(100, 30);
+            this.Controls.Add(this.closeButton);
         }
 
 
@@ -156,6 +164,12 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
 
             glForm.editButton.Click += (sender, e) =>
             {
+                if (glForm.listView.SelectedItems.Count <= 0)
+                {
+                    MessageBox.Show("作品を選択してください。");
+                    return;
+                }
+
                 canClose = true;
                 remove = false;
                 foreach (var dir in gfDir.Directories)
@@ -172,6 +186,12 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
 
             glForm.removeButton.Click += (sender, e) =>
             {
+                if (glForm.listView.SelectedItems.Count <= 0)
+                {
+                    MessageBox.Show("作品を選択してください。");
+                    return;
+                }
+
                 if (MessageBox.Show("一度削除した登録情報は、再登録しないと復元できません。\n本当に削除してもよろしいですか？", "", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                     return;
 
@@ -186,6 +206,11 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
                     }
                 }
 
+                glForm.Close();
+            };
+
+            glForm.closeButton.Click += (sender, e) =>
+            {
                 glForm.Close();
             };
 
