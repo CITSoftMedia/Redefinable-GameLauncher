@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\RedefinableLauncher\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,7 +26,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\RedefinableLauncher\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -43,9 +43,25 @@
       <Project>{3f994eae-d8d8-4b02-af2a-1408f3978a2e}</Project>
       <Name>Redefinable.ExHandler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.IniHandler\Redefinable.IniHandler.csproj">
+      <Project>{1d944a8e-79e6-4151-a58c-9594a95b91ac}</Project>
+      <Name>Redefinable.IniHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable.StreamArchive\Redefinable.StreamArchive.csproj">
+      <Project>{7309dee9-2bb4-42df-88e9-c9ca7e15f06b}</Project>
+      <Name>Redefinable.StreamArchive</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\RedefinableLibraries\Redefinable\Redefinable\Redefinable.csproj">
       <Project>{283b9c50-3ba4-4559-96dd-b83a567c84ed}</Project>
       <Name>Redefinable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RedefinableLauncher.Controls\RedefinableLauncher.Controls.csproj">
+      <Project>{9927e317-9f6c-487b-8857-8b1143edb1b3}</Project>
+      <Name>RedefinableLauncher.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RedefinableLauncher.Core\RedefinableLauncher.Core.csproj">
+      <Project>{b6dfbb4e-e432-4bea-b095-accb14a907b5}</Project>
+      <Name>RedefinableLauncher.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\RedefinableLauncher.Informations\RedefinableLauncher.Informations.csproj">
       <Project>{c247380f-8561-4bdd-9231-215117d9d95c}</Project>
@@ -53,10 +69,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ConfigHandler.cs" />
+    <Compile Include="Core\EditorStarter.cs" />
     <Compile Include="Entry.cs" />
+    <Compile Include="Forms\SelectModeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
