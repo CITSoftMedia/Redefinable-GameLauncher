@@ -16,7 +16,8 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
     {
         // 非公開フィールド
         private ListView listView;
-
+        private Button editButton;
+        private Button removeButton;
 
         // コンストラクタ
 
@@ -46,19 +47,37 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
             // リストビューの初期化
             this.listView = new ListView();
             this.listView.Location = new Point(20, 20);
-            this.listView.Size = new Size(760, 530);
+            this.listView.Size = new Size(760, 510);
             this.listView.View = View.Details;
+            this.listView.Font = new Font("MS UI Gothic", 12);
+            this.listView.Columns.Add("ディレクトリ名",  200);
             this.listView.Columns.Add("状態", 100);
             this.listView.Columns.Add("作品No", 100);
-            this.listView.Columns.Add("ディレクトリ名", 200);
-            this.listView.Columns.Add("作品名", 200);
+            this.listView.Columns.Add("作品名", 250);
+            this.listView.FullRowSelect = true;
             this.Controls.Add(this.listView);
+
+            // 編集ボタン
+            this.editButton = new Button();
+            this.editButton.Text = "登録・編集";
+            this.editButton.Location = new Point(680, 550);
+            this.editButton.Size = new Size(100, 30);
+            this.editButton.Enabled = false;
+            this.Controls.Add(this.editButton);
+
+            // 削除ボタン
+            this.removeButton = new Button();
+            this.removeButton.Text = "登録解除";
+            this.removeButton.Location = new Point(560, 550);
+            this.removeButton.Size = new Size(100, 30);
+            this.removeButton.Enabled = false;
+            this.Controls.Add(this.removeButton);
         }
 
 
         // 公開静的メソッド
 
-        public static Game ShowSelecter(GameGenreCollection allGenres, GameControllerCollection allControllers)
+        public static GameDirectory ShowSelecter(GameGenreCollection allGenres, GameControllerCollection allControllers)
         {
             // ローディング画面の表示
             LoadingForm ldForm = new LoadingForm();
@@ -75,10 +94,56 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
             Application.DoEvents();
 
             // 作品情報追加
+            foreach (var dir in gfDir.Directories)
+            {
+                var item = glForm.listView.Items.Add(dir.DirectoryName);
+                
+                if (dir.CheckInitialized())
+                {
+                    // 登録済み
+                    Game g = dir.Load();
+                    item.SubItems.Add("登録済み");
+                    item.SubItems.Add(g.DisplayNumber.FullNumber);
+                    item.SubItems.Add(g.Title);
+                }
+                else
+                {
+                    item.SubItems.Add("未登録");
+                    item.SubItems.Add("-");
+                    item.SubItems.Add("-");
+                }
+            }
+
+            // イベント
+
+            glForm.listView.Click += (sender, e) =>
+            {
+                var selected = glForm.listView.SelectedItems;
+                if (selected.Count <= 0)
+                {
+                    glForm.editButton.Enabled = false;
+                    glForm.removeButton.Enabled = false;
+                    return;
+                }
+
+                //MessageBox.Show(selected[0].SubItems.Count.ToString());
+                if (selected[0].SubItems[1].Text == "登録済み")
+                {
+                    // 登録済み
+                    glForm.editButton.Enabled = true;
+                    glForm.removeButton.Enabled = true;
+                }
+                else
+                {
+                    // 未登録
+                    glForm.editButton.Enabled = true;
+                    glForm.removeButton.Enabled = false;
+                }
+            };
 
             // 表示
-            glForm.ShowDialog();
             ldForm.Close();
+            glForm.ShowDialog();
 
             return null;
         }
