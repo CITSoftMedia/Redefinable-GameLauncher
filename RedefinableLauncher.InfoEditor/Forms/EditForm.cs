@@ -116,11 +116,13 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
             this.basicInfo_titleTextBox.Location = new Point(120, 10);
             this.basicInfo_titleTextBox.Size = new Size(300, 35);
             this.operationPanel[0].Controls.Add(this.basicInfo_titleTextBox);
-            this.operationPanel[0].Controls.Add(new Label() { Location = new Point(10, 60), Text = "左側に作品番号、右側に作品タイトル" });
+            this.operationPanel[0].Controls.Add(new Label() { Location = new Point(10, 60), AutoSize = true, Text = "左側に作品番号、右側に作品タイトル" });
 
             // 概要
-            this.operationPanel[1].Controls.Add(new Label() { Location = new Point(10, 10), Text = "作品概要を簡単に！！" });
+            this.operationPanel[1].Controls.Add(new Label() { Location = new Point(10, 10), AutoSize = true, Text = "作品概要を簡単に！！" });
             this.description_textBox = new TextBox();
+            this.description_textBox.Location = new Point(10, 40);
+            this.description_textBox.Size = new Size(420, 100);
             this.description_textBox.Multiline = true;
             this.operationPanel[1].Controls.Add(this.description_textBox);
         }
