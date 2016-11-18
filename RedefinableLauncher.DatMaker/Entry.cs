@@ -133,30 +133,34 @@ namespace Redefinable.Applications.Launcher.DatMaker
                 string scdir = dir.Path + "\\" + infodirName + "\\" + screenshots;
 
                 GameGenreCollection targetGenres = new GameGenreCollection();
-                if (Boolean.Parse(ini.Sections["Genre"].Values["shooting2d"].Value))
-                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{0BB90942-D04A-4ACD-B4A8-CCF21A42C640}")));
-                if (Boolean.Parse(ini.Sections["Genre"].Values["shooting3d"].Value))
-                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{9EF887A7-8F70-4B84-9AE1-746A8FDFC1C2}")));
                 if (Boolean.Parse(ini.Sections["Genre"].Values["action2d"].Value))
                     targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{35F9421E-60E1-43B9-ADD0-73EC866F5FA7}")));
                 if (Boolean.Parse(ini.Sections["Genre"].Values["action3d"].Value))
                     targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{45F9421E-30A3-53B9-B6D0-73EC866F5CB3}")));
-                if (Boolean.Parse(ini.Sections["Genre"].Values["adventure"].Value))
-                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{E6CF9704-B12C-4099-A201-25BE981E9EED}")));
                 if (Boolean.Parse(ini.Sections["Genre"].Values["guessing"].Value))
                     targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{A6D532AB-F293-41BF-9001-E6FCBD605666}")));
                 if (Boolean.Parse(ini.Sections["Genre"].Values["novel"].Value))
                     targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{CBDBBA70-936A-4D26-BCF6-97DF78E5A541}")));
-                if (Boolean.Parse(ini.Sections["Genre"].Values["puzzle"].Value))
-                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{A9562BB8-1F84-49C0-9441-B4A4646693D0}")));
-                if (Boolean.Parse(ini.Sections["Genre"].Values["simulation"].Value))
-                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{F0B230E3-DBFD-4527-9537-BB19327A0BF7}")));
-                if (Boolean.Parse(ini.Sections["Genre"].Values["training_and_develop"].Value))
+                if (Boolean.Parse(ini.Sections["Genre"].Values["training"].Value))
                     targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{083630F5-3A36-4291-87CB-14A0019DCC95}")));
                 if (Boolean.Parse(ini.Sections["Genre"].Values["music"].Value))
                     targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{2955F9A2-6F1F-47EF-88B8-1B96C736AC33}")));
-                if (Boolean.Parse(ini.Sections["Genre"].Values["quiz"].Value))
-                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{5DC7932F-2AD3-4159-9D0B-8E43E74F72F9}")));
+                if (Boolean.Parse(ini.Sections["Genre"].Values["horizontalstg"].Value))
+                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{2AC7932F-2AD3-4159-9D0B-8E43E74F72A9}")));
+                if (Boolean.Parse(ini.Sections["Genre"].Values["verticalstg"].Value))
+                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{C1AA932F-2AD3-4159-9D0B-8E43E74F72A9}")));
+                if (Boolean.Parse(ini.Sections["Genre"].Values["allstg"].Value))
+                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{119A932F-2AD3-4159-9D0B-8E43E74F72A9}")));
+                if (Boolean.Parse(ini.Sections["Genre"].Values["romance"].Value))
+                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{4511A32F-2AD3-4159-9D0B-8E43E74F72A9}")));
+                if (Boolean.Parse(ini.Sections["Genre"].Values["rpg"].Value))
+                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{AFAFA32F-3AD3-4159-9D0B-8E43E74F72A9}")));
+                if (Boolean.Parse(ini.Sections["Genre"].Values["race"].Value))
+                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{AF11A32F-3AD3-4159-9D0B-8E43E74F72A7}")));
+                if (Boolean.Parse(ini.Sections["Genre"].Values["horror"].Value))
+                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{AF22A32F-3AD3-4159-9D0B-8E43E74F72A8}")));
+                if (Boolean.Parse(ini.Sections["Genre"].Values["tower"].Value))
+                    targetGenres.Add(fullGenres.GetGenre(Guid.Parse("{AF22A32F-3AD3-4159-9D0B-8E43E74F72B9}")));
 
                 GameControllerCollection targetController = new GameControllerCollection();
                 if (Boolean.Parse(ini.Sections["Controller"].Values["keyboard"].Value))

@@ -132,7 +132,7 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Core
                 else
                 {
                     MessageBox.Show(res.Directory.DirectoryName + "を編集");
-                    EditForm.ShowEditor(res.Directory);
+                    EditForm.ShowEditor(res.Directory, genreFullInformations, controllerFullInformations);
                 }
             }
         }
