@@ -125,6 +125,8 @@ namespace Redefinable.Applications.Launcher.InfoEditor.Forms
             this.description_textBox.Size = new Size(420, 100);
             this.description_textBox.Multiline = true;
             this.operationPanel[1].Controls.Add(this.description_textBox);
+
+            
         }
 
 
